@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import NotFound from "./component/page_not_found";
 import Wrapper from "./component/wrapper/wrapper";
 import "./component/i18n"; // Import i18n to ensure it initializes
+import Home from "./pages/home";
 
 // Component to handle language sync with URL
 function LanguageHandler() {
@@ -39,7 +40,7 @@ function LanguageHandler() {
     const isArabic = languageToUse === "ar";
     document.documentElement.dir = isArabic ? "rtl" : "ltr";
     document.documentElement.lang = languageToUse;
-    
+
     // Apply ShamelSansOne font for both Arabic and English
     document.documentElement.style.fontFamily = "ShamelSansOne, sans-serif";
     document.documentElement.style.fontWeight = "400";
@@ -66,6 +67,8 @@ function App() {
     createRoutesFromElements(
       <Route element={<LanguageHandler />}>
         <Route path="/:lang?" element={<Wrapper />}>
+          <Route index element={<Home />} />
+
           {/* Add 404 route - this will catch all unmatched routes */}
           <Route path="*" element={<NotFound />} />
         </Route>
