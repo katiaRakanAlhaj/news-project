@@ -2,6 +2,10 @@
     "menu": {
         "about_us": "About Us",
         "contact_us": "Contact Us"
-
+    },
+    "news_wedget": {
+        "latest_news": "Latest news",
+        "most_view": "Most viewed",
+        "vote_now": "Vote now"
     }
 }

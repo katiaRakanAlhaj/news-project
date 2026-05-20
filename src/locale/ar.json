@@ -2,6 +2,10 @@
     "menu": {
         "about_us": "من نحن",
         "contact_us": "اتصل بنا"
-
+    },
+    "news_wedget": {
+        "latest_news": "أحدث الأخبار",
+        "most_view": "الأكثر مشاهدة",
+        "vote_now": "صوّت الآن"
     }
 }

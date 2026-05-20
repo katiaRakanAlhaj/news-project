@@ -18,6 +18,34 @@
     font-style: normal;
 }
 
+:root {
+    --text-primary: #111827;
+    --bg-negative: #BF0000;
+    --bg-secondary: #005BBF;
+    --text-negative: #BF0000;
+    --text-secondary: #121C2A;
+}
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-negative {
+    color: var(--text-negative);
+}
+
+.bg-secondary {
+    background-color: var(--bg-secondary)
+}
+
+.bg-negative {
+    background-color: var(--bg-negative);
+}
+
 html::-webkit-scrollbar {
     display: none;
 }
