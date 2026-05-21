@@ -88,7 +88,7 @@ const NewsModelTwo = () => {
     <div className="container1 mx-auto mt-[2rem]">
       <TitleSection title={"سياسة"} />
 
-      <div className="mt-[1rem] relative pb-12">
+      <div className="mt-[1rem] relative">
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={0}

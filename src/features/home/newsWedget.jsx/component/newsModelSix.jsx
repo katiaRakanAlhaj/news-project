@@ -10,7 +10,8 @@ import newsImage8 from "../../../../assets/images/newsImage8.png";
 const NewsModelSix = () => {
   const mainNews = {
     image: newsImage1,
-    title: "أحد شوارعها خسر 1.5 مليار دولار.. أسواق الخرطوم تستعيد نبضها التجاري",
+    title:
+      "أحد شوارعها خسر 1.5 مليار دولار.. أسواق الخرطوم تستعيد نبضها التجاري",
     date: "الخميس، 18 مايو 2024",
     views: "1.2k",
   };
@@ -45,7 +46,7 @@ const NewsModelSix = () => {
   return (
     <div className="container1 mx-auto mt-[2rem] px-4 md:px-0">
       <TitleSection title={"منوعات"} />
-      
+
       {/* first row - Main large card */}
       <div className="mt-[1rem]">
         <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[17rem] overflow-hidden">
@@ -71,7 +72,11 @@ const NewsModelSix = () => {
                 <p className="text-[#9CA3AF] text-xs mr-1">{mainNews.date}</p>
               </div>
               <div className="flex items-center">
-                <img className="w-[0.9rem] h-[0.9rem]" src={views} alt="views" />
+                <img
+                  className="w-[0.9rem] h-[0.9rem]"
+                  src={views}
+                  alt="views"
+                />
                 <p className="text-[#9CA3AF] text-xs mr-1">{mainNews.views}</p>
               </div>
             </div>
@@ -82,7 +87,10 @@ const NewsModelSix = () => {
       {/* second row - Small cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-[0.5rem] gap-y-[0.5rem] mt-[0.5rem]">
         {smallNews.map((item, index) => (
-          <div key={index} className="relative w-full h-[10rem] md:h-[12rem] lg:h-[10rem] overflow-hidden">
+          <div
+            key={index}
+            className="relative w-full h-[10rem] md:h-[12rem] lg:h-[10rem] overflow-hidden"
+          >
             <img
               className="w-full h-full object-cover"
               src={item.image}
@@ -101,13 +109,21 @@ const NewsModelSix = () => {
               </h1>
               <div className="flex items-center gap-x-[0.75rem] mt-1">
                 <div className="flex items-center">
-                  <img className="w-[0.7rem] h-[0.7rem]" src={date} alt="date" />
+                  <img
+                    className="w-[0.7rem] h-[0.7rem]"
+                    src={date}
+                    alt="date"
+                  />
                   <p className="text-[#9CA3AF] text-xs mr-1 mt-1 truncate">
                     {item.date}
                   </p>
                 </div>
                 <div className="flex items-center">
-                  <img className="w-[0.8rem] h-[0.8rem]" src={views} alt="views" />
+                  <img
+                    className="w-[0.8rem] h-[0.8rem]"
+                    src={views}
+                    alt="views"
+                  />
                   <p className="text-[#9CA3AF] text-xs mr-1 mt-1">
                     {item.views}
                   </p>
