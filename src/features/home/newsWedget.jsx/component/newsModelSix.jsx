@@ -1,11 +1,10 @@
 import TitleSection from "../../../../ui/titleSection";
 import newsImage1 from "../../../../assets/images/newsImage1.png";
-import views from "../../../../assets/images/views.svg";
-import date from "../../../../assets/images/date.svg";
 import newsImage5 from "../../../../assets/images/newsImage5.png";
 import newsImage6 from "../../../../assets/images/newsImage6.png";
 import newsImage7 from "../../../../assets/images/newsImage7.png";
 import newsImage8 from "../../../../assets/images/newsImage8.png";
+import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 
 const NewsModelSix = () => {
   const mainNews = {
@@ -66,20 +65,11 @@ const NewsModelSix = () => {
             <h1 className="text-white text-base md:text-lg lg:text-xl w-full md:w-[85%] leading-relaxed font-bold">
               {mainNews.title}
             </h1>
-            <div className="flex items-center gap-x-[1rem] mt-2">
-              <div className="flex items-center">
-                <img className="w-[0.8rem] h-[0.8rem]" src={date} alt="date" />
-                <p className="text-[#9CA3AF] text-xs mr-1">{mainNews.date}</p>
-              </div>
-              <div className="flex items-center">
-                <img
-                  className="w-[0.9rem] h-[0.9rem]"
-                  src={views}
-                  alt="views"
-                />
-                <p className="text-[#9CA3AF] text-xs mr-1">{mainNews.views}</p>
-              </div>
-            </div>
+            <NewsMetaInfo
+              dateText={mainNews.date}
+              viewsText={mainNews.views}
+              textColor="text-[#9CA3AF]"
+            />
           </div>
         </div>
       </div>
@@ -107,28 +97,11 @@ const NewsModelSix = () => {
               <h1 className="text-white text-xs md:text-sm w-full leading-relaxed font-bold line-clamp-2">
                 {item.title}
               </h1>
-              <div className="flex items-center gap-x-[0.75rem] mt-1">
-                <div className="flex items-center">
-                  <img
-                    className="w-[0.7rem] h-[0.7rem]"
-                    src={date}
-                    alt="date"
-                  />
-                  <p className="text-[#9CA3AF] text-xs mr-1 mt-1 truncate">
-                    {item.date}
-                  </p>
-                </div>
-                <div className="flex items-center">
-                  <img
-                    className="w-[0.8rem] h-[0.8rem]"
-                    src={views}
-                    alt="views"
-                  />
-                  <p className="text-[#9CA3AF] text-xs mr-1 mt-1">
-                    {item.views}
-                  </p>
-                </div>
-              </div>
+              <NewsMetaInfo
+                dateText={item.date}
+                viewsText={item.views}
+                textColor="text-[#9CA3AF]"
+              />
             </div>
           </div>
         ))}

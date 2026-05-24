@@ -4,8 +4,7 @@ import newsImage2 from "../../../../assets/images/newsImage2.png";
 import newsImage3 from "../../../../assets/images/newsImage3.png";
 import newsImage4 from "../../../../assets/images/newsImage4.png";
 import TitleSection from "../../../../ui/titleSection";
-import date from "../../../../assets/images/date.svg";
-import views from "../../../../assets/images/views.svg";
+import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 
 const NewsModelFour = () => {
   const originalImages = [
@@ -181,28 +180,11 @@ const NewsModelFour = () => {
                     <h3 className="text-sm font-bold mb-2 line-clamp-2 opacity-85">
                       {item.title}
                     </h3>
-                    <div className="flex items-center gap-x-[1rem] mt-2">
-                      <div className="flex items-center">
-                        <img
-                          className="w-[0.8rem] h-[0.8rem]"
-                          src={date}
-                          alt="date"
-                        />
-                        <p className="text-[#9CA3AF] text-xs mr-1 mt-1">
-                          {item.date}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <img
-                          className="w-[0.9rem] h-[0.9rem]"
-                          src={views}
-                          alt="views"
-                        />
-                        <p className="text-[#9CA3AF] text-xs mr-1 mt-1">
-                          {item.views}
-                        </p>
-                      </div>
-                    </div>
+                    <NewsMetaInfo
+                      dateText={item.date}
+                      viewsText={item.views}
+                      textColor="text-[#9CA3AF]"
+                    />
                   </div>
                 </div>
               </div>

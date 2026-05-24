@@ -1,6 +1,7 @@
 import React from "react";
 import date from "../assets/images/date.svg";
 import views from "../assets/images/views.svg";
+import NewsMetaInfo from "./dateAndViewsSection";
 
 const NewsCard = ({ image, title, description, date: newsDate, views: newsViews, type }) => {
   return (
@@ -27,16 +28,11 @@ const NewsCard = ({ image, title, description, date: newsDate, views: newsViews,
         </p>
       )}
       
-      <div className="flex items-center gap-x-[1rem] mt-2">
-        <div className="flex items-center">
-          <img className="w-[0.8rem]" src={date} alt="date" />
-          <p className="text-[#6B7280] text-xs mr-1 mt-1">{newsDate}</p>
-        </div>
-        <div className="flex items-center">
-          <img className="w-[0.9rem]" src={views} alt="views" />
-          <p className="text-[#6B7280] text-xs mr-1 mt-1">{newsViews}</p>
-        </div>
-      </div>
+        <NewsMetaInfo 
+        dateText={newsDate} 
+        viewsText={newsViews} 
+        textColor="text-[#6B7280]"
+      />
     </div>
   );
 };

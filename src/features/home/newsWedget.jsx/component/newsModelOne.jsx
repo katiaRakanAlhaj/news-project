@@ -4,8 +4,6 @@ import newsImage1 from "../../../../assets/images/newsImage1.png";
 import newsImage2 from "../../../../assets/images/newsImage2.png";
 import newsImage3 from "../../../../assets/images/newsImage3.png";
 import newsImage4 from "../../../../assets/images/newsImage4.png";
-import date from "../../../../assets/images/date.svg";
-import views from "../../../../assets/images/views.svg";
 import seeMore1 from "../../../../assets/images/seeMore1.png";
 import seeMore2 from "../../../../assets/images/seeMore2.png";
 import seeMore3 from "../../../../assets/images/seeMore3.png";

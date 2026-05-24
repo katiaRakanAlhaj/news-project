@@ -3,8 +3,6 @@ import newsImage2 from "../../../../assets/images/newsImage2.png";
 import newsImage3 from "../../../../assets/images/newsImage3.png";
 import newsImage4 from "../../../../assets/images/newsImage4.png";
 import newsImage5 from "../../../../assets/images/newsImage5.png";
-import date from "../../../../assets/images/date.svg";
-import views from "../../../../assets/images/views.svg";
 import LinkedInColor from "../../../../assets/images/linkedInColor.svg";
 import instgramColor from "../../../../assets/images/instgramColor.svg";
 import facebookColor from "../../../../assets/images/facebookColor.svg";
@@ -12,6 +10,7 @@ import twitterColor from "../../../../assets/images/twitterColor.svg";
 import youtubeColor from "../../../../assets/images/youtubeColor.svg";
 import tiktok from "../../../../assets/images/tiktok.svg";
 import TitleSection from "../../../../ui/titleSection";
+import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 const NewsModelSeven = () => {
   const social = [
     { image: LinkedInColor, name: "Linkedin", width: "1.3rem" },
@@ -81,28 +80,11 @@ const NewsModelSeven = () => {
               <p className="text-sm text-[#666666] mt-2">
                 {mainNews.description}
               </p>
-              <div className="flex items-center gap-x-[1rem] mt-2">
-                <div className="flex items-center">
-                  <img
-                    className="w-[0.8rem] h-[0.8rem]"
-                    src={date}
-                    alt="date"
-                  />
-                  <p className="text-[#363636] text-xs mr-1 mt-1">
-                    {mainNews.date}
-                  </p>
-                </div>
-                <div className="flex items-center">
-                  <img
-                    className="w-[0.9rem] h-[0.9rem]"
-                    src={views}
-                    alt="views"
-                  />
-                  <p className="text-[#363636] text-xs mr-1 mt-1">
-                    {mainNews.views}
-                  </p>
-                </div>
-              </div>
+              <NewsMetaInfo
+                dateText={mainNews.date}
+                viewsText={mainNews.views}
+                textColor="text-[#363636]"
+              />
             </div>
 
             {/* second column - List of other news items */}
@@ -118,28 +100,11 @@ const NewsModelSeven = () => {
                     <h1 className="font-bold text-md text-[#333333]">
                       {item.title}
                     </h1>
-                    <div className="flex items-center gap-x-[1rem] mt-2">
-                      <div className="flex items-center">
-                        <img
-                          className="w-[0.8rem] h-[0.8rem]"
-                          src={date}
-                          alt="date"
-                        />
-                        <p className="text-[#363636] text-xs mr-1 mt-1">
-                          {item.date}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <img
-                          className="w-[0.9rem] h-[0.9rem]"
-                          src={views}
-                          alt="views"
-                        />
-                        <p className="text-[#363636] text-xs mr-1 mt-1">
-                          {item.views}
-                        </p>
-                      </div>
-                    </div>
+                    <NewsMetaInfo
+                      dateText={item.date}
+                      viewsText={item.views}
+                      textColor="text-[#363636]"
+                    />
                   </div>
                 </div>
               ))}
