@@ -4,6 +4,8 @@ import media2 from "../../../../assets/images/media2.png";
 import media3 from "../../../../assets/images/media3.png";
 import media4 from "../../../../assets/images/media4.png";
 import auto from "../../../../assets/images/auto.svg";
+import TitleSection from "../../../../ui/titleSection";
+import { IoIosArrowBack } from "react-icons/io";
 
 const MediaModelOne = () => {
   const [playingVideoId, setPlayingVideoId] = useState(null);
@@ -66,8 +68,20 @@ const MediaModelOne = () => {
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
+      <div className="flex flex-wrap gap-x-2 items-center">
+        <h1 className="text-primary font-bold text-md text-nowrap">
+          معرض الفيديو
+        </h1>
+        <div className=" h-[0.15rem] w-[85%] relative bg-[#D9E3F6]">
+          <div className="absolute h-full w-[10%] bg-negative"></div>
+        </div>
+        <div className="flex">
+          <p className="font-bold text-sm text-[#005BBF]">شاهد المزيد</p>
+          <IoIosArrowBack className="text-[#005BBF]" />
+        </div>
+      </div>
       {/* Main Row - Large Image/Video */}
-      <div className="relative flex justify-center items-center">
+      <div className="relative flex justify-center items-center mt-[1rem]">
         {playingVideoId === mainItem.id ? (
           // Show Video
           <div className="relative w-full h-[33rem] rounded-t-xl overflow-hidden">
@@ -112,7 +126,6 @@ const MediaModelOne = () => {
           </>
         )}
       </div>
-
       {/* Second Row - Thumbnails */}
       <div className="grid grid-cols-4 gap-x-[0.5rem] mt-[0.5rem]">
         {thumbnailItems.map((item) => (

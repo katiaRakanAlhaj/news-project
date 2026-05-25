@@ -14,6 +14,8 @@ import NotFound from "./component/page_not_found";
 import Wrapper from "./component/wrapper/wrapper";
 import "./component/i18n"; // Import i18n to ensure it initializes
 import Home from "./pages/home";
+import Contact from "./pages/contact";
+import AboutUs from "./pages/aboutUs";
 
 // Component to handle language sync with URL
 function LanguageHandler() {
@@ -68,6 +70,8 @@ function App() {
       <Route element={<LanguageHandler />}>
         <Route path="/:lang?" element={<Wrapper />}>
           <Route index element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/About_Us" element={<AboutUs />} />
 
           {/* Add 404 route - this will catch all unmatched routes */}
           <Route path="*" element={<NotFound />} />

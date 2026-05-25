@@ -32,7 +32,7 @@ const Home = () => {
       <NewsModelNine/>
       <MediaModelOne/>
       <MediaModelTwo/>
-      katia
+      
     </div>
   );
 };

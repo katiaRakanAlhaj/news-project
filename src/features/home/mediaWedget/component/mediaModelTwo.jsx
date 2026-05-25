@@ -5,6 +5,7 @@ import media3 from "../../../../assets/images/media3.png";
 import media4 from "../../../../assets/images/media4.png";
 import youtube from "../../../../assets/images/youtube.svg";
 import mainVideo from "../../../../assets/images/mainVideo.png";
+import TitleSection from "../../../../ui/titleSection";
 
 const MediaModelTwo = () => {
   const [currentVideo, setCurrentVideo] = useState(null);
@@ -17,7 +18,7 @@ const MediaModelTwo = () => {
     {
       id: 1,
       image: media2,
-      title: "وكالة موديز ترسم صورة متشائمة عن اقتصاد إسرائيل",
+      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
       videoUrl: "https://youtu.be/_isFw_iXogI?si=pZjPCg5N2CGKgRK_",
     },
     {
@@ -72,7 +73,8 @@ const MediaModelTwo = () => {
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
-      <div className="w-full">
+      <TitleSection title={"ميديا"}/>
+      <div className="w-full mt-[1rem]">
         <div className="flex">
           {/* First image - 82% width (Main display area) */}
           <div className="relative w-[82%] h-[28rem] overflow-hidden">
@@ -116,6 +118,10 @@ const MediaModelTwo = () => {
                 </div>
               </>
             )}
+            {/* Dynamic title - changes based on selected video */}
+            <h1 className="absolute right-[2rem] top-[2rem] font-bold text-white text-xl">
+              {isPlaying ? currentTitle : "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة"}
+            </h1>
           </div>
 
           {/* Second column - 18% width with multiple items stacked */}

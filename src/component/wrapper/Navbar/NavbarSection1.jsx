@@ -4,6 +4,7 @@ import linkedIn from "../../../assets/images/linkedIn.svg";
 import instgram from "../../../assets/images/instgram.svg";
 import twitter from "../../../assets/images/twitter.svg";
 import sun from "../../../assets/images/sun.svg";
+import { Link } from "react-router-dom";
 const NavbarSection1 = () => {
   const socilaIcons = [
     { icon: twitter },
@@ -17,12 +18,17 @@ const NavbarSection1 = () => {
       <div className="container1 mx-auto h-full">
         <div className="flex justify-between items-center w-full h-full">
           <div className="flex gap-x-6 items-center">
-            <p className="text-[#222222] text-sm">
-              {i18next.t("menu.about_us")}
-            </p>
-            <p className="text-[#222222] text-sm">
-              {i18next.t("menu.contact_us")}
-            </p>
+            <Link to="/About_Us">
+              <p className="text-[#222222] text-sm">
+                {i18next.t("menu.about_us")}
+              </p>
+            </Link>
+
+            <Link to="/contact">
+              <p className="text-[#222222] text-sm">
+                {i18next.t("menu.contact_us")}
+              </p>
+            </Link>
           </div>
           <div className="flex items-center">
             <p className="text-[#222222] text-sm">الخميس، 18 مايو 2024</p>
