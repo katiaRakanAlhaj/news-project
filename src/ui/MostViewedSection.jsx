@@ -28,7 +28,7 @@ const MostViewedSection = ({ activeTab, mostViewedData }) => {
             alt={newsItem.title}
           />
           <div className="flex-1 flex flex-col space-y-2">
-            <h3 className="text-secondary font-bold text-sm line-clamp-2 group-hover:text-negative transition">
+            <h3 className="text-secondary font-bold text-xs line-clamp-2 group-hover:text-negative transition">
               {newsItem.title}
             </h3>
             <p className="text-xs text-[#121C2A] line-clamp-2">

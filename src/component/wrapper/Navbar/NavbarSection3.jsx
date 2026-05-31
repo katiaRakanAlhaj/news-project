@@ -11,7 +11,9 @@ const NavbarSection3 = () => {
           </Link>
           <div className="flex gap-x-[2rem]">
             {menuItems?.map((menuItems) => (
-              <p className="text-white text-[0.9rem]">{menuItems}</p>
+              <Link to="/News">
+                <p className="text-white text-[0.9rem]">{menuItems}</p>
+              </Link>
             ))}
           </div>
         </div>
