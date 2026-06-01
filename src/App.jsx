@@ -17,6 +17,7 @@ import Home from "./pages/home";
 import Contact from "./pages/contact";
 import AboutUs from "./pages/aboutUs";
 import News from "./pages/news";
+import SingleNews from "./pages/singleNews";
 
 // Component to handle language sync with URL
 function LanguageHandler() {
@@ -74,7 +75,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/About_Us" element={<AboutUs />} />
           <Route path="/News" element={<News />} />
-
+          <Route path="/News/:id" element={<SingleNews />} />
           {/* Add 404 route - this will catch all unmatched routes */}
           <Route path="*" element={<NotFound />} />
         </Route>
