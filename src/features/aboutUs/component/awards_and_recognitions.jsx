@@ -15,7 +15,7 @@ const AwardsandRecognitions = () => {
     <div className="w-full h-auto pt-[3rem] bg-[#FFFFFF]">
       <AboutUsTitle title={"جوائز وتقديرات"} />
       <div className="container4 mx-auto mt-[2rem]">
-        <div className="grid grid-cols-4 gap-x-[1.5rem]">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-[1.5rem]">
           {awardsItem?.map((awardsItem) => (
             <div className="w-full h-[7rem] rounded-md border border-[#BBD0E4] space-y-2 flex flex-col justify-center items-center">
               <img className="w-[2rem] h-[2rem]" src={awardsItem.image} />

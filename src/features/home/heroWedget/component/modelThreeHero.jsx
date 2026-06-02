@@ -42,13 +42,13 @@ const ModelThreeHero = () => {
 
   return (
     <div className="container1 mx-auto h-auto">
-      <div className="grid grid-cols-12 gap-x-[0.5rem] mt-[1rem]">
+      <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[0.5rem] gap-y-[0.5rem] mt-[1rem]">
         {/* first column - single image (col-span-4) */}
-        <div className="col-span-5">
+        <div className="lg:col-span-5 col-span-1">
           {firstColumnImage.map((item, index) => (
             <div
               key={index}
-              className="relative w-full h-[33rem] overflow-hidden rounded-xl group"
+              className="relative w-full lg:h-[33rem] h-[20rem] overflow-hidden rounded-xl group"
             >
               <img
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -80,12 +80,12 @@ const ModelThreeHero = () => {
         </div>
 
         {/* second column - 4 images in 2x2 grid (col-span-8) */}
-        <div className="col-span-7">
-          <div className="grid grid-cols-2 gap-[0.5rem]">
+        <div className="lg:col-span-7 col-span-1">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-[0.5rem]">
             {secondColumnImages.map((item, index) => (
               <div
                 key={index}
-                className="relative w-full h-[16.25rem] overflow-hidden rounded-xl group"
+                className="relative w-full lg:h-[16.25rem] h-[20rem] overflow-hidden rounded-xl group"
               >
                 <img
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

@@ -62,12 +62,12 @@ const NewsModelSeven = () => {
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
-      <div className="grid grid-cols-12 gap-x-[5rem]">
+      <div className="grid lg:grid-cols-12 gap-x-[5rem] lg:gap-y-0 gap-y-[2rem]">
         {/* first column */}
-        <div className="col-span-9">
+        <div className="lg:col-span-9 col-span-1">
           <TitleSection title="منوعات وثقافة" showArrows={false} />
 
-          <div className="grid grid-cols-2 gap-x-[1rem] mt-[1rem]">
+          <div className="grid md:grid-cols-2 gap-[1rem] mt-[1rem]">
             {/* first column - Main featured news */}
             <div className="flex flex-col">
               <img
@@ -90,14 +90,14 @@ const NewsModelSeven = () => {
             {/* second column - List of other news items */}
             <div className="flex flex-col space-y-[1rem]">
               {sideNews.map((item, index) => (
-                <div key={index} className="flex gap-x-[1rem]">
+                <div key={index} className="md:flex gap-x-[1rem]">
                   <img
-                    className="w-[9rem] h-[8rem] object-cover"
+                    className="md:w-[9rem] w-full h-[8rem] object-cover"
                     src={item.image}
                     alt={item.title}
                   />
                   <div className="flex flex-col space-y-2 justify-center">
-                    <h1 className="font-bold text-md text-[#333333]">
+                    <h1 className="font-bold text-md text-[#333333] md:mt-0 mt-[1rem]">
                       {item.title}
                     </h1>
                     <NewsMetaInfo
@@ -112,7 +112,7 @@ const NewsModelSeven = () => {
           </div>
         </div>
         {/* second column */}
-        <div className="col-span-3">
+        <div className="lg:col-span-3 col-span-1">
           <TitleSection title={"سوشال ميديا"} showArrows={false} />
           <div
             style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}

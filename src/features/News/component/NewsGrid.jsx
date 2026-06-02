@@ -138,9 +138,9 @@ const NewsGrid = () => {
 
   return (
     <div>
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col lg:space-y-4 space-y-6">
         {visibleNewsItems?.map((newsItem, index) => (
-          <div key={index} className="grid grid-cols-2 gap-x-3">
+          <div key={index} className="grid md:grid-cols-2 gap-x-3 lg:gap-y-0 gap-y-[2rem]">
             <div
               onClick={() => handleNewsClick(newsItem.id)} // Add this
               className="relative"
@@ -165,7 +165,7 @@ const NewsGrid = () => {
               <p className="text-[#666666] mt-1 text-sm leading-relaxed">
                 {newsItem.desc}
               </p>
-              <div className="absolute bottom-[0.4rem] pointer-events-none">
+              <div className="absolute lg:bottom-[0.4rem] bottom-[-1rem] pointer-events-none">
                 <NewsMetaInfo
                   dateText={"الخميس، 18 مايو 2024"}
                   viewsText={"1.2k"}

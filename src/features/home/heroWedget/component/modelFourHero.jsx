@@ -50,11 +50,11 @@ const ModelFourHero = () => {
     <div className="container1 mx-auto h-auto">
       <div className="grid grid-cols-1 gap-[0.5rem] mt-[1rem]">
         {/* First row - 2 images */}
-        <div className="grid grid-cols-2 gap-[0.5rem]">
+        <div className="grid md:grid-cols-2 gap-[0.5rem]">
           {firstRowImages.map((item, index) => (
             <div
               key={index}
-              className="relative w-full h-[16.25rem] overflow-hidden rounded-xl group"
+              className="relative w-full lg:h-[16.25rem] h-[20rem] overflow-hidden rounded-xl group"
             >
               <img
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -86,11 +86,11 @@ const ModelFourHero = () => {
         </div>
 
         {/* Second row - 4 images */}
-        <div className="grid grid-cols-4 gap-[0.5rem]">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-[0.5rem]">
           {secondRowImages.map((item, index) => (
             <div
               key={index}
-              className="relative w-full h-[16.25rem] overflow-hidden rounded-xl group"
+              className="relative w-full lg:h-[16.25rem] h-[20rem] overflow-hidden rounded-xl group"
             >
               <img
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

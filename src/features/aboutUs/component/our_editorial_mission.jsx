@@ -9,12 +9,12 @@ const OurEditorialMission = () => {
 
   return (
     <div className="w-full h-auto py-[2rem] container1 mx-auto">
-      <div className="grid grid-cols-2 gap-x-[2rem]">
+      <div className="grid md:grid-cols-2 lg:gap-y-0 gap-y-[2rem] gap-x-[2rem]">
         {/* first column */}
         <div className="flex flex-col justify-center">
           <div className="flex gap-x-2 items-center">
             <div className="w-[1.5rem] h-[0.3rem] bg-[#005BBF] rounded-full"></div>
-            <h1 className="text-[#005BBF] font-bold text-2xl mt-1">
+            <h1 className="text-[#005BBF] font-bold md:text-2xl text-lg mt-1">
               رسالتنا التحريرية
             </h1>
           </div>

@@ -7,14 +7,14 @@ const News = () => {
     <div>
       <ModelTwoHero />
       <div className="container1 mx-auto">
-        <div className="grid grid-cols-12 gap-x-[4rem] mt-[2rem]">
+        <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[4rem] mt-[2rem] lg:gap-y-0 gap-y-[2rem]">
           {/* first column */}
-          <div className="col-span-9">
-            <NewsGrid/>
+          <div className="lg:col-span-9 col-span-1">
+            <NewsGrid />
           </div>
           {/* second column */}
-          <div className="col-span-3">
-            <LastNews/>
+          <div className="lg:col-span-3 col-span-1">
+            <LastNews />
           </div>
         </div>
       </div>

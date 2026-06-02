@@ -25,7 +25,7 @@ const OurCoreValues = () => {
       <div className="container1 mx-auto">
         <AboutUsTitle title={"قيمنا الجوهرية"} />
         <div className="container4 mx-auto">
-          <div className="grid grid-cols-3 gap-x-[1.5rem] mt-[2rem]">
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-[1.5rem] mt-[2rem]">
             {valuesItems?.map((valuesItems) => (
               <div className="w-full h-[10rem] bg-white rounded-md border border-[#BBD3E4] flex flex-col justify-center items-center space-y-2">
                 <img className="w-[1.5rem]" src={valuesItems?.image} />

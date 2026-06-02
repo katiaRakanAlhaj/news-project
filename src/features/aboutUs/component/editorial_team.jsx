@@ -23,7 +23,7 @@ const EditorialTeam = () => {
           </p>
           <div className="w-full h-[0.1rem] bg-[#005BBF] mt-2"></div>
         </div>
-        <div className="grid grid-cols-4 gap-x-[1.5rem] mt-[2rem]">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-[1.5rem] mt-[2rem]">
           {teamItems.map((item, index) => (
             <div key={index}>
               {item.image ? (

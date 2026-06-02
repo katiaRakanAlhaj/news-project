@@ -46,7 +46,7 @@ const SingleNewsModel13 = () => {
         أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم
         أد مينيم فينايم,كيواس نوستريد أكسير
       </p>
-      <div className="grid grid-cols-3 mt-[1rem] gap-[2rem]">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-[1rem] gap-[2rem]">
         {items?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}

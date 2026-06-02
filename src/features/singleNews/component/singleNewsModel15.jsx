@@ -26,7 +26,7 @@ const SingleNewsModel15 = () => {
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={"المصطلحات الرئيسية للأمم المتحدة"} />
-      <div className="grid grid-cols-2 gap-x-[4rem] gap-y-[3rem] mt-[2rem]">
+      <div className="grid md:grid-cols-2 gap-x-[4rem] gap-y-[3rem] mt-[2rem]">
         {items?.map((item, index) => (
           <div key={index} className="flex flex-col space-y-2">
             <h1 className="text-[#005BBF] font-bold text-md">{item?.title}</h1>

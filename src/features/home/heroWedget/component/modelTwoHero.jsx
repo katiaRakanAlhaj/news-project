@@ -30,13 +30,13 @@ const ModelTwoHero = () => {
 
   return (
     <div className="container1 mx-auto h-auto">
-      <div className="grid grid-cols-12 gap-x-[0.5rem] mt-[1rem]">
+      <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[0.5rem] mt-[1rem] gap-y-[0.5rem]">
         {/* first column - single image */}
-        <div className="col-span-8">
+        <div className="lg:col-span-8 col-span-1">
           {firstColumnImages.map((item, index) => (
             <div
               key={index}
-              className="relative w-full h-[33rem] overflow-hidden rounded-xl group"
+              className="relative w-full lg:h-[33rem] h-[20rem] overflow-hidden rounded-xl group"
             >
               <img
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -68,12 +68,12 @@ const ModelTwoHero = () => {
         </div>
 
         {/* second column - 2 images stacked vertically */}
-        <div className="col-span-4 flex flex-col gap-y-[0.5rem]">
+        <div className="lg:col-span-4 col-span-1 flex flex-col gap-y-[0.5rem]">
           {secondColumnImages.map((item, index) => (
             <div
               style={{ boxShadow: "0px 20px 25px -5px #0000001A" }}
               key={index}
-              className="relative w-full h-[16.25rem] overflow-hidden rounded-xl group"
+              className="relative w-full lg:h-[16.25rem] h-[20rem] overflow-hidden rounded-xl group"
             >
               <img
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

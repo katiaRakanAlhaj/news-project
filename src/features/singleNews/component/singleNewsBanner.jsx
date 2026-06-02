@@ -15,7 +15,7 @@ const SinlgeNewsBanner = () => {
       <div className="w-[5rem] h-[1.8rem] flex justify-center items-center bg-[#005BBF] rounded-full">
         <p className="text-white font-[400] text-sm mt-1">سياسة</p>
       </div>
-      <h1 className="text-[#373737] text-2xl font-bold mt-3">
+      <h1 className="text-[#373737] lg:text-2xl text-lg font-bold mt-3">
         أكسيوس: اتفاق وشيك بين واشنطن وطهران لإنهاء الحرب
       </h1>
       <p className="text-[#282828] text-xs mt-2">الخميس، 18 مايو 2024</p>

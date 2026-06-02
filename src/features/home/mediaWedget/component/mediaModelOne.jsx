@@ -72,7 +72,7 @@ const MediaModelOne = () => {
         <h1 className="text-primary font-bold text-md text-nowrap">
           معرض الفيديو
         </h1>
-        <div className=" h-[0.15rem] w-[85%] relative bg-[#D9E3F6]">
+        <div className=" h-[0.15rem] md:w-[85%] w-[32%] relative bg-[#D9E3F6]">
           <div className="absolute h-full w-[10%] bg-negative"></div>
         </div>
         <div className="flex">
@@ -107,7 +107,7 @@ const MediaModelOne = () => {
           <>
             <img
               style={{ boxShadow: "0px 25px 50px -12px #00000040" }}
-              className="w-full h-[33rem] object-cover rounded-t-xl cursor-pointer"
+              className="w-full lg:h-[33rem] h-[20rem] object-cover rounded-t-xl cursor-pointer"
               src={mainItem.image}
               alt="media"
               onClick={() => handlePlayVideo(mainItem.id)}
@@ -127,7 +127,7 @@ const MediaModelOne = () => {
         )}
       </div>
       {/* Second Row - Thumbnails */}
-      <div className="grid grid-cols-4 gap-x-[0.5rem] mt-[0.5rem]">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-[0.5rem] mt-[0.5rem]">
         {thumbnailItems.map((item) => (
           <div key={item.id} className="flex flex-col space-y-2">
             <div className="relative">

@@ -34,7 +34,7 @@ const SingleNewsModel16 = () => {
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={"اختصارات خاصة بالأمم المتحدة"} />
-      <div className="grid grid-cols-2 gap-[2rem] mt-[1rem]">
+      <div className="grid md:grid-cols-2 gap-[2rem] mt-[1rem]">
         {items?.map((item) => (
           <div className="flex gap-x-[1rem]">
             <div className="h-[26.5rem] w-[0.15rem] bg-[#005BBF]"></div>

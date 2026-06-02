@@ -6,7 +6,7 @@ const OurGlobalPresence = () => {
   return (
     <div className="w-full py-[3rem] h-auto bg-[#001926]">
       <div className="container1 mx-auto">
-        <div className="grid grid-cols-2 gap-x-[4rem]">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-[4rem] lg:gap-y-0 gap-y-[2rem]">
           {/* first column */}
           <div className="flex flex-col justify-center">
             <div className="flex flex-start">
@@ -33,7 +33,7 @@ const OurGlobalPresence = () => {
           <div>
             <img
               src={Newspaper}
-              className="w-full h-[25rem] rounded-lg object-cover"
+              className="w-full lg:h-[25rem] h-[20rem] rounded-lg object-cover"
             />
           </div>
         </div>

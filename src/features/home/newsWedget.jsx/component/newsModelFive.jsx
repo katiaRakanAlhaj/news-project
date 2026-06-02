@@ -54,11 +54,11 @@ const NewsModelFive = () => {
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
-      <div className="grid grid-cols-12 gap-x-[2rem]">
+      <div className="grid lg:grid-cols-12 grid-cols-1 gap-[2rem]">
         {/* first column */}
-        <div className="col-span-9">
+        <div className="lg:col-span-9 col-span-1">
           <TitleSection title={"أحدث الأخبار"} />
-          <div className="grid grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]">
+          <div className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]">
             {news.map((item, index) => (
               <NewsCard
                 key={index}
@@ -73,7 +73,7 @@ const NewsModelFive = () => {
         </div>
 
         {/* second column - Survey */}
-        <div className="col-span-3">
+        <div className="lg:col-span-3 col-span-1">
           {/* استبيان  */}
           <div
             style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}

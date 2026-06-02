@@ -29,7 +29,7 @@ const SingleNewsModel8 = () => {
         المتحدة. هذه الهيئات مسؤولة عن المهام الرئيسية للمنظمة، بدءاً من صون
         السلم والأمن الدوليين وصولاً إلى تعزيز التقدم الاجتماعي والاقتصادي.
       </p>
-      <div className="grid grid-cols-3 px-[1rem] mt-[2rem] gap-[2rem]">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 px-[1rem] mt-[2rem] gap-[2rem]">
         {items?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}

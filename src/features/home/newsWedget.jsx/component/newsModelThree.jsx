@@ -53,9 +53,9 @@ const NewsModelThree = () => {
     <div className="container1 mx-auto mt-[2rem] px-4">
       <TitleSection title={i18next.t("news_wedget.latest_news")} />
 
-      <div className="grid grid-cols-12 gap-x-[1rem] mt-[1rem]">
+      <div className="grid lg:grid-cols-12 grid-cols-1 gap-[1rem] mt-[1rem]">
         {/* First column - Main News col-span-9 */}
-        <div className="col-span-9">
+        <div className="lg:col-span-9 col-span-1">
           <div className="relative">
             <img
               src={mainNewsItem.image}
@@ -74,7 +74,7 @@ const NewsModelThree = () => {
         </div>
 
         {/* Second column - Most Viewed col-span-3 */}
-        <div className="col-span-3">
+        <div className="lg:col-span-3 col-span-1">
           {/* Passing full array but MostViewedSection will slice from second item */}
           <MostViewedSection mostViewedData={newsData.slice(1)} />
         </div>
