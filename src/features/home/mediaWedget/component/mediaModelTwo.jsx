@@ -6,6 +6,7 @@ import media4 from "../../../../assets/images/media4.png";
 import youtube from "../../../../assets/images/youtube.svg";
 import mainVideo from "../../../../assets/images/mainVideo.png";
 import TitleSection from "../../../../ui/titleSection";
+import i18next from "i18next";
 
 const MediaModelTwo = () => {
   const [currentVideo, setCurrentVideo] = useState(null);
@@ -82,7 +83,7 @@ const MediaModelTwo = () => {
                 <iframe
                   className="w-full h-full"
                   src={`https://www.youtube.com/embed/${getYouTubeVideoId(
-                    currentVideo
+                    currentVideo,
                   )}?autoplay=1`}
                   title={currentTitle}
                   frameBorder="0"
@@ -123,7 +124,9 @@ const MediaModelTwo = () => {
               </>
             )}
 
-            <h1 className="absolute right-4 lg:right-[2rem] top-4 lg:top-[2rem] font-bold text-white text-sm sm:text-lg lg:text-xl max-w-[90%]">
+            <h1
+              className={`absolute ${i18next.language == "ar" ? "right-4 lg:right-[2rem]" : "left-4 lg:left-[2rem]"} top-4 lg:top-[2rem] font-bold text-white text-sm sm:text-lg lg:text-xl max-w-[90%]`}
+            >
               {isPlaying
                 ? currentTitle
                 : "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة"}

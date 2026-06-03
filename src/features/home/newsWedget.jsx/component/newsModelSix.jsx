@@ -5,6 +5,7 @@ import newsImage6 from "../../../../assets/images/newsImage6.png";
 import newsImage7 from "../../../../assets/images/newsImage7.png";
 import newsImage8 from "../../../../assets/images/newsImage8.png";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
+import i18next from "i18next";
 
 const NewsModelSix = () => {
   const mainNews = {
@@ -61,7 +62,9 @@ const NewsModelSix = () => {
                 "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
             }}
           />
-          <div className="absolute right-[1rem] bottom-[1.5rem] left-[1rem] md:left-auto">
+          <div
+            className={`absolute ${i18next.language == "ar" ? "right-[1rem] md:left-auto " : "left-[1rem] md:right-auto"} bottom-[1.5rem] `}
+          >
             <h1 className="text-white text-base md:text-lg lg:text-xl w-full md:w-[85%] leading-relaxed font-bold">
               {mainNews.title}
             </h1>

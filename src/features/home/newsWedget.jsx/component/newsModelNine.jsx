@@ -123,7 +123,9 @@ const NewsModelNine = () => {
                       "linear-gradient(180deg, rgba(0, 0, 0, 0) 51.55%, #000000 100%)",
                   }}
                 ></div>
-                <div className="absolute right-[1rem] bottom-[1rem]">
+                <div
+                  className={`absolute ${i18next.language == "ar" ? "right-[1rem] " : "left-[1rem] "} bottom-[1rem]`}
+                >
                   <h1 className="text-white font-bold text-md">{item.title}</h1>
                 </div>
               </div>
@@ -140,7 +142,11 @@ const NewsModelNine = () => {
                 : "bg-[#D9D9D9] cursor-pointer hover:bg-gray-400"
             }`}
           >
-            <img className="w-[0.6rem]" src={arrow1} alt="previous" />
+            <img
+              className={`w-[0.6rem] ${i18next.language == "ar" ? "" : "rotate-180"}`}
+              src={arrow1}
+              alt="previous"
+            />
           </div>
           <div
             onClick={handleNext}
@@ -150,7 +156,7 @@ const NewsModelNine = () => {
                 : "bg-[#D9D9D9] cursor-pointer hover:bg-gray-400"
             }`}
           >
-            <img className="w-[0.6rem]" src={arrow2} alt="next" />
+            <img className={`w-[0.6rem] ${i18next.language == "ar"?'':'rotate-180'}`} src={arrow2} alt="next" />
           </div>
         </div>
       </div>

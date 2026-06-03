@@ -4,7 +4,7 @@ import NewsGrid from "../features/News/component/NewsGrid";
 
 const News = () => {
   return (
-    <div>
+    <div className="lg:mt-0 mt-[6rem]">
       <ModelTwoHero />
       <div className="container1 mx-auto">
         <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[4rem] mt-[2rem] lg:gap-y-0 gap-y-[2rem]">

@@ -86,7 +86,7 @@ const SingleNews = () => {
     },
   ];
   return (
-    <div className="container1 mx-auto">
+    <div className="container1 mx-auto lg:mt-0 mt-[5rem]">
       <SinlgeNewsBanner />
       <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[1.5rem]">
         <div className="lg:col-span-9 col-span-1 mt-[2rem]">

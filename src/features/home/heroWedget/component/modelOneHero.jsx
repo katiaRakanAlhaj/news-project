@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import heroImage1 from "../../../../assets/images/heroImage1.png";
 import heroImage2 from "../../../../assets/images/heroImage2.png";
 import heroImage3 from "../../../../assets/images/heroImage3.png";
@@ -57,7 +58,9 @@ const ModelOneHero = () => {
                       "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
                   }}
                 ></div>
-                <div className="absolute right-[2rem] bottom-[2rem] pointer-events-none">
+                <div
+                  className={`absolute ${i18next.language == "ar" ? "right-[2rem]" : "left-[2rem]"} bottom-[2rem] pointer-events-none`}
+                >
                   <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
                     <p className="text-white font-[400] text-sm mt-1">
                       {item.name}

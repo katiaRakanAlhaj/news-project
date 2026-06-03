@@ -14,7 +14,7 @@ function Wrapper() {
         <NavbarSection2/>
         <NavbarSection3/>
       </div>
-      <div className="lg:hidden md:block">
+      <div className="lg:hidden block">
         <NavbarMobile/> 
       </div>
       <Outlet />

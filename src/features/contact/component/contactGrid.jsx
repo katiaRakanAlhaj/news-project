@@ -4,6 +4,7 @@ import linkedinContact from "../../../assets/images/linkedinContact.svg";
 import instgramContact from "../../../assets/images/instgramContact.svg";
 import facebookContact from "../../../assets/images/facebookContact.svg";
 import logoContact from "../../../assets/images/logoContact.svg";
+import i18next from "i18next";
 const icons = [
   { icon: linkedinContact, name: "linkedin" },
   { icon: instgramContact, name: "instagram" },
@@ -19,7 +20,9 @@ const ContactGrid = () => {
     <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-[3rem] lg:gap-y-0 gap-y-[2rem] lg:px-0 px-[2rem]">
       {/* first column */}
       <div className="flex flex-col justify-center">
-        <h1 className="font-bold text-[#000000] text-xl">تواصل معنا</h1>
+        <h1 className="font-bold text-[#000000] text-xl">
+          {i18next.t("contact.contact_us")}
+        </h1>
         <p className="text-sm text-[#002F3C] mt-2 leading-relaxed">
           لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو
           أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت
@@ -29,12 +32,14 @@ const ContactGrid = () => {
         <div className="lg:flex gap-x-[3rem] lg:space-y-0 space-y-[2rem] mt-[2rem]">
           <div className="flex flex-col space-y-1">
             <h1 className="text-md font-bold text-[#000000]">
-              بريد الالكتروني
+              {i18next.t("contact.email")}
             </h1>
             <p className="text-[#002F3C] text-sm">Alsahifa@INFO.COM</p>
           </div>
           <div className="flex flex-col space-y-1">
-            <h1 className="text-md font-bold text-[#000000]">مواقع التواصل</h1>
+            <h1 className="text-md font-bold text-[#000000]">
+              {i18next.t("contact.social_media")}
+            </h1>
             <div className="flex gap-x-4">
               {icons?.map((icon) => (
                 <img
@@ -60,32 +65,32 @@ const ContactGrid = () => {
             <input
               className={inputClassName}
               type="text"
-              placeholder="الاسم الاول"
+              placeholder={i18next.t("contact.first_name")}
             />
             <input
               className={inputClassName}
               type="text"
-              placeholder="الاسم الثاني"
+              placeholder={i18next.t("contact.surname")}
             />
           </div>
           <div className="grid md:grid-cols-2 gap-[0.5rem] w-full">
             <input
               className={inputClassName}
               type="text"
-              placeholder="الايميل"
+              placeholder={i18next.t("contact.email")}
             />
             <input
               className={inputClassName}
               type="text"
-              placeholder="الموضوع"
+              placeholder={i18next.t("contact.subject")}
             />
           </div>
           <textarea
-            placeholder="النص"
+            placeholder={i18next.t("contact.text")}
             className="w-full h-[10rem] p-2 text-sm border border-[#474747] placeholder-[#474747]"
           />
           <button className="w-full h-[3rem] bg-[#005BBF] text-white font-bold text-md mt-[1.8rem] cursor-pointer">
-            ارسال
+            {i18next.t("send")}
           </button>
         </form>
       </div>

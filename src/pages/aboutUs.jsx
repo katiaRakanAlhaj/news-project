@@ -7,7 +7,7 @@ import OurHistory from "../features/aboutUs/component/our_history";
 
 const AboutUs = () => {
   return (
-    <div>
+    <div className = "lg:mt-0 mt-[4rem]">
       <OurEditorialMission />
       <OurCoreValues />
       <EditorialTeam />

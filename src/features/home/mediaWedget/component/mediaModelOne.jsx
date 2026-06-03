@@ -6,6 +6,7 @@ import media4 from "../../../../assets/images/media4.png";
 import auto from "../../../../assets/images/auto.svg";
 import TitleSection from "../../../../ui/titleSection";
 import { IoIosArrowBack } from "react-icons/io";
+import i18next from "i18next";
 
 const MediaModelOne = () => {
   const [playingVideoId, setPlayingVideoId] = useState(null);
@@ -76,8 +77,12 @@ const MediaModelOne = () => {
           <div className="absolute h-full w-[10%] bg-negative"></div>
         </div>
         <div className="flex">
-          <p className="font-bold text-sm text-[#005BBF]">شاهد المزيد</p>
-          <IoIosArrowBack className="text-[#005BBF]" />
+          <p className="font-bold text-sm text-[#005BBF]">
+            {i18next.t("buttons.see_more")}
+          </p>
+          <IoIosArrowBack
+            className={`text-[#005BBF] ${i18next.language == "ar" ? "" : "rotate-180"}`}
+          />
         </div>
       </div>
       {/* Main Row - Large Image/Video */}

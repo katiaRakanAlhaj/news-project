@@ -245,3 +245,21 @@ html::-webkit-scrollbar {
 .scroll>* {
     scroll-snap-align: start;
 }
+
+.swiper-pagination {
+    position: relative !important;
+    margin-top: 20px;
+}
+
+.swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #d1d5db;
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+    background: #005bbf;
+    width: 24px;
+    border-radius: 9999px;
+}

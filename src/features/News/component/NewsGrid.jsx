@@ -6,6 +6,7 @@ import news4 from "../../../assets/images/news4.png";
 import news5 from "../../../assets/images/news5.png";
 import NewsMetaInfo from "../../../ui/dateAndViewsSection";
 import { useNavigate } from "react-router-dom";
+import i18next from "i18next";
 
 const NewsGrid = () => {
   const navigate = useNavigate();
@@ -140,7 +141,10 @@ const NewsGrid = () => {
     <div>
       <div className="flex flex-col lg:space-y-4 space-y-6">
         {visibleNewsItems?.map((newsItem, index) => (
-          <div key={index} className="grid md:grid-cols-2 gap-x-3 lg:gap-y-0 gap-y-[2rem]">
+          <div
+            key={index}
+            className="grid md:grid-cols-2 gap-x-3 lg:gap-y-0 gap-y-[2rem]"
+          >
             <div
               onClick={() => handleNewsClick(newsItem.id)} // Add this
               className="relative"
@@ -150,7 +154,9 @@ const NewsGrid = () => {
                 className="w-full h-[12rem] rounded-xl object-center"
                 alt={newsItem.title}
               />
-              <div className="absolute right-[0.5rem] top-[0.5rem] pointer-events-none">
+              <div
+                className={`absolute ${i18next.language == "ar" ? "right-[0.5rem]" : "left-[0.5rem]"} top-[0.5rem] pointer-events-none`}
+              >
                 <div className="w-[5rem] h-[1.8rem] flex justify-center items-center bg-[#005BBF] rounded-full">
                   <p className="text-white font-[400] text-sm mt-1">
                     {newsItem.type}
@@ -182,7 +188,7 @@ const NewsGrid = () => {
             onClick={handleLoadMore}
             className="flex justify-center items-center w-[14rem] cursor-pointer rounded-md text-white text-sm font-bold h-[2.5rem] bg-[#005BBF] hover:bg-[#004a99] transition-colors"
           >
-            <p className="mt-1">شاهد المزيد</p>
+            <p className="mt-1">{i18next.t("buttons.see_more")}</p>
           </button>
         </div>
       )}

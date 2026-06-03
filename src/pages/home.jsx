@@ -16,7 +16,7 @@ import NewsModelTwo from "../features/home/newsWedget.jsx/component/newsModelTwo
 
 const Home = () => {
   return (
-    <div>
+    <div className="lg:mt-0 mt-[6rem]">
       <ModelOneHero />
       <ModelTwoHero />
       <ModelThreeHero />
@@ -28,11 +28,10 @@ const Home = () => {
       <NewsModelFive />
       <NewsModelSix />
       <NewsModelSeven />
-      <NewsModelEight/>
-      <NewsModelNine/>
-      <MediaModelOne/>
-      <MediaModelTwo/>
-      
+      <NewsModelEight />
+      <NewsModelNine />
+      <MediaModelOne />
+      <MediaModelTwo />
     </div>
   );
 };

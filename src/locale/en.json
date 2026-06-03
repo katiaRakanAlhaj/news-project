@@ -1,11 +1,25 @@
 {
     "menu": {
         "about_us": "About Us",
-        "contact_us": "Contact Us"
+        "contact_us": "Contact Us",
+        "home": "Home"
     },
     "news_wedget": {
         "latest_news": "Latest news",
         "most_view": "Most viewed",
         "vote_now": "Vote now"
+    },
+    "buttons": {
+        "see_more": "see more"
+    },
+    "contact": {
+        "contact_us": "Contact Us",
+        "email": "Email",
+        "social_media": "Social Media",
+        "first_name": "First Name",
+        "surname": "Surname",
+        "subject": "Subject",
+        "text": "Text",
+        "send": "Send"
     }
 }

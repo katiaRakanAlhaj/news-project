@@ -1,13 +1,19 @@
-import { useState, useEffect, useRef } from "react";
 import newsImage1 from "../../../../assets/images/newsImage1.png";
 import newsImage2 from "../../../../assets/images/newsImage2.png";
 import newsImage3 from "../../../../assets/images/newsImage3.png";
 import newsImage4 from "../../../../assets/images/newsImage4.png";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
+
 import TitleSection from "../../../../ui/titleSection";
-import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
+import i18next from "i18next";
 
 const NewsModelFour = () => {
-  const originalImages = [
+  const news = [
     {
       image: newsImage1,
       type: "سياسة",
@@ -66,150 +72,70 @@ const NewsModelFour = () => {
     },
   ];
 
-  // Create a massive array for infinite scrolling
-  const createInfiniteArray = () => {
-    const result = [];
-    // Create 50 copies to ensure we never hit the end
-    for (let i = 0; i < 50; i++) {
-      result.push(...originalImages);
-    }
-    return result;
-  };
-
-  const infiniteImages = createInfiniteArray();
-  const startPosition = 20 * originalImages.length; // Start in the middle
-  const [position, setPosition] = useState(startPosition);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.clientWidth);
-      }
-    };
-
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
-  // Handle the infinite loop
-  useEffect(() => {
-    const resetThreshold = originalImages.length * 30;
-
-    if (position > startPosition + resetThreshold) {
-      // Jump back to start position without animation
-      setIsTransitioning(false);
-      setPosition(startPosition);
-      setTimeout(() => setIsTransitioning(true), 50);
-    } else if (position < startPosition - resetThreshold) {
-      setIsTransitioning(false);
-      setPosition(startPosition);
-      setTimeout(() => setIsTransitioning(true), 50);
-    }
-  }, [position, startPosition]);
-
-  const nextSlide = () => {
-    setPosition((prev) => prev + 1);
-  };
-
-  useEffect(() => {
-    const autoPlay = setInterval(nextSlide, 3000);
-    return () => clearInterval(autoPlay);
-  }, []);
-
-  // Calculate which 8 images to show (6 visible + 1 on each side for smoothness)
-  const startIdx = Math.max(0, position - 1);
-  const visibleImages = infiniteImages.slice(startIdx, startIdx + 8);
-
-  // Calculate transform with centering
-  const getTransform = () => {
-    if (containerWidth === 0) return "translateX(0)";
-    const gap = 16; // 1rem = 16px
-    const slideWidth = (containerWidth - 5 * gap) / 6;
-    const offset = (position - startIdx) * (slideWidth + gap);
-    const centerOffset = (containerWidth - slideWidth) / 2;
-    return `translateX(calc(-${offset}px + ${centerOffset}px))`;
-  };
-
   return (
-    <div className="mt-[2rem] relative w-full overflow-hidden">
-      <div className="container1 mx-auto">
-        <TitleSection title={"سياسة"} />
+    <div className="mt-8 w-full">
+      <div className="container1 mx-auto mb-[1rem]">
+        <TitleSection title="سياسة" />
       </div>
-      <div ref={containerRef} className="relative mt-[1rem]">
-        <div className="overflow-hidden">
-          <div
-            className="flex gap-2"
-            style={{
-              transform: getTransform(),
-              transition: isTransitioning ? "transform 1s ease-in-out" : "none",
-            }}
-          >
-            {visibleImages.map((item, idx) => (
-              <div
-                key={startIdx + idx}
-                className="flex-shrink-0"
-                style={{ width: `calc((100% - (6 * 1rem)) / 6)` }}
-              >
-                <div className="relative group cursor-pointer">
-                  <img
-                    className="w-full h-[24rem] object-cover rounded-lg shadow-lg"
-                    src={item.image}
-                    alt={`slide-${idx}`}
-                  />
-                  <div
-                    className="absolute inset-0 rounded-lg pointer-events-none"
-                    style={{
-                      background:
-                        "linear-gradient(360deg, #000000 0%, rgba(102, 102, 102, 0) 57.83%)",
-                    }}
-                  ></div>
 
-                  {/* Category Badge */}
-                  <div className="absolute top-[1rem] right-[1rem] z-10">
-                    <div className="px-3 py-1 flex justify-center items-center bg-secondary text-white text-xs rounded-full font-[400]">
-                      {item.type}
-                    </div>
-                  </div>
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        loop={true}
+        spaceBetween={10}
+        slidesPerView={6.3}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        breakpoints={{
+          320: {
+            slidesPerView: 1.3,
+          },
+          640: {
+            slidesPerView: 2.3,
+          },
+          768: {
+            slidesPerView: 4.3,
+          },
+          1024: {
+            slidesPerView: 6.3,
+          },
+        }}
+      >
+        {news.map((item, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative h-[24rem] overflow-hidden rounded-md group cursor-pointer">
+              <div className={`absolute top-2 ${i18next.language == "ar"?'right-2':'left-2'} z-10`}>
+                <span className="inline-block bg-[#005BBF] text-xs px-2 py-1 rounded-full text-white">
+                  {item.type}
+                </span>
+              </div>
 
-                  {/* Content Overlay at Bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 z-10 text-white">
-                    <h3 className="text-sm font-bold mb-2 line-clamp-2 opacity-85">
-                      {item.title}
-                    </h3>
-                    <NewsMetaInfo
-                      dateText={item.date}
-                      viewsText={item.views}
-                      textColor="text-[#9CA3AF]"
-                    />
-                  </div>
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                <h3 className="text-sm leading-5 font-bold line-clamp-3">
+                  {item.title}
+                </h3>
+
+                <div className="flex justify-between mt-2 text-[10px] text-gray-300">
+                  <span>{item.date}</span>
+                  <span>{item.views}</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Dots Navigation */}
-      <div className="flex justify-center gap-2 mt-4">
-        {originalImages.slice(0, 6).map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => {
-              setIsTransitioning(true);
-              setPosition(startPosition + idx);
-            }}
-            className={`rounded-full transition-all duration-300 ${
-              position % originalImages.length === idx
-                ? "w-2 h-2  bg-negative"
-                : "w-2 h-2  bg-gray-400"
-            }`}
-          />
+            </div>
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 };

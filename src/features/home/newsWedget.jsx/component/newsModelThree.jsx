@@ -62,7 +62,7 @@ const NewsModelThree = () => {
               className="w-full h-[22.5rem] rounded-lg object-cover"
               alt="main news"
             />
-            <div className="absolute bottom-[2rem] right-[2rem]">
+            <div className={`absolute bottom-[2rem] ${i18next.language == "ar"?'right-[2rem]':'left-[2rem]'}`}>
               <button className="w-[4rem] h-[1.6rem] bg-secondary rounded-full text-white text-xs">
                 فنون
               </button>

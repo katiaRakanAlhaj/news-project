@@ -1,11 +1,25 @@
 {
     "menu": {
         "about_us": "من نحن",
-        "contact_us": "اتصل بنا"
+        "contact_us": "اتصل بنا",
+        "home": "الرئيسية"
     },
     "news_wedget": {
         "latest_news": "أحدث الأخبار",
         "most_view": "الأكثر مشاهدة",
         "vote_now": "صوّت الآن"
+    },
+    "buttons": {
+        "see_more": "شاهد المزيد"
+    },
+    "contact": {
+        "contact_us": "تواصل معنا",
+        "email": "بريد الالكتروني",
+        "social_media": "مواقع التواصل",
+        "first_name": "الاسم الاول",
+        "surname": "الاسم الثاني",
+        "subject": "الموضوع",
+        "text": "النص",
+        "send": "ارسال"
     }
 }
