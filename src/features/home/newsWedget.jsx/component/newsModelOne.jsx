@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import newsImage1 from "../../../../assets/images/newsImage1.png";
 import newsImage2 from "../../../../assets/images/newsImage2.png";
 import newsImage3 from "../../../../assets/images/newsImage3.png";
@@ -11,41 +11,47 @@ import NewsCard from "../../../../ui/newsCard";
 import MostViewedSection from "../../../../ui/MostViewedSection";
 import TitleSection from "../../../../ui/titleSection";
 
-const NewsModelOne = () => {
+const NewsModelOne = ({ data }) => {
   const [activeTab, setActiveTab] = useState("ترند");
 
-  const news = [
-    {
-      image: newsImage1,
-      title: "إنهاء الأعمال العدائية ضد إيران.. رسالة ترمب تفجر جدلا بواشنطن",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "سياسة",
-    },
-    {
-      image: newsImage2,
-      title: "شهيدان في غزة وتحذيرات من انهيار القطاع الصحي",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "سياسة",
-    },
-    {
-      image: newsImage3,
-      title:
-        "أكبر شركة شحن بالعالم تطلق خطا ملاحيا بين أوروبا والشرق الأوسط عبر السعودية",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "اقتصاد",
-    },
-    {
-      image: newsImage4,
-      title: "دول الخليج تتجاوز المتوسط العالمي في مؤشر الحرية الاقتصادية 2026",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "اقتصاد",
-    },
-  ];
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
 
+  // Get items from API (handle pagination structure)
+  const getItemsArray = (items) => {
+    if (Array.isArray(items)) {
+      return items;
+    }
+    if (items && items.data && Array.isArray(items.data)) {
+      return items.data;
+    }
+    return [];
+  };
+
+  // Extract news items from API data
+  const newsItems = getItemsArray(data?.items || []);
+  
+  // Map API news items to the format expected by NewsCard
+  const news = newsItems.map((item) => ({
+    image: item.news_image,
+    title: item.news_title,
+    date: formatDate(item.date),
+    views: "1.2k", // Default value if not provided by API
+    type: item.category?.name ,
+    id: item.id
+  }));
+
+  // Note: Most viewed data would come from a separate API endpoint
+  // This is still static for now until you have an API for it
   const mostViewedData = {
     ترند: [
       {
@@ -69,14 +75,14 @@ const NewsModelOne = () => {
           "وجهات سياحية جديدة تتبنى مفاهيم الاستدامة البيئية في المنطقة..",
         time: "منذ ١٠ ساعات",
       },
-        {
+      {
         image: seeMore1,
         title: "السياحة المستدامة",
         description:
           "وجهات سياحية جديدة تتبنى مفاهيم الاستدامة البيئية في المنطقة..",
         time: "منذ ١٠ ساعات",
       },
-        {
+      {
         image: seeMore2,
         title: "السياحة المستدامة",
         description:
@@ -109,19 +115,24 @@ const NewsModelOne = () => {
     ],
   };
 
+  // Don't render if no data
+  if (!data || !newsItems.length) {
+    return null;
+  }
+
   return (
     <div className="container1 mx-auto mt-[2rem]">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-[2rem] gap-y-[2rem]">
         {/* first column - Main News */}
         <div className="lg:col-span-9">
-          {/* title */}
-          <TitleSection title={i18next.t("news_wedget.latest_news")} />
+          {/* title - use API title or default */}
+          <TitleSection title={data.title || i18next.t("news_wedget.latest_news")} />
 
           {/* grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[0.5rem] gap-y-[2rem] mt-[1rem]">
-            {news.map((item, index) => (
+            {news.map((item) => (
               <NewsCard
-                key={index}
+                key={item.id}
                 image={item.image}
                 title={item.title}
                 date={item.date}
@@ -177,4 +188,5 @@ const NewsModelOne = () => {
     </div>
   );
 };
+
 export default NewsModelOne;

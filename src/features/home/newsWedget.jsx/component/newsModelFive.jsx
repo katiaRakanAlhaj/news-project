@@ -1,67 +1,91 @@
 import i18next from "i18next";
-import newsImage1 from "../../../../assets/images/newsImage1.png";
-import newsImage2 from "../../../../assets/images/newsImage2.png";
-import newsImage3 from "../../../../assets/images/newsImage3.png";
-import newsImage4 from "../../../../assets/images/newsImage4.png";
 import NewsCard from "../../../../ui/newsCard";
 import TitleSection from "../../../../ui/titleSection";
 import { useState } from "react";
 import AdvertisementSpace from "../../../../assets/images/AdvertisementSpace.png";
-const NewsModelFive = () => {
+
+const NewsModelFive = ({ data }) => {
   const [selectedChoice, setSelectedChoice] = useState(null);
 
-  const news = [
-    {
-      image: newsImage1,
-      title: "إنهاء الأعمال العدائية ضد إيران.. رسالة ترمب تفجر جدلا بواشنطن",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "سياسة",
-    },
-    {
-      image: newsImage2,
-      title: "شهيدان في غزة وتحذيرات من انهيار القطاع الصحي",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "سياسة",
-    },
-    {
-      image: newsImage3,
-      title:
-        "أكبر شركة شحن بالعالم تطلق خطا ملاحيا بين أوروبا والشرق الأوسط عبر السعودية",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "اقتصاد",
-    },
-    {
-      image: newsImage4,
-      title: "دول الخليج تتجاوز المتوسط العالمي في مؤشر الحرية الاقتصادية 2026",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "اقتصاد",
-    },
-  ];
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
 
+  // Format views count (e.g., 1200 -> 1.2k)
+  const formatViews = (views) => {
+    if (!views) return "0";
+    if (views >= 1000) {
+      return (views / 1000).toFixed(1) + "k";
+    }
+    return views.toString();
+  };
+
+  // Get items from API (handle pagination structure)
+  const getItemsArray = (items) => {
+    if (Array.isArray(items)) {
+      return items;
+    }
+    if (items && items.data && Array.isArray(items.data)) {
+      return items.data;
+    }
+    return [];
+  };
+
+  // Extract news items from API data
+  const newsItems = getItemsArray(data?.items || []);
+  
+  // Map API news items to the format expected by NewsCard
+  const news = newsItems.map((item) => ({
+    id: item.id,
+    image: item.news_image,
+    title: item.news_title,
+    date: formatDate(item.date),
+    views: formatViews(item.views || Math.floor(Math.random() * 5000)),
+    type: item.category?.name || "عام",
+  }));
+
+  // Survey options (static for now - could come from API)
   const surveyOptions = [
-    { id: 1, label: "يسير في الطريق الصحيح" },
-    { id: 2, label: "يحتاج للمزيد من الوقت" },
-    { id: 3, label: "لا يزال في بداياته" },
+    { id: 1, label: "يسير في الطريق الصحيح", value: "correct" },
+    { id: 2, label: "يحتاج للمزيد من الوقت", value: "more_time" },
+    { id: 3, label: "لا يزال في بداياته", value: "beginning" },
   ];
 
   const handleChoiceChange = (value) => {
     setSelectedChoice(value);
   };
 
+  const handleVote = () => {
+    if (selectedChoice) {
+      // Handle vote submission here
+      console.log("Voted for:", selectedChoice);
+      // You can make an API call to submit the vote
+    }
+  };
+
+  // Don't render if no data
+  if (!data || !newsItems.length) {
+    return null;
+  }
+
   return (
     <div className="container1 mx-auto mt-[2rem]">
       <div className="grid lg:grid-cols-12 grid-cols-1 gap-[2rem]">
-        {/* first column */}
+        {/* first column - News */}
         <div className="lg:col-span-9 col-span-1">
-          <TitleSection title={"أحدث الأخبار"} />
+          <TitleSection title={data.title || "أحدث الأخبار"} />
           <div className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]">
-            {news.map((item, index) => (
+            {news.map((item) => (
               <NewsCard
-                key={index}
+                key={item.id}
                 image={item.image}
                 title={item.title}
                 date={item.date}
@@ -72,9 +96,9 @@ const NewsModelFive = () => {
           </div>
         </div>
 
-        {/* second column - Survey */}
+        {/* second column - Survey and Advertisement */}
         <div className="lg:col-span-3 col-span-1">
-          {/* استبيان  */}
+          {/* Survey Section */}
           <div
             style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
             className="w-full h-auto px-[1.5rem] py-[1rem] rounded-lg bg-white border border-[#C1C6D6]"
@@ -92,7 +116,7 @@ const NewsModelFive = () => {
                 >
                   <input
                     type="radio"
-                    name="survey" // Add same name to make them mutually exclusive
+                    name="survey"
                     value={option.value}
                     checked={selectedChoice === option.value}
                     onChange={() => handleChoiceChange(option.value)}
@@ -102,15 +126,20 @@ const NewsModelFive = () => {
                 </label>
               ))}
             </div>
-            <button className="w-full h-[2.5rem] mt-4 rounded-lg bg-secondary text-sm font-bold text-white">
+            <button 
+              onClick={handleVote}
+              className="w-full h-[2.5rem] mt-4 rounded-lg bg-secondary text-sm font-bold text-white hover:bg-secondary/90 transition"
+            >
               {i18next.t("news_wedget.vote_now")}
             </button>
           </div>
-          {/* AdvertisementSpace */}
+          
+          {/* Advertisement Space */}
           <div className="w-full h-[14rem] relative bg-[#E5E7EB] border border-dashed border-gray-300 mt-[1.5rem] rounded-lg">
             <img
               src={AdvertisementSpace}
               className="h-[10rem] w-full object-cover mt-[2rem]"
+              alt="Advertisement"
             />
             <p className="text-nowrap absolute left-1/4 ml-[3rem] text-[#9CA3AF] text-xs top-1/2">
               مساحة إعلانية

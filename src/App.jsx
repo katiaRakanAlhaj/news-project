@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NotFound from "./component/page_not_found";
 import Wrapper from "./component/wrapper/wrapper";
 import "./component/i18n"; // Import i18n to ensure it initializes
@@ -18,6 +19,19 @@ import Contact from "./pages/contact";
 import AboutUs from "./pages/aboutUs";
 import News from "./pages/news";
 import SingleNews from "./pages/singleNews";
+
+// Create QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      refetchIntervalInBackground: true,
+      retry: 2,
+      networkMode: "offlineFirst",
+    },
+  },
+});
 
 // Component to handle language sync with URL
 function LanguageHandler() {
@@ -72,21 +86,21 @@ function App() {
       <Route element={<LanguageHandler />}>
         <Route path="/:lang?" element={<Wrapper />}>
           <Route index element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/About_Us" element={<AboutUs />} />
-          <Route path="/News" element={<News />} />
-          <Route path="/News/:id" element={<SingleNews />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="About_Us" element={<AboutUs />} />
+          <Route path="News" element={<News />} />
+          <Route path="News/:id" element={<SingleNews />} />
           {/* Add 404 route - this will catch all unmatched routes */}
           <Route path="*" element={<NotFound />} />
         </Route>
-      </Route>,
-    ),
+      </Route>
+    )
   );
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-    </>
+    </QueryClientProvider>
   );
 }
 

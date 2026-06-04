@@ -7,86 +7,52 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 
-// Import images
-import newsImage1 from "../../../../assets/images/newsImage1.png";
-import newsImage2 from "../../../../assets/images/newsImage2.png";
-import newsImage3 from "../../../../assets/images/newsImage3.png";
-import newsImage4 from "../../../../assets/images/newsImage4.png";
-import newsImage5 from "../../../../assets/images/newsImage1.png";
-import newsImage6 from "../../../../assets/images/newsImage2.png";
+const NewsModelTwo = ({ data }) => {
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
 
-const NewsModelTwo = () => {
-  const newsData = [
-    {
-      id: 1,
-      image: newsImage1,
-      title: "إنهاء الأعمال العدائية ضد إيران.. رسالة ترمب تفجر جدلا بواشنطن",
-      description:
-        "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026، متجاوزة المتوسط العالمي، في دلالة على تحسن بيئة الأعمال وتعزيز الانفتاح الاقتصادي في المنطقة..",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-      type: "سياسة",
-    },
-    {
-      id: 2,
-      image: newsImage2,
-      description:
-        "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026، متجاوزة المتوسط العالمي، في دلالة على تحسن بيئة الأعمال وتعزيز الانفتاح الاقتصادي في المنطقة..",
+  // Get items from API (handle pagination structure)
+  const getItemsArray = (items) => {
+    if (Array.isArray(items)) {
+      return items;
+    }
+    if (items && items.data && Array.isArray(items.data)) {
+      return items.data;
+    }
+    return [];
+  };
 
-      title: "شهيدان في غزة وتحذيرات من انهيار القطاع الصحي",
-      date: "الخميس، 18 مايو 2024",
-      views: "2.5k",
-      type: "سياسة",
-    },
-    {
-      id: 3,
-      image: newsImage3,
-      description:
-        "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026، متجاوزة المتوسط العالمي، في دلالة على تحسن بيئة الأعمال وتعزيز الانفتاح الاقتصادي في المنطقة..",
+  // Extract news items from API data
+  const newsItems = getItemsArray(data?.items || []);
+  
+  // Map API news items to the format expected by NewsCard
+  const newsData = newsItems.map((item) => ({
+    id: item.id,
+    image: item.news_image,
+    title: item.news_title,
+    description: item.news_description || "لا يوجد وصف متاح",
+    date: formatDate(item.date),
+    views: "1.2k", // Default value if not provided by API
+    type: item.category?.name || "عام",
+  }));
 
-      title:
-        "أكبر شركة شحن بالعالم تطلق خطا ملاحيا بين أوروبا والشرق الأوسط عبر السعودية",
-      date: "الخميس، 18 مايو 2024",
-      views: "3.7k",
-      type: "اقتصاد",
-    },
-    {
-      id: 4,
-      image: newsImage4,
-      description:
-        "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026، متجاوزة المتوسط العالمي، في دلالة على تحسن بيئة الأعمال وتعزيز الانفتاح الاقتصادي في المنطقة..",
-
-      title: "دول الخليج تتجاوز المتوسط العالمي في مؤشر الحرية الاقتصادية 2026",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.8k",
-      type: "اقتصاد",
-    },
-    {
-      id: 5,
-      image: newsImage5,
-      description:
-        "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026، متجاوزة المتوسط العالمي، في دلالة على تحسن بيئة الأعمال وتعزيز الانفتاح الاقتصادي في المنطقة..",
-
-      title: "الذكاء الاصطناعي يحدث ثورة في مجال التعليم",
-      date: "الجمعة، 19 مايو 2024",
-      views: "4.2k",
-      type: "تكنولوجيا",
-    },
-    {
-      id: 6,
-      image: newsImage6,
-      description:
-        "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026، متجاوزة المتوسط العالمي، في دلالة على تحسن بيئة الأعمال وتعزيز الانفتاح الاقتصادي في المنطقة..",
-      title: "السياحة المستدامة تفتح آفاق جديدة في المنطقة",
-      date: "الجمعة، 19 مايو 2024",
-      views: "2.3k",
-      type: "سياحة",
-    },
-  ];
+  // Don't render if no data
+  if (!data || !newsItems.length) {
+    return null;
+  }
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
-      <TitleSection title={"سياسة"} />
+      <TitleSection title={data.title || i18next.t("news_wedget.latest_news")} />
 
       <div className="mt-[1rem] relative">
         <Swiper

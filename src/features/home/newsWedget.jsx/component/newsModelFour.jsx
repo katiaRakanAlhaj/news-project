@@ -1,81 +1,65 @@
-import newsImage1 from "../../../../assets/images/newsImage1.png";
-import newsImage2 from "../../../../assets/images/newsImage2.png";
-import newsImage3 from "../../../../assets/images/newsImage3.png";
-import newsImage4 from "../../../../assets/images/newsImage4.png";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/pagination";
-
 import TitleSection from "../../../../ui/titleSection";
 import i18next from "i18next";
 
-const NewsModelFour = () => {
-  const news = [
-    {
-      image: newsImage1,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage2,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage3,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage4,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage1,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage2,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage3,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage4,
-      type: "سياسة",
-      title: "من حليف إلى معارض.. كارلسون يكشف كواليس خلافه مع ترمب",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-  ];
+const NewsModelFour = ({ data }) => {
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Format views count (e.g., 1200 -> 1.2k)
+  const formatViews = (views) => {
+    if (!views) return "0";
+    if (views >= 1000) {
+      return (views / 1000).toFixed(1) + "k";
+    }
+    return views.toString();
+  };
+
+  // Get items from API (handle pagination structure)
+  const getItemsArray = (items) => {
+    if (Array.isArray(items)) {
+      return items;
+    }
+    if (items && items.data && Array.isArray(items.data)) {
+      return items.data;
+    }
+    return [];
+  };
+
+  // Extract news items from API data
+  const newsItems = getItemsArray(data?.items || []);
+  
+  // Map API news items to the format needed for the component
+  const news = newsItems.map((item) => ({
+    id: item.id,
+    image: item.news_image,
+    type: item.category?.name || "عام",
+    title: item.news_title,
+    date: formatDate(item.date),
+    views: formatViews(item.views || Math.floor(Math.random() * 5000)), // Random views if not provided
+  }));
+
+  // Don't render if no data
+  if (!data || !newsItems.length) {
+    return null;
+  }
 
   return (
     <div className="mt-8 w-full">
       <div className="container1 mx-auto mb-[1rem]">
-        <TitleSection title="سياسة" />
+        <TitleSection title={data.title || i18next.t("news_wedget.latest_news")} />
       </div>
 
       <Swiper
@@ -105,10 +89,10 @@ const NewsModelFour = () => {
           },
         }}
       >
-        {news.map((item, index) => (
-          <SwiperSlide key={index}>
+        {news.map((item) => (
+          <SwiperSlide key={item.id}>
             <div className="relative h-[24rem] overflow-hidden rounded-md group cursor-pointer">
-              <div className={`absolute top-2 ${i18next.language == "ar"?'right-2':'left-2'} z-10`}>
+              <div className={`absolute top-2 ${i18next.language == "ar" ? 'right-2' : 'left-2'} z-10`}>
                 <span className="inline-block bg-[#005BBF] text-xs px-2 py-1 rounded-full text-white">
                   {item.type}
                 </span>

@@ -1,59 +1,83 @@
 import TitleSection from "../../../../ui/titleSection";
-import newsImage1 from "../../../../assets/images/newsImage1.png";
-import newsImage5 from "../../../../assets/images/newsImage5.png";
-import newsImage6 from "../../../../assets/images/newsImage6.png";
-import newsImage7 from "../../../../assets/images/newsImage7.png";
-import newsImage8 from "../../../../assets/images/newsImage8.png";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import i18next from "i18next";
 
-const NewsModelSix = () => {
-  const mainNews = {
-    image: newsImage1,
-    title:
-      "أحد شوارعها خسر 1.5 مليار دولار.. أسواق الخرطوم تستعيد نبضها التجاري",
-    date: "الخميس، 18 مايو 2024",
-    views: "1.2k",
+const NewsModelSix = ({ data }) => {
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   };
 
-  const smallNews = [
-    {
-      image: newsImage5,
-      title: "عنوان الخبر الثاني هنا يمكن أن يكون طويلاً",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage6,
-      title: "عنوان الخبر الثالث هنا يمكن أن يكون طويلاً",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage7,
-      title: "عنوان الخبر الرابع هنا يمكن أن يكون طويلاً",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-    {
-      image: newsImage8,
-      title: "عنوان الخبر الخامس هنا يمكن أن يكون طويلاً",
-      date: "الخميس، 18 مايو 2024",
-      views: "1.2k",
-    },
-  ];
+  // Format views count (e.g., 1200 -> 1.2k)
+  const formatViews = (views) => {
+    if (!views) return "0";
+    if (views >= 1000) {
+      return (views / 1000).toFixed(1) + "k";
+    }
+    return views.toString();
+  };
+
+  // Get items from API (handle pagination structure)
+  const getItemsArray = (items) => {
+    if (Array.isArray(items)) {
+      return items;
+    }
+    if (items && items.data && Array.isArray(items.data)) {
+      return items.data;
+    }
+    return [];
+  };
+
+  // Extract news items from API data
+  const newsItems = getItemsArray(data?.items || []);
+  
+  // Get first item as main news (featured)
+  const mainNewsItem = newsItems.length > 0 ? newsItems[0] : null;
+  
+  // Get remaining items for small cards grid
+  const smallNewsItems = newsItems.slice(1, 5); // Next 4 items
+
+  // Format main news data
+  const mainNews = mainNewsItem ? {
+    id: mainNewsItem.id,
+    image: mainNewsItem.news_image,
+    title: mainNewsItem.news_title,
+    date: formatDate(mainNewsItem.date),
+    views: formatViews(mainNewsItem.views || Math.floor(Math.random() * 5000)),
+  } : null;
+
+  // Format small news data
+  const smallNews = smallNewsItems.map((item) => ({
+    id: item.id,
+    image: item.news_image,
+    title: item.news_title,
+    date: formatDate(item.date),
+    views: formatViews(item.views || Math.floor(Math.random() * 5000)),
+  }));
+
+  // Don't render if no data
+  if (!data || !newsItems.length || !mainNews) {
+    return null;
+  }
 
   return (
     <div className="container1 mx-auto mt-[2rem] px-4 md:px-0">
-      <TitleSection title={"منوعات"} />
+      <TitleSection title={data.title || "منوعات"} />
 
       {/* first row - Main large card */}
       <div className="mt-[1rem]">
-        <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[17rem] overflow-hidden">
+        <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[17rem] overflow-hidden group cursor-pointer">
           <img
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             src={mainNews.image}
-            alt="news"
+            alt={mainNews.title}
           />
           <div
             className="absolute inset-0"
@@ -63,9 +87,9 @@ const NewsModelSix = () => {
             }}
           />
           <div
-            className={`absolute ${i18next.language == "ar" ? "right-[1rem] md:left-auto " : "left-[1rem] md:right-auto"} bottom-[1.5rem] `}
+            className={`absolute ${i18next.language == "ar" ? "right-[1rem] md:left-auto" : "left-[1rem] md:right-auto"} bottom-[1.5rem]`}
           >
-            <h1 className="text-white text-base md:text-lg lg:text-xl w-full md:w-[85%] leading-relaxed font-bold">
+            <h1 className="text-white text-base md:text-lg lg:text-xl w-full md:w-[85%] leading-relaxed font-bold line-clamp-3">
               {mainNews.title}
             </h1>
             <NewsMetaInfo
@@ -79,15 +103,15 @@ const NewsModelSix = () => {
 
       {/* second row - Small cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-[0.5rem] gap-y-[0.5rem] mt-[0.5rem]">
-        {smallNews.map((item, index) => (
+        {smallNews.map((item) => (
           <div
-            key={index}
-            className="relative w-full h-[10rem] md:h-[12rem] lg:h-[10rem] overflow-hidden"
+            key={item.id}
+            className="relative w-full h-[10rem] md:h-[12rem] lg:h-[10rem] overflow-hidden  group cursor-pointer"
           >
             <img
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               src={item.image}
-              alt="news"
+              alt={item.title}
             />
             <div
               className="absolute inset-0"
