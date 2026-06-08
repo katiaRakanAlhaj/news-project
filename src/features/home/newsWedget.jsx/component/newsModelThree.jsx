@@ -1,8 +1,17 @@
 import i18next from "i18next";
+import { motion, AnimatePresence } from "framer-motion";
 import TitleSection from "../../../../ui/titleSection";
 import MostViewedSection from "../../../../ui/MostViewedSection";
+import { containerVariants, imageVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
 
-const NewsModelThree = ({ data }) => {
+const NewsModelThree = ({ 
+  data, 
+  sectionId, 
+  currentPage, 
+  totalPages, 
+  onPageChange,
+  isLoading 
+}) => {
   // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -55,8 +64,21 @@ const NewsModelThree = ({ data }) => {
     date: formatDate(item.date),
   }));
 
+  // Pagination handlers
+  const handlePrevPage = () => {
+    if (currentPage > 1 && !isLoading) {
+      onPageChange(sectionId, currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages && !isLoading) {
+      onPageChange(sectionId, currentPage + 1);
+    }
+  };
+
   // Don't render if no data
-  if (!data || !newsItems.length) {
+  if (!data || (!newsItems.length && !isLoading)) {
     return null;
   }
 
@@ -66,42 +88,76 @@ const NewsModelThree = ({ data }) => {
   // Get remaining items for Most Viewed section (from index 1 onwards)
   const remainingItems = newsData.slice(1);
 
-  // If no main item, don't render
-  if (!mainNewsItem) {
-    return null;
-  }
-
   return (
-    <div className="container1 mx-auto mt-[2rem] px-4">
-      <TitleSection title={data.title || i18next.t("news_wedget.latest_news")} />
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={containerVariants}
+      className="container1 mx-auto mt-[2rem] px-4"
+    >
+      <TitleSection 
+        title={data.title || i18next.t("news_wedget.latest_news")}
+        showArrows={true}
+        currentPage={currentPage}
+        lastPage={totalPages}
+        onPrevPage={handlePrevPage}
+        onNextPage={handleNextPage}
+        isLoading={isLoading}
+      />
 
-      <div className="grid lg:grid-cols-12 grid-cols-1 gap-[1rem] mt-[1rem]">
-        {/* First column - Main News col-span-9 */}
-        <div className="lg:col-span-9 col-span-1">
-          <div className="relative">
-            <img
-              src={mainNewsItem.image}
-              className="w-full h-[22.5rem] rounded-lg object-cover"
-              alt={mainNewsItem.title}
-            />
-            <div className={`absolute bottom-[2rem] ${i18next.language == "ar" ? 'right-[2rem]' : 'left-[2rem]'}`}>
-              <button className="w-[4rem] h-[1.6rem] bg-secondary rounded-full text-white text-xs">
-                {mainNewsItem.type}
-              </button>
-              <h1 className="font-bold text-white text-md mt-3">
-                {mainNewsItem.title}
-              </h1>
-            </div>
+      {/* Single Loader for entire content */}
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <div className="min-h-[400px]">
+            <CenteredSquareLoader key="loader" />
           </div>
-        </div>
+        ) : (
+          <motion.div
+            key={currentPage}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={containerVariants}
+            className="grid lg:grid-cols-12 grid-cols-1 gap-[1rem] mt-[1rem]"
+          >
+            {/* First column - Main News col-span-9 */}
+            <motion.div 
+              variants={imageVariants}
+              className="lg:col-span-9 col-span-1"
+            >
+              {mainNewsItem && (
+                <div className="relative rounded-lg overflow-hidden">
+                  <img
+                    src={mainNewsItem.image}
+                    className="w-full h-[25rem] object-cover"
+                    alt={mainNewsItem.title}
+                  />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0" />
+                  <div className={`absolute bottom-[2rem] ${i18next.language == "ar" ? 'right-[2rem]' : 'left-[2rem]'} z-10`}>
+                    <button className="w-[4rem] h-[1.6rem] bg-secondary rounded-full text-white text-xs">
+                      {mainNewsItem.type}
+                    </button>
+                    <h1 className="font-bold text-white text-md mt-3">
+                      {mainNewsItem.title}
+                    </h1>
+                  </div>
+                </div>
+              )}
+            </motion.div>
 
-        {/* Second column - Most Viewed col-span-3 */}
-        <div className="lg:col-span-3 col-span-1">
-          {/* Passing remaining items to MostViewedSection */}
-          <MostViewedSection mostViewedData={remainingItems} />
-        </div>
-      </div>
-    </div>
+            {/* Second column - Most Viewed col-span-3 */}
+            <motion.div 
+              variants={imageVariants}
+              className="lg:col-span-3 col-span-1"
+            >
+              <MostViewedSection mostViewedData={remainingItems} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

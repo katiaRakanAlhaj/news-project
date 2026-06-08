@@ -2,9 +2,18 @@ import i18next from "i18next";
 import NewsCard from "../../../../ui/newsCard";
 import TitleSection from "../../../../ui/titleSection";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import AdvertisementSpace from "../../../../assets/images/AdvertisementSpace.png";
+import { containerVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
 
-const NewsModelFive = ({ data }) => {
+const NewsModelFive = ({ 
+  data, 
+  sectionId, 
+  currentPage, 
+  totalPages, 
+  onPageChange,
+  isLoading: externalIsLoading 
+}) => {
   const [selectedChoice, setSelectedChoice] = useState(null);
 
   // Format date function
@@ -17,15 +26,6 @@ const NewsModelFive = ({ data }) => {
       month: 'long', 
       day: 'numeric' 
     });
-  };
-
-  // Format views count (e.g., 1200 -> 1.2k)
-  const formatViews = (views) => {
-    if (!views) return "0";
-    if (views >= 1000) {
-      return (views / 1000).toFixed(1) + "k";
-    }
-    return views.toString();
   };
 
   // Get items from API (handle pagination structure)
@@ -48,7 +48,7 @@ const NewsModelFive = ({ data }) => {
     image: item.news_image,
     title: item.news_title,
     date: formatDate(item.date),
-    views: formatViews(item.views || Math.floor(Math.random() * 5000)),
+    views: '1.2K',
     type: item.category?.name || "عام",
   }));
 
@@ -58,6 +58,19 @@ const NewsModelFive = ({ data }) => {
     { id: 2, label: "يحتاج للمزيد من الوقت", value: "more_time" },
     { id: 3, label: "لا يزال في بداياته", value: "beginning" },
   ];
+
+  // Pagination handlers
+  const handlePrevPage = () => {
+    if (currentPage > 1 && !externalIsLoading) {
+      onPageChange(sectionId, currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages && !externalIsLoading) {
+      onPageChange(sectionId, currentPage + 1);
+    }
+  };
 
   const handleChoiceChange = (value) => {
     setSelectedChoice(value);
@@ -72,31 +85,62 @@ const NewsModelFive = ({ data }) => {
   };
 
   // Don't render if no data
-  if (!data || !newsItems.length) {
+  if (!data || (!newsItems.length && !externalIsLoading)) {
     return null;
   }
 
   return (
-    <div className="container1 mx-auto mt-[2rem]">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={containerVariants}
+      className="container1 mx-auto mt-[2rem]"
+    >
       <div className="grid lg:grid-cols-12 grid-cols-1 gap-[2rem]">
-        {/* first column - News */}
+        {/* first column - News with animations */}
         <div className="lg:col-span-9 col-span-1">
-          <TitleSection title={data.title || "أحدث الأخبار"} />
-          <div className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]">
-            {news.map((item) => (
-              <NewsCard
-                key={item.id}
-                image={item.image}
-                title={item.title}
-                date={item.date}
-                views={item.views}
-                type={item.type}
-              />
-            ))}
+          <TitleSection 
+            title={data.title || "أحدث الأخبار"} 
+            showArrows={true}
+            currentPage={currentPage}
+            lastPage={totalPages}
+            onPrevPage={handlePrevPage}
+            onNextPage={handleNextPage}
+            isLoading={externalIsLoading}
+          />
+
+          {/* Animated content with centered square loader */}
+          <div className="relative min-h-[400px]">
+            <AnimatePresence mode="wait">
+              {externalIsLoading ? (
+                <CenteredSquareLoader key="loader" />
+              ) : (
+                <motion.div
+                  key={currentPage}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]"
+                >
+                  {news.map((item, index) => (
+                    <NewsCard
+                      key={item.id || index}
+                      image={item.image}
+                      title={item.title}
+                      date={item.date}
+                      views={item.views}
+                      type={item.type}
+                    />
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* second column - Survey and Advertisement */}
+        {/* second column - Survey and Advertisement (no animations) */}
         <div className="lg:col-span-3 col-span-1">
           {/* Survey Section */}
           <div
@@ -147,7 +191,7 @@ const NewsModelFive = ({ data }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

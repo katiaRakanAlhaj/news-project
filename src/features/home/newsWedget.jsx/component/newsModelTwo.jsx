@@ -1,14 +1,15 @@
 import TitleSection from "../../../../ui/titleSection";
 import NewsCard from "../../../../ui/newsCard";
 import i18next from "i18next";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/autoplay";
-import "swiper/css/pagination";
+import { useState, useEffect } from "react";
 
-const NewsModelTwo = ({ data }) => {
-  // Format date function
+const NewsModelTwo = ({ 
+  data, 
+  sectionId, 
+  currentPage = 1, 
+  totalPages = 1, 
+  onPageChange,
+}) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -20,104 +21,87 @@ const NewsModelTwo = ({ data }) => {
     });
   };
 
-  // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
-    if (Array.isArray(items)) {
-      return items;
-    }
-    if (items && items.data && Array.isArray(items.data)) {
-      return items.data;
-    }
+    if (Array.isArray(items)) return items;
+    if (items?.data && Array.isArray(items.data)) return items.data;
     return [];
   };
 
-  // Extract news items from API data
   const newsItems = getItemsArray(data?.items || []);
   
-  // Map API news items to the format expected by NewsCard
   const newsData = newsItems.map((item) => ({
     id: item.id,
     image: item.news_image,
     title: item.news_title,
     description: item.news_description || "لا يوجد وصف متاح",
     date: formatDate(item.date),
-    views: "1.2k", // Default value if not provided by API
+    views: "1.2k",
     type: item.category?.name || "عام",
   }));
 
-  // Don't render if no data
+  // Auto-pagination effect
+  useEffect(() => {
+    if (totalPages <= 1) return;
+    
+    const interval = setInterval(() => {
+      let nextPage = currentPage + 1;
+      if (nextPage > totalPages) {
+        nextPage = 1;
+      }
+      onPageChange?.(sectionId, nextPage);
+    }, 2000); // Change page every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [currentPage, totalPages, sectionId, onPageChange]);
+
+  // Render pagination circles (dots)
+  const renderPaginationDots = () => {
+    const dots = [];
+    for (let i = 1; i <= totalPages; i++) {
+      dots.push(
+        <button
+          key={i}
+          onClick={() => onPageChange?.(sectionId, i)}
+          className={`transition-all duration-300 mx-1 ${
+            currentPage === i
+              ? 'w-3 h-3 bg-red-600 rounded-md'
+              : 'w-3 h-3 bg-gray-300 rounded-full hover:bg-gray-400'
+          }`}
+          aria-label={`Go to page ${i}`}
+        />
+      );
+    }
+    return dots;
+  };
+
   if (!data || !newsItems.length) {
     return null;
   }
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
-      <TitleSection title={data.title || i18next.t("news_wedget.latest_news")} />
+      <TitleSection showArrows={true} title={data.title || i18next.t("news_wedget.latest_news")} />
 
-      <div className="mt-[1rem] relative">
-        <Swiper
-          modules={[Autoplay, Pagination]}
-          spaceBetween={0}
-          slidesPerView={1}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-              spaceBetween: 0,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 0,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 0,
-            },
-          }}
-          style={{ paddingBottom: "3rem" }}
-          className="news-slider"
-        >
-          {newsData.map((item) => (
-            <SwiperSlide key={item.id} className="px-2">
-              <NewsCard
-                description={item.description}
-                image={item.image}
-                title={item.title}
-                date={item.date}
-                views={item.views}
-                type={item.type}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        {newsData.map((item) => (
+          <NewsCard
+            key={item.id}
+            description={item.description}
+            image={item.image}
+            title={item.title}
+            date={item.date}
+            views={item.views}
+            type={item.type}
+          />
+        ))}
       </div>
 
-      <style>{`
-        .swiper-pagination-bullet {
-          width: 0.7rem !important;
-          height: 0.7rem !important;
-          background: #CBD5E1 !important;
-          opacity: 1 !important;
-          transition: all 0.3s ease !important;
-        }
-        
-        .swiper-pagination-bullet-active {
-          background: #DC2626 !important;
-          border-radius: 6px !important;
-        }
-        
-        /* Remove margin between slides */
-        .swiper-slide {
-          height: auto !important;
-        }
-      `}</style>
+      {/* Pagination Circles */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-8">
+          {renderPaginationDots()}
+        </div>
+      )}
     </div>
   );
 };

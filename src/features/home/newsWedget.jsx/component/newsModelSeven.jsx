@@ -30,14 +30,6 @@ const NewsModelSeven = ({ data }) => {
     });
   };
 
-  // Format views count (e.g., 1200 -> 1.2k)
-  const formatViews = (views) => {
-    if (!views) return "0";
-    if (views >= 1000) {
-      return (views / 1000).toFixed(1) + "K";
-    }
-    return views.toString();
-  };
 
   // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
@@ -60,7 +52,7 @@ const NewsModelSeven = ({ data }) => {
     title: item.news_title,
     description: item.news_description || "لا يوجد وصف متاح",
     date: formatDate(item.date),
-    views: formatViews(item.views || Math.floor(Math.random() * 5000)),
+    views: '1.2K',
   }));
 
   // Don't render if no data
