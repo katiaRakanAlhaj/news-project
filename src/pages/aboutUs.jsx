@@ -14,7 +14,7 @@ const AboutUs = () => {
       <OurCoreValues aboutusData = {aboutusData}/>
       <EditorialTeam aboutusData = {aboutusData}/>
       <OurHistory aboutusData = {aboutusData}/>
-      <OurGlobalPresence />
+      <OurGlobalPresence aboutusData = {aboutusData}/>
       <AwardsandRecognitions aboutusData = {aboutusData}/>
     </div>
   );
