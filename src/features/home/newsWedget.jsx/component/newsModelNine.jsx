@@ -1,166 +1,184 @@
+// NewsModelNine.jsx - Using simple CSS slider instead of Swiper
 import TitleSection from "../../../../ui/titleSection";
-import NewsCard from "../../../../ui/newsCard";
 import i18next from "i18next";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/autoplay";
-import "swiper/css/navigation";
-import newsImage12 from "../../../../assets/images/newsImage12.png";
-import newsImage13 from "../../../../assets/images/newsImage13.png";
-import newsImage14 from "../../../../assets/images/newsImage14.png";
-import arrow1 from "../../../../assets/images/arrow1.svg";
-import arrow2 from "../../../../assets/images/arrow2.svg";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { containerVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
 
-const NewsModelNine = () => {
-  const swiperRef = useRef(null);
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
+const NewsModelNine = ({ 
+  data, 
+  sectionId, 
+  currentPage, 
+  totalPages, 
+  onPageChange,
+  isLoading: externalIsLoading 
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(3);
 
-  const newsData = [
-    {
-      id: 1,
-      image: newsImage12,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-    },
-    {
-      id: 2,
-      image: newsImage13,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-    },
-    {
-      id: 3,
-      image: newsImage14,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-    },
-    {
-      id: 4,
-      image: newsImage12,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-    },
-    {
-      id: 5,
-      image: newsImage13,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-    },
-    {
-      id: 6,
-      image: newsImage14,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-    },
-  ];
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
 
-  const handlePrev = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slidePrev();
+  // Extract news items from API data
+  const newsItems = data?.items || [];
+  
+  // Map API news items
+  const newsData = newsItems.map((item) => ({
+    id: item.id,
+    image: item.news_image,
+    title: item.news_title,
+    date: formatDate(item.date),
+    views: item.views || "0",
+    type: item.category?.name,
+  }));
+
+  // Handle responsive slides to show
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesToShow(3);
+      } else if (window.innerWidth >= 768) {
+        setSlidesToShow(2);
+      } else {
+        setSlidesToShow(1);
+      }
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Reset index when data changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [newsData.length]);
+
+  // Pagination handlers (for page navigation - top arrows)
+  const handlePrevPage = () => {
+    if (currentPage > 1 && !externalIsLoading) {
+      onPageChange(sectionId, currentPage - 1);
+      setCurrentIndex(0);
     }
   };
 
-  const handleNext = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slideNext();
+  const handleNextPage = () => {
+    if (currentPage < totalPages && !externalIsLoading) {
+      onPageChange(sectionId, currentPage + 1);
+      setCurrentIndex(0);
     }
   };
 
-  // Update button states when swiper changes
-  const updateNavButtons = () => {
-    if (swiperRef.current) {
-      setIsBeginning(swiperRef.current.isBeginning);
-      setIsEnd(swiperRef.current.isEnd);
+  // Slider navigation handlers
+  const handlePrevSlide = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
     }
   };
+
+  const handleNextSlide = () => {
+    const maxIndex = Math.max(0, newsData.length - slidesToShow);
+    if (currentIndex < maxIndex) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < newsData.length - slidesToShow;
+
+  // Don't render if no data
+  if (!data || (!newsItems.length && !externalIsLoading)) {
+    return null;
+  }
 
   return (
-    <div className="container1 mx-auto mt-[2rem]">
-      <TitleSection title={"تقارير"} />
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={containerVariants}
+      className="container1 mx-auto mt-[2rem]"
+    >
+      {/* Title Section with pagination arrows (top) */}
+      <TitleSection 
+        title={data.title || i18next.t("news_wedget.reports")}
+        showArrows={true}
+        currentPage={currentPage}
+        lastPage={totalPages}
+        onPrevPage={handlePrevPage}
+        onNextPage={handleNextPage}
+        isLoading={externalIsLoading}
+      />
 
       <div className="mt-[1rem] relative">
-        <Swiper
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
-            updateNavButtons();
-          }}
-          onSlideChange={updateNavButtons}
-          onReachBeginning={() => setIsBeginning(true)}
-          onReachEnd={() => setIsEnd(true)}
-          modules={[Autoplay, Navigation]}
-          spaceBetween={0}
-          slidesPerView={1}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-              spaceBetween: 0,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 0,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 0,
-            },
-          }}
-          className="news-slider"
-        >
-          {newsData.map((item) => (
-            <SwiperSlide key={item.id} className="px-2">
-              <div className="relative w-full h-[18rem] overflow-hidden">
-                <img
-                  className="w-full h-full object-cover"
-                  src={item.image}
-                  alt={item.title}
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(0, 0, 0, 0) 51.55%, #000000 100%)",
+        <AnimatePresence mode="wait">
+          {externalIsLoading ? (
+            <div className="flex justify-center items-center min-h-[18rem]">
+              <CenteredSquareLoader />
+            </div>
+          ) : (
+            <motion.div
+              key={currentPage}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {/* Simple CSS Slider */}
+              <div className="overflow-hidden">
+                <div 
+                  className="flex transition-transform duration-300 ease-out"
+                  style={{ 
+                    transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
+                    width: `${(newsData.length / slidesToShow) * 100}%`
                   }}
-                ></div>
-                <div
-                  className={`absolute ${i18next.language == "ar" ? "right-[1rem] " : "left-[1rem] "} bottom-[1rem]`}
                 >
-                  <h1 className="text-white font-bold text-md">{item.title}</h1>
+                  {newsData.map((item) => (
+                    <div 
+                      key={item.id} 
+                      className="px-2"
+                      style={{ width: `${100 / slidesToShow}%` }}
+                    >
+                      <div className="relative w-full h-[18rem] overflow-hidden rounded-lg">
+                        <img
+                          className="w-full h-full object-cover"
+                          src={item.image}
+                          alt={item.title}
+                        />
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            background:
+                              "linear-gradient(180deg, rgba(0, 0, 0, 0) 51.55%, #000000 100%)",
+                          }}
+                        ></div>
+                        <div
+                          className={`absolute ${i18next.language == "ar" ? "right-[1rem]" : "left-[1rem]"} bottom-[1rem]`}
+                        >
+                          <h1 className="text-white font-bold text-md line-clamp-2">
+                            {item.title}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
 
-        <div className="flex justify-center items-center mt-[1rem] gap-x-2">
-          <div
-            onClick={handlePrev}
-            className={`w-[1.5rem] h-[1.5rem] flex items-center justify-center rounded-full transition ${
-              isBeginning
-                ? "bg-[#E0E0E0] cursor-not-allowed opacity-50"
-                : "bg-[#D9D9D9] cursor-pointer hover:bg-gray-400"
-            }`}
-          >
-            <img
-              className={`w-[0.6rem] ${i18next.language == "ar" ? "" : "rotate-180"}`}
-              src={arrow1}
-              alt="previous"
-            />
-          </div>
-          <div
-            onClick={handleNext}
-            className={`w-[1.5rem] h-[1.5rem] rounded-full flex items-center justify-center transition ${
-              isEnd
-                ? "bg-[#E0E0E0] cursor-not-allowed opacity-50"
-                : "bg-[#D9D9D9] cursor-pointer hover:bg-gray-400"
-            }`}
-          >
-            <img className={`w-[0.6rem] ${i18next.language == "ar"?'':'rotate-180'}`} src={arrow2} alt="next" />
-          </div>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

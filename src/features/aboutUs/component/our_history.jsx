@@ -1,7 +1,7 @@
 import AboutUsTitle from "../../../ui/aboutUsTitle";
 import OurHistoryComponent from "../../../ui/ourHistoryComponent";
 
-const OurHistory = () => {
+const OurHistory = ({aboutusData}) => {
   const historyItems = [
     {
       title: "التأسيس",
@@ -31,11 +31,11 @@ const OurHistory = () => {
         <AboutUsTitle title={"محطات في تاريخنا"} />
         <div className="lg:block hidden">
           <div className="container4 mx-auto">
-            <OurHistoryComponent historyItems={historyItems} />
+            <OurHistoryComponent aboutusData={aboutusData} />
           </div>
         </div>
         <div className="lg:hidden block">
-          <OurHistoryComponent historyItems={historyItems} />
+          <OurHistoryComponent aboutusData={aboutusData} />
         </div>
       </div>
     </div>

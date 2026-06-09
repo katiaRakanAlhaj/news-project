@@ -15,7 +15,7 @@ const icons = [
 
 const inputClassName =
   "w-full h-[2.5rem] px-2 text-sm border border-[#474747] placeholder-[#474747]";
-const ContactGrid = () => {
+const ContactGrid = ({ contactData }) => {
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-[3rem] lg:gap-y-0 gap-y-[2rem] lg:px-0 px-[2rem]">
       {/* first column */}
@@ -24,17 +24,14 @@ const ContactGrid = () => {
           {i18next.t("contact.contact_us")}
         </h1>
         <p className="text-sm text-[#002F3C] mt-2 leading-relaxed">
-          لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو
-          أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت
-          انيم أد مينيم فينايم,كيواس نوستريد أكسير سيتاشن يللأمكو لابورأس نيسي
-          يت
+          {contactData?.data?.description}
         </p>
         <div className="lg:flex gap-x-[3rem] lg:space-y-0 space-y-[2rem] mt-[2rem]">
           <div className="flex flex-col space-y-1">
             <h1 className="text-md font-bold text-[#000000]">
               {i18next.t("contact.email")}
             </h1>
-            <p className="text-[#002F3C] text-sm">Alsahifa@INFO.COM</p>
+            <p className="text-[#002F3C] text-sm">{contactData?.data?.email}</p>
           </div>
           <div className="flex flex-col space-y-1">
             <h1 className="text-md font-bold text-[#000000]">

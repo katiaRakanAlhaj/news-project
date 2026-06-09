@@ -4,16 +4,18 @@ import OurCoreValues from "../features/aboutUs/component/our_core_values";
 import OurEditorialMission from "../features/aboutUs/component/our_editorial_mission";
 import OurGlobalPresence from "../features/aboutUs/component/our_global_presence";
 import OurHistory from "../features/aboutUs/component/our_history";
+import { useFetchAboutUsPage } from "../features/aboutUs/hook/useFetchAboutUs";
 
 const AboutUs = () => {
+  const {data:aboutusData , isLoading:aboutusDataLoading , error:aboutusDataError} = useFetchAboutUsPage();
   return (
     <div className = "lg:mt-0 mt-[4rem]">
-      <OurEditorialMission />
-      <OurCoreValues />
-      <EditorialTeam />
-      <OurHistory />
+      <OurEditorialMission aboutusData = {aboutusData} />
+      <OurCoreValues aboutusData = {aboutusData}/>
+      <EditorialTeam aboutusData = {aboutusData}/>
+      <OurHistory aboutusData = {aboutusData}/>
       <OurGlobalPresence />
-      <AwardsandRecognitions />
+      <AwardsandRecognitions aboutusData = {aboutusData}/>
     </div>
   );
 };

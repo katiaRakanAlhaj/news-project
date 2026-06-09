@@ -35,7 +35,7 @@ const newsComponents = {
   12: NewsModelSix,
   13: NewsModelSeven,
   14: NewsModelEight,
-  // 15: NewsModelNine,
+  15: NewsModelNine,
 };
 
 const mediaComponents = {
