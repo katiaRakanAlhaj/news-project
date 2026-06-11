@@ -97,9 +97,9 @@ const NewsModelFive = ({
       variants={containerVariants}
       className="container1 mx-auto mt-[2rem]"
     >
-      <div className="grid lg:grid-cols-12 grid-cols-1 gap-[2rem]">
+      <div className="grid lg:grid-cols-12 grid-cols-1 gap-[1rem]">
         {/* first column - News with animations */}
-        <div className="lg:col-span-9 col-span-1">
+        <div className="lg:col-span-8 col-span-1">
           <TitleSection 
             title={data.title || "أحدث الأخبار"} 
             showArrows={true}
@@ -141,14 +141,14 @@ const NewsModelFive = ({
         </div>
 
         {/* second column - Survey and Advertisement (no animations) */}
-        <div className="lg:col-span-3 col-span-1">
+        <div className="lg:col-span-4 col-span-1">
           {/* Survey Section */}
           <div
             style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
-            className="w-full h-auto px-[1.5rem] py-[1rem] rounded-lg bg-white border border-[#C1C6D6]"
+            className="w-full h-auto px-[2rem] py-[2rem] rounded-lg bg-white border border-[#C1C6D6]"
           >
-            <h1 className="text-secondary text-sm mt-1">استبيان</h1>
-            <p className="text-secondary text-sm mt-4 font-bold">
+            <h1 className="text-secondary text-md mt-1">استبيان</h1>
+            <p className="text-secondary text-xl mt-4 font-bold">
               ما هو رأيك في التحول الرقمي الحالي في المنطقة؟
             </p>
 
@@ -166,20 +166,20 @@ const NewsModelFive = ({
                     onChange={() => handleChoiceChange(option.value)}
                     className="w-3 h-3 border border-[#C1C6D6] text-secondary focus:ring-secondary cursor-pointer"
                   />
-                  <span className="text-secondary text-xs">{option.label}</span>
+                  <span className="text-secondary text-md">{option.label}</span>
                 </label>
               ))}
             </div>
             <button 
               onClick={handleVote}
-              className="w-full h-[2.5rem] mt-4 rounded-lg bg-secondary text-sm font-bold text-white hover:bg-secondary/90 transition"
+              className="w-full h-[3rem] mt-4 rounded-lg bg-secondary text-md font-bold text-white hover:bg-secondary/90 transition"
             >
               {i18next.t("news_wedget.vote_now")}
             </button>
           </div>
           
           {/* Advertisement Space */}
-          <div className="w-full h-[14rem] relative bg-[#E5E7EB] border border-dashed border-gray-300 mt-[1.5rem] rounded-lg">
+          <div className="w-full h-[19rem] relative bg-[#E5E7EB] border border-dashed border-gray-300 mt-[2rem] rounded-lg">
             <img
               src={AdvertisementSpace}
               className="h-[10rem] w-full object-cover mt-[2rem]"

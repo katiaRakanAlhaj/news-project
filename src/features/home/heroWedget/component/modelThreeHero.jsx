@@ -24,13 +24,13 @@ const ModelThreeHero = ({ data }) => {
 
   return (
     <div className="container1 mx-auto h-auto">
-      <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[0.5rem] gap-y-[0.5rem] mt-[1rem]">
+      <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[0.5rem] gap-y-[0.5rem] mt-[2.5rem]">
         {/* first column - single image (col-span-5) */}
         <div className="lg:col-span-5 col-span-1">
           {firstColumnItem.map((item, index) => (
             <div
               key={item.id || index}
-              className="relative w-full lg:h-[33rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
+              className="relative w-full lg:h-[42rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
             >
               <img
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -44,16 +44,16 @@ const ModelThreeHero = ({ data }) => {
                     "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
                 }}
               ></div>
-              <div className="absolute right-[1rem] bottom-[1rem] left-[1rem] pointer-events-none">
+              <div className="absolute right-[2rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
                 <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-                  <p className="text-white font-[400] text-sm mt-1">
+                  <p className="text-white font-[700] text-md mt-1">
                     {item.category?.name || "عام"}
                   </p>
                 </div>
-                <p className="text-md font-bold text-white w-full leading-relaxed mt-4">
+                <p className="text-2xl font-bold text-white w-full leading-relaxed mt-4">
                   {item.news_title}
                 </p>
-                <p className="text-[#FFFFFF] text-xs mt-2 opacity-70">
+                <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
                   {formatDate(item.date)}
                 </p>
               </div>
@@ -67,7 +67,7 @@ const ModelThreeHero = ({ data }) => {
             {secondColumnItems.map((item, index) => (
               <div
                 key={item.id || index}
-                className="relative w-full lg:h-[16.25rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
+                className="relative w-full lg:h-[20.8rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
               >
                 <img
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -81,16 +81,16 @@ const ModelThreeHero = ({ data }) => {
                       "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
                   }}
                 ></div>
-                <div className="absolute right-[1rem] bottom-[1rem] left-[1rem] pointer-events-none">
+                <div className="absolute right-[1.5rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
                   <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-                    <p className="text-white font-[400] text-sm mt-1">
+                    <p className="text-white font-[700] text-sm mt-1">
                       {item.category?.name || "عام"}
                     </p>
                   </div>
-                  <p className="text-sm font-bold text-white w-full leading-relaxed mt-4">
+                  <p className="text-lg font-bold text-white w-full leading-relaxed mt-4">
                     {item.news_title}
                   </p>
-                  <p className="text-[#FFFFFF] text-xs mt-2 opacity-70">
+                  <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
                     {formatDate(item.date)}
                   </p>
                 </div>

@@ -25,24 +25,24 @@ const NavbarSection1 = () => {
 
   return (
     <>
-      <div className="w-full h-[2.5rem] bg-[#C4C4C4]">
+      <div className="w-full h-[3rem] bg-[#C4C4C4]">
         <div className="container1 mx-auto h-full">
           <div className="flex justify-between items-center w-full h-full">
-            <div className="flex gap-x-6 items-center">
+            <div className="flex gap-x-10 items-center">
               <Link to="/About_Us">
-                <p className="text-[#222222] text-sm">
+                <p className="text-[#222222] text-md">
                   {i18next.t("menu.about_us")}
                 </p>
               </Link>
 
               <Link to="/contact">
-                <p className="text-[#222222] text-sm">
+                <p className="text-[#222222] text-md">
                   {i18next.t("menu.contact_us")}
                 </p>
               </Link>
             </div>
             <div className="flex items-center">
-              <p className="text-[#222222] text-sm">الخميس، 18 مايو 2024</p>
+              <p className="text-[#222222] text-md">الخميس، 18 مايو 2024</p>
             </div>
             <div className="flex items-center gap-x-4">
               {socilaIcons?.map((socilaIcons, index) => (

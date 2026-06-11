@@ -4,7 +4,7 @@ import i18n from "../../i18n";
 import { useParams, useNavigate } from "react-router-dom";
 import i18next from "i18next";
 
-const NavbarSection3 = () => {
+const NavbarSection3 = ({ categoryData }) => {
   const menuItems = ["سياسية", "رياضة", "اقتصادية"];
   const navigate = useNavigate();
   const { lang } = useParams();
@@ -57,17 +57,17 @@ const NavbarSection3 = () => {
   const currentLang = getCurrentLang();
 
   return (
-    <div className="w-full h-[4rem] bg-[#121C2A] relative">
+    <div className="w-full h-[5.5rem] bg-[#121C2A] relative">
       <div className="container1 mx-auto h-full">
         <div className="flex w-full gap-x-[2rem] h-full items-center justify-between">
           <div className="flex gap-x-[2rem] items-center">
             <Link to="/">
-              <p className="text-white text-[0.9rem]">{i18next.t("menu.home")}</p>
+              <p className="text-white text-md">{i18next.t("menu.home")}</p>
             </Link>
             <div className="flex gap-x-[2rem]">
-              {menuItems?.map((menuItem, index) => (
-                <Link to="/News" key={index}>
-                  <p className="text-white text-[0.9rem]">{menuItem}</p>
+              {categoryData?.data?.map((categoryData) => (
+                <Link to="/News" key={categoryData.id}>
+                  <p className="text-white text-md">{categoryData.name}</p>
                 </Link>
               ))}
             </div>

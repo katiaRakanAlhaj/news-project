@@ -21,7 +21,7 @@ const SingleNewsModel10 = () => {
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={"كيفية اعتماد قرار"} />
-      <p className="text-[#333333] text-sm mt-2">
+      <p className="text-[#333333] text-md mt-2">
         تتضمن عملية اعتماد القرار عدة مراحل رئيسية، تبدأ من المقترح الأولي
         وصولاً إلى التصويت النهائي. ويضمن ذلك اتخاذ القرارات بتوافق واسع واتفاق
         دولي.
@@ -29,13 +29,13 @@ const SingleNewsModel10 = () => {
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-[4rem] gap-y-[2rem] mt-[2rem]">
         {items?.map((item) => (
           <div key={item.id} className="flex flex-col space-y-2">
-            <div className="w-[3rem] h-[3rem] flex justify-center items-center bg-[#005BBF] rounded-full text-lg font-bold text-white">
+            <div className="w-[4rem] h-[4rem] flex justify-center items-center bg-[#005BBF] rounded-full text-xl font-bold text-white">
               <p className="mt-2">{item.id}</p>
             </div>
-            <h1 className="font-bold text-md mt-1 text-[#333333]">
+            <h1 className="font-bold text-lg mt-1 text-[#333333]">
               {item.title}
             </h1>
-            <p className="text-[#333333] text-sm">{item.desc}</p>
+            <p className="text-[#333333] text-lg">{item.desc}</p>
           </div>
         ))}
       </div>

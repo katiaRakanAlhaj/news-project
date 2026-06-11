@@ -148,7 +148,7 @@ const NewsModelNine = ({
                       className="px-2"
                       style={{ width: `${100 / slidesToShow}%` }}
                     >
-                      <div className="relative w-full h-[18rem] overflow-hidden rounded-lg">
+                      <div className="relative w-full h-[22rem] overflow-hidden">
                         <img
                           className="w-full h-full object-cover"
                           src={item.image}
@@ -164,7 +164,7 @@ const NewsModelNine = ({
                         <div
                           className={`absolute ${i18next.language == "ar" ? "right-[1rem]" : "left-[1rem]"} bottom-[1rem]`}
                         >
-                          <h1 className="text-white font-bold text-md line-clamp-2">
+                          <h1 className="text-white font-bold text-xl line-clamp-2">
                             {item.title}
                           </h1>
                         </div>

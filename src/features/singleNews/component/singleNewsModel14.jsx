@@ -41,7 +41,7 @@ const SingleNewsModel14 = () => {
               className="w-full flex justify-between items-center py-4 px-4 text-right bg-white hover:bg-gray-50 transition-colors"
             >
               <span
-                className={`text-md ${
+                className={`text-lg ${
                   openIndex === index
                     ? "font-bold text-[#005BBF]"
                     : "font-normal text-[#333333]"
@@ -61,7 +61,7 @@ const SingleNewsModel14 = () => {
                 openIndex === index ? "max-h-auto" : "max-h-0"
               }`}
             >
-              <div className="pb-4 px-4 text-[#333333] text-sm">
+              <div className="pb-4 px-4 text-[#333333] text-md">
                 {item.content}
               </div>
             </div>

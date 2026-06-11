@@ -3,25 +3,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import arrow1 from "../../../../assets/images/arrow1.svg";
 import arrow2 from "../../../../assets/images/arrow2.svg";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
-import { containerVariants, imageVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
+import {
+  containerVariants,
+  imageVariants,
+  CenteredSquareLoader,
+} from "../../../../ui/animationNews";
 
-const NewsModelEight = ({ 
-  data, 
-  sectionId, 
-  currentPage: apiCurrentPage, 
-  totalPages: apiTotalPages, 
+const NewsModelEight = ({
+  data,
+  sectionId,
+  currentPage: apiCurrentPage,
+  totalPages: apiTotalPages,
   onPageChange,
-  isLoading: externalIsLoading 
+  isLoading: externalIsLoading,
 }) => {
   // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -32,30 +36,30 @@ const NewsModelEight = ({
     }
 
     const newsDataMap = {};
-    
+
     apiData.items.forEach((categoryItem) => {
       const categoryName = categoryItem.name;
       const newsArray = categoryItem.news || [];
-      
+
       newsDataMap[categoryName] = newsArray.map((news) => ({
         id: news.id,
         image: news.news_image,
         title: news.news_title,
         description: news.news_description || "",
         date: formatDate(news.date),
-        views: '1.2K',
+        views: "1.2K",
       }));
     });
-    
+
     return newsDataMap;
   };
 
   // Get news data from API
   const newsData = processApiData(data);
-  
+
   // Get categories from the data
   const categories = Object.keys(newsData);
-  
+
   // State management
   const [activeCategory, setActiveCategory] = useState(categories[0] || "");
   const [currentPage, setCurrentPage] = useState(0);
@@ -130,7 +134,10 @@ const NewsModelEight = ({
     >
       {/* API Pagination Dots at the top */}
       {apiTotalPages > 1 && (
-        <motion.div variants={imageVariants} className="flex justify-end items-center gap-2 mb-4">
+        <motion.div
+          variants={imageVariants}
+          className="flex justify-end items-center gap-10 mb-4"
+        >
           <button
             onClick={handlePrevApiPage}
             disabled={apiCurrentPage <= 1 || externalIsLoading}
@@ -140,17 +147,32 @@ const NewsModelEight = ({
                 : "bg-gray-200 text-gray-700 hover:bg-negative hover:text-white"
             }`}
           >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
-          
+
           <div className="flex gap-1">
             {Array.from({ length: Math.min(apiTotalPages, 5) }, (_, i) => {
               let pageNumber = i + 1;
               if (apiTotalPages > 5 && apiCurrentPage > 3) {
                 if (i === 0) pageNumber = 1;
-                else if (i === 1) return <span key="ellipsis1" className="px-1">...</span>;
+                else if (i === 1)
+                  return (
+                    <span key="ellipsis1" className="px-1">
+                      ...
+                    </span>
+                  );
                 else if (i === 4) pageNumber = apiTotalPages;
                 else pageNumber = apiCurrentPage + (i - 2);
               }
@@ -167,7 +189,7 @@ const NewsModelEight = ({
               );
             })}
           </div>
-          
+
           <button
             onClick={handleNextApiPage}
             disabled={apiCurrentPage >= apiTotalPages || externalIsLoading}
@@ -177,8 +199,18 @@ const NewsModelEight = ({
                 : "bg-gray-200 text-gray-700 hover:bg-negative hover:text-white"
             }`}
           >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         </motion.div>
@@ -199,13 +231,16 @@ const NewsModelEight = ({
             exit="exit"
           >
             {/* Desktop & Tablet Categories (md and up) */}
-            <motion.div variants={imageVariants} className="hidden md:flex justify-between items-center">
+            <motion.div
+              variants={imageVariants}
+              className="hidden md:flex justify-between items-center"
+            >
               <div className="flex gap-x-[1rem] pb-[0.5rem] overflow-x-auto hide-scrollbar">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => handleCategoryClick(category)}
-                    className={`px-[1rem] py-[0.5rem] mb-[-0.7rem] cursor-pointer z-10 text-[0.875rem] transition-colors duration-200 whitespace-nowrap ${
+                    className={`px-[1rem] py-[0.5rem] mb-[-0.7rem] cursor-pointer z-10 text-lg transition-colors duration-200 whitespace-nowrap ${
                       activeCategory === category
                         ? "text-negative border-b-2 border-[#BF0000] font-bold"
                         : "text-[#204A84] font-[400]"
@@ -238,12 +273,17 @@ const NewsModelEight = ({
             </motion.div>
 
             {/* Mobile Categories Dropdown */}
-            <motion.div variants={imageVariants} className="md:hidden mb-[1rem]">
+            <motion.div
+              variants={imageVariants}
+              className="md:hidden mb-[1rem]"
+            >
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="w-full flex justify-between items-center px-[1rem] py-[0.75rem] bg-[#F5F5F5] rounded-[0.5rem]"
               >
-                <span className="text-[#204A84] font-medium">{activeCategory}</span>
+                <span className="text-[#204A84] font-medium">
+                  {activeCategory}
+                </span>
                 <svg
                   className={`w-[1.25rem] h-[1.25rem] transition-transform duration-300 ${
                     isMobileMenuOpen ? "rotate-180" : ""
@@ -281,7 +321,10 @@ const NewsModelEight = ({
             </motion.div>
 
             {/* Mobile Horizontal Scroll Categories */}
-            <motion.div variants={imageVariants} className="md:hidden overflow-x-auto pb-[0.5rem] mb-[1rem] hide-scrollbar">
+            <motion.div
+              variants={imageVariants}
+              className="md:hidden overflow-x-auto pb-[0.5rem] mb-[1rem] hide-scrollbar"
+            >
               <div className="flex gap-x-[0.75rem]">
                 {categories.map((category) => (
                   <button
@@ -304,20 +347,26 @@ const NewsModelEight = ({
             {currentNews.length > 0 ? (
               <>
                 {/* Desktop Layout (lg screens) */}
-                <motion.div variants={containerVariants} className="hidden lg:grid grid-cols-12 mt-[1rem]">
+                <motion.div
+                  variants={containerVariants}
+                  className="hidden lg:grid grid-cols-12 gap-x-[2rem] mt-[1rem]"
+                >
                   <div className="col-span-8">
                     <div className="grid grid-cols-2 gap-x-[1rem]">
-                      <motion.div variants={imageVariants} className="flex flex-col">
+                      <motion.div
+                        variants={imageVariants}
+                        className="flex flex-col"
+                      >
                         <img
                           src={mainNews.image}
-                          className="w-full h-[16rem] object-cover rounded-[0.5rem]"
+                          className="w-full h-[16rem] object-cover"
                           alt="news"
                         />
-                        <h1 className="font-bold text-[1rem] text-[#333333] mt-[1rem]">
+                        <h1 className="font-bold text-xl text-[#333333] mt-[1rem]">
                           {mainNews.title}
                         </h1>
                         {mainNews.description && (
-                          <p className="text-[0.875rem] text-[#666666] mt-[0.5rem] line-clamp-3">
+                          <p className="text-md text-[#666666] mt-[0.5rem] line-clamp-3">
                             {mainNews.description}
                           </p>
                         )}
@@ -330,7 +379,10 @@ const NewsModelEight = ({
                         </div>
                       </motion.div>
 
-                      <motion.div variants={containerVariants} className="flex flex-col space-y-[1rem]">
+                      <motion.div
+                        variants={containerVariants}
+                        className="flex flex-col space-y-[1rem]"
+                      >
                         {leftColumnNews.map((item, idx) => (
                           <motion.div
                             key={item.id}
@@ -338,12 +390,12 @@ const NewsModelEight = ({
                             className="flex gap-x-[1rem]"
                           >
                             <img
-                              className="w-[7rem] h-[6rem] object-cover rounded-[0.5rem]"
+                              className="w-[9rem] h-[8rem] object-cover"
                               src={item.image}
                               alt="news"
                             />
                             <div className="flex flex-col space-y-[0.5rem] justify-center">
-                              <h1 className="font-bold line-clamp-2 text-[1rem] text-[#333333]">
+                              <h1 className="font-bold line-clamp-2 text-lg text-[#333333]">
                                 {item.title}
                               </h1>
                               <NewsMetaInfo
@@ -358,7 +410,10 @@ const NewsModelEight = ({
                     </div>
                   </div>
 
-                  <motion.div variants={containerVariants} className="col-span-4">
+                  <motion.div
+                    variants={containerVariants}
+                    className="col-span-4"
+                  >
                     <div className="flex flex-col space-y-[1rem]">
                       {rightColumnNews.map((item, idx) => (
                         <motion.div
@@ -367,7 +422,7 @@ const NewsModelEight = ({
                           className="flex gap-x-[1rem]"
                         >
                           <img
-                            className="w-[7rem] h-[6rem] object-cover rounded-[0.5rem]"
+                            className="w-[9rem] h-[8rem] object-cover"
                             src={item.image}
                             alt="news"
                           />
@@ -388,12 +443,18 @@ const NewsModelEight = ({
                 </motion.div>
 
                 {/* Tablet Layout (md screens) */}
-                <motion.div variants={containerVariants} className="hidden md:block lg:hidden mt-[1rem]">
+                <motion.div
+                  variants={containerVariants}
+                  className="hidden md:block lg:hidden mt-[1rem]"
+                >
                   <div className="grid grid-cols-2 gap-[1.5rem]">
-                    <motion.div variants={imageVariants} className="col-span-2 mb-[1rem]">
+                    <motion.div
+                      variants={imageVariants}
+                      className="col-span-2 mb-[1rem]"
+                    >
                       <img
                         src={mainNews.image}
-                        className="w-full h-[16rem] object-cover rounded-[0.5rem]"
+                        className="w-full h-[16rem] object-cover"
                         alt="news"
                       />
                       <h1 className="font-bold text-[1.25rem] text-[#333333] mt-[1rem]">
@@ -413,7 +474,10 @@ const NewsModelEight = ({
                       </div>
                     </motion.div>
 
-                    <motion.div variants={containerVariants} className="col-span-1">
+                    <motion.div
+                      variants={containerVariants}
+                      className="col-span-1"
+                    >
                       <div className="flex flex-col space-y-[1rem]">
                         {leftColumnNews.map((item, idx) => (
                           <motion.div
@@ -441,7 +505,10 @@ const NewsModelEight = ({
                       </div>
                     </motion.div>
 
-                    <motion.div variants={containerVariants} className="col-span-1">
+                    <motion.div
+                      variants={containerVariants}
+                      className="col-span-1"
+                    >
                       <div className="flex flex-col space-y-[1rem]">
                         {rightColumnNews.map((item, idx) => (
                           <motion.div
@@ -485,9 +552,13 @@ const NewsModelEight = ({
                     </span>
                     <button
                       onClick={handleNextLocal}
-                      disabled={currentPage === totalLocalPages - 1 || totalLocalPages === 0}
+                      disabled={
+                        currentPage === totalLocalPages - 1 ||
+                        totalLocalPages === 0
+                      }
                       className={`w-[2.5rem] h-[2.5rem] bg-[#D9D9D9] rounded-full flex items-center justify-center ${
-                        currentPage === totalLocalPages - 1 || totalLocalPages === 0
+                        currentPage === totalLocalPages - 1 ||
+                        totalLocalPages === 0
                           ? "opacity-50"
                           : ""
                       }`}
@@ -498,7 +569,10 @@ const NewsModelEight = ({
                 </motion.div>
 
                 {/* Mobile Layout (small screens) */}
-                <motion.div variants={containerVariants} className="md:hidden mt-[1rem]">
+                <motion.div
+                  variants={containerVariants}
+                  className="md:hidden mt-[1rem]"
+                >
                   <motion.div variants={imageVariants} className="mb-[1.5rem]">
                     <img
                       src={mainNews.image}
@@ -537,9 +611,13 @@ const NewsModelEight = ({
                     </span>
                     <button
                       onClick={handleNextLocal}
-                      disabled={currentPage === totalLocalPages - 1 || totalLocalPages === 0}
+                      disabled={
+                        currentPage === totalLocalPages - 1 ||
+                        totalLocalPages === 0
+                      }
                       className={`w-[2rem] h-[2rem] bg-[#D9D9D9] rounded-full flex items-center justify-center ${
-                        currentPage === totalLocalPages - 1 || totalLocalPages === 0
+                        currentPage === totalLocalPages - 1 ||
+                        totalLocalPages === 0
                           ? "opacity-50"
                           : ""
                       }`}
@@ -548,7 +626,10 @@ const NewsModelEight = ({
                     </button>
                   </div>
 
-                  <motion.div variants={containerVariants} className="space-y-[1rem]">
+                  <motion.div
+                    variants={containerVariants}
+                    className="space-y-[1rem]"
+                  >
                     {paginatedNews.map((item, idx) => (
                       <motion.div
                         key={item.id}
@@ -585,7 +666,10 @@ const NewsModelEight = ({
                 </motion.div>
               </>
             ) : (
-              <motion.div variants={imageVariants} className="text-center py-[2rem] text-gray-500">
+              <motion.div
+                variants={imageVariants}
+                className="text-center py-[2rem] text-gray-500"
+              >
                 لا توجد أخبار في هذا القسم
               </motion.div>
             )}

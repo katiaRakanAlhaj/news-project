@@ -62,10 +62,10 @@ const SingleNewsModel12 = () => {
 
       {/* Tab Content */}
       <div className="mt-[1rem]">
-        <h2 className="text-[#000000] font-bold text-md mb-2">
+        <h2 className="text-[#000000] font-bold text-lg mb-4">
           {tabs[activeTab]?.data?.title}
         </h2>
-        <p className="text-[#000000] text-sm leading-relaxed">
+        <p className="text-[#000000] text-md leading-relaxed">
           {tabs[activeTab]?.data?.description}
         </p>
       </div>

@@ -24,7 +24,7 @@ const SingleNewsModel8 = () => {
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={"الهيئات الرئيسية"} />
-      <p className="text-[#333333] text-sm mt-2">
+      <p className="text-[#333333] text-md mt-2">
         تتمحور الأمم المتحدة حول ست هيئات رئيسية، تم إنشاؤها بموجب ميثاق الأمم
         المتحدة. هذه الهيئات مسؤولة عن المهام الرئيسية للمنظمة، بدءاً من صون
         السلم والأمن الدوليين وصولاً إلى تعزيز التقدم الاجتماعي والاقتصادي.
@@ -33,12 +33,12 @@ const SingleNewsModel8 = () => {
         {items?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}
-            className="w-full h-[6rem] flex flex-col space-y-2 rounded-xl p-[1rem]"
+            className="w-full h-[7rem] flex flex-col space-y-2 rounded-xl p-[1rem]"
           >
-            <h1 className="font-bold mt-1 text-sm text-secondary">
+            <h1 className="font-bold mt-1 text-md text-secondary">
               {item.title}
             </h1>
-            <p className="text-[#666666] text-sm line-clamp-2">{item.desc}</p>
+            <p className="text-[#666666] text-md line-clamp-2">{item.desc}</p>
           </div>
         ))}
       </div>

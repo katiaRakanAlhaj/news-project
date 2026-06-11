@@ -23,7 +23,7 @@ const MediaModelTwo = ({ data }) => {
 
   // Extract media items from API data
   const mediaItemsData = getItemsArray(data?.items || []);
-  
+
   // Map API media items to the format needed for the component
   const secondColumnItems = mediaItemsData.map((item) => ({
     id: item.id,
@@ -65,18 +65,22 @@ const MediaModelTwo = ({ data }) => {
   const defaultMainItem = secondColumnItems[0];
 
   // If no video is playing, show the first item by default
-  const activeItem = isPlaying 
+  const activeItem = isPlaying
     ? { videoUrl: currentVideo, title: currentTitle }
-    : { videoUrl: defaultMainItem.videoUrl, title: defaultMainItem.title, image: defaultMainItem.image };
+    : {
+        videoUrl: defaultMainItem.videoUrl,
+        title: defaultMainItem.title,
+        image: defaultMainItem.image,
+      };
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
       <TitleSection title={data.title || "ميديا"} />
 
       <div className="w-full mt-[1rem]">
-        <div className="flex flex-col lg:flex-row">
-          {/* Main Video */}
-          <div className="relative w-full lg:w-[82%] h-[18rem] sm:h-[24rem] lg:h-[28rem] overflow-hidden">
+        <div className="grid grid-cols-12 gap-4">
+          {/* Main Video - col-span-8 */}
+          <div className="relative col-span-9 h-[18rem] sm:h-[24rem] lg:h-[38rem] overflow-hidden">
             {isPlaying ? (
               <>
                 <iframe
@@ -113,12 +117,12 @@ const MediaModelTwo = ({ data }) => {
                   }}
                 />
 
-                <div 
+                <div
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer flex justify-center items-center"
                   onClick={() => handlePlayVideo(defaultMainItem)}
                 >
                   <img
-                    className="w-[3rem] sm:w-[4rem] lg:w-[5rem] transition-transform hover:scale-110"
+                    className="w-[3rem] sm:w-[4rem] lg:w-[7rem] transition-transform hover:scale-110"
                     src={youtube}
                     alt="play"
                   />
@@ -127,14 +131,14 @@ const MediaModelTwo = ({ data }) => {
             )}
 
             <h1
-              className={`absolute ${i18next.language == "ar" ? "right-4 lg:right-[2rem]" : "left-4 lg:left-[2rem]"} top-4 lg:top-[2rem] font-bold text-white text-sm sm:text-lg lg:text-xl max-w-[90%] drop-shadow-lg`}
+              className={`absolute ${i18next.language == "ar" ? "right-4 lg:right-[2rem]" : "left-4 lg:left-[2rem]"} top-4 lg:top-[2rem] font-bold text-white text-sm sm:text-lg lg:text-2xl max-w-[90%] drop-shadow-lg`}
             >
               {isPlaying ? currentTitle : defaultMainItem.title}
             </h1>
           </div>
 
-          {/* Sidebar */}
-          <div className="relative w-full lg:w-[18%] h-auto lg:h-[28rem] flex flex-col overflow-hidden mt-4 lg:mt-0">
+          {/* Sidebar - col-span-4 */}
+          <div className="relative col-span-3 h-auto lg:h-[38rem] flex flex-col overflow-hidden">
             <div
               className="absolute inset-0 -z-10"
               style={{
@@ -150,19 +154,21 @@ const MediaModelTwo = ({ data }) => {
                 <div
                   key={item.id}
                   className={`flex gap-x-2 items-center cursor-pointer transition-all duration-300 flex-shrink-0 lg:flex-shrink min-w-[240px] lg:min-w-0 ${
-                    selectedItemId === item.id ? "bg-[#66CCFF33] p-1 rounded" : ""
+                    selectedItemId === item.id
+                      ? "bg-[#66CCFF33] p-1 rounded"
+                      : ""
                   }`}
                   onClick={() => handlePlayVideo(item)}
                 >
-                  <div className="w-[6rem] h-[5rem] flex-shrink-0">
+                  <div className="w-[7rem] h-[7rem] flex-shrink-0">
                     <img
                       src={item.image}
-                      className="w-full h-full object-cover rounded"
+                      className="w-full h-full object-cover"
                       alt={item.title}
                     />
                   </div>
 
-                  <p className="text-white font-[700] text-sm line-clamp-3 flex-1">
+                  <p className="text-white font-[700] text-md line-clamp-3 flex-1">
                     {item.title}
                   </p>
                 </div>

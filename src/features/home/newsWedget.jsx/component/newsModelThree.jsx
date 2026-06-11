@@ -124,22 +124,22 @@ const NewsModelThree = ({
             {/* First column - Main News col-span-9 */}
             <motion.div 
               variants={imageVariants}
-              className="lg:col-span-9 col-span-1"
+              className="lg:col-span-8 col-span-1"
             >
               {mainNewsItem && (
                 <div className="relative rounded-lg overflow-hidden">
                   <img
                     src={mainNewsItem.image}
-                    className="w-full h-[25rem] object-cover"
+                    className="w-full h-[34rem] object-cover"
                     alt={mainNewsItem.title}
                   />
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0" />
-                  <div className={`absolute bottom-[2rem] ${i18next.language == "ar" ? 'right-[2rem]' : 'left-[2rem]'} z-10`}>
-                    <button className="w-[4rem] h-[1.6rem] bg-secondary rounded-full text-white text-xs">
+                  <div className={`absolute bottom-[3rem] ${i18next.language == "ar" ? 'right-[3rem]' : 'left-[3rem]'} z-10`}>
+                    <button className="w-[5rem] h-[1.8rem] bg-secondary rounded-full text-white text-md">
                       {mainNewsItem.type}
                     </button>
-                    <h1 className="font-bold text-white text-md mt-3">
+                    <h1 className="font-bold text-white text-2xl mt-3">
                       {mainNewsItem.title}
                     </h1>
                   </div>
@@ -150,7 +150,7 @@ const NewsModelThree = ({
             {/* Second column - Most Viewed col-span-3 */}
             <motion.div 
               variants={imageVariants}
-              className="lg:col-span-3 col-span-1"
+              className="lg:col-span-4 col-span-1"
             >
               <MostViewedSection mostViewedData={remainingItems} />
             </motion.div>

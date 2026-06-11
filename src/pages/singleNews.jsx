@@ -89,12 +89,12 @@ const SingleNews = () => {
     <div className="container1 mx-auto lg:mt-0 mt-[5rem]">
       <SinlgeNewsBanner />
       <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[1.5rem]">
-        <div className="lg:col-span-9 col-span-1 mt-[2rem]">
+        <div className="lg:col-span-8 col-span-1 mt-[2rem]">
           <SingleNewsModel5 />
           <SingleNewsModel15 />
           <SingleNewsModel16 />
         </div>
-        <div className="lg:col-span-3 col-span-1 mt-[2rem]">
+        <div className="lg:col-span-4 col-span-1 mt-[2rem]">
           <div className="flex gap-x-2 items-center">
             <h1 className="text-negative font-bold text-md text-nowrap">
               اخر الاخبار

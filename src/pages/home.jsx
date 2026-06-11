@@ -1,4 +1,4 @@
-// Home.jsx - Fixed version with simple loading indicator
+// Home.jsx - Fixed version with working arrows for media
 import { useState, useEffect } from "react";
 import { useQueries } from "@tanstack/react-query";
 import ModelFourHero from "../features/home/heroWedget/component/modelFourHero";
@@ -20,10 +20,10 @@ import NewsModelThree from "../features/home/newsWedget.jsx/component/newsModelT
 import NewsModelTwo from "../features/home/newsWedget.jsx/component/newsModelTwo";
 
 const heroComponents = {
-  // 1: ModelOneHero,
-  // 2: ModelTwoHero,
-  // 3: ModelThreeHero,
-  // 4: ModelFourHero,
+  1: ModelOneHero,
+  2: ModelTwoHero,
+  3: ModelThreeHero,
+  4: ModelFourHero,
 };
 
 const newsComponents = {
@@ -60,11 +60,13 @@ const Home = () => {
     setSectionPages(prev => ({ ...prev, [sectionId]: newPage }));
   };
 
-  // Prepare queries for paginated sections
-  const newsSections = homePageData?.data?.filter(item => item.home_model_id >= 7) || [];
+  // Prepare queries for paginated sections (include media sections)
+  const sectionsNeedingPagination = homePageData?.data?.filter(
+    item => (item.home_model_id >= 7 || item.home_model_id === 5 || item.home_model_id === 6)
+  ) || [];
   
   // Create a map of section ID to its query
-  const sectionQueryMap = newsSections
+  const sectionQueryMap = sectionsNeedingPagination
     .filter(section => sectionPages[section.id] && sectionPages[section.id] !== 1)
     .map(section => ({
       sectionId: section.id,
@@ -78,7 +80,6 @@ const Home = () => {
     queries: sectionQueryMap.map(q => ({ 
       queryKey: q.queryKey, 
       queryFn: q.queryFn,
-      // Keep previous data while fetching new data
       placeholderData: (previousData) => previousData,
     })),
   });
@@ -178,19 +179,31 @@ const Home = () => {
         ) : null;
       })}
       
-      {/* Media Sections */}
+      {/* Media Sections - UPDATED to include pagination props */}
       {mediaSections.map((section) => {
         const MediaComponent = mediaComponents[section.home_model_id];
-        return MediaComponent ? (
+        if (!MediaComponent) return null;
+        
+        const currentPage = sectionPages[section.id] || 1;
+        const pagination = getPaginationInfo(section.items);
+        const isLoading = isSectionLoading(section.id);
+        const sectionData = getSectionData(section);
+        
+        return (
           <MediaComponent 
-            key={`media-${section.id}`} 
-            data={{ ...section, items: getItemsArray(section.items) }} 
+            key={`media-${section.id}`}
+            data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
+            sectionId={section.id}
+            currentPage={currentPage}
+            totalPages={pagination.lastPage}
+            onPageChange={handlePageChange}
+            isLoading={isLoading}
           />
-        ) : null;
+        );
       })}
       
       {/* News Sections */}
-      {newsSections.map((section) => {
+      {sectionsNeedingPagination.filter(section => section.home_model_id >= 7).map((section) => {
         const NewsComponent = newsComponents[section.home_model_id];
         if (!NewsComponent) return null;
         

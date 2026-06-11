@@ -41,7 +41,7 @@ const SingleNewsModel13 = () => {
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={"أولويات العراق في الأمم المتحدة"} />
-      <p className="text-[#666666] text-sm mt-2">
+      <p className="text-[#666666] text-md mt-3">
         لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو
         أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم
         أد مينيم فينايم,كيواس نوستريد أكسير
@@ -50,13 +50,13 @@ const SingleNewsModel13 = () => {
         {items?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}
-            className="w-full h-[8rem] flex flex-col space-y-2 rounded-xl  p-[1rem]"
+            className="w-full h-[10rem] flex flex-col space-y-2 rounded-xl  p-[1rem]"
           >
-            <img className="w-[1.2rem]" src={item.image} />
-            <h1 className="font-bold mt-1 text-sm text-secondary">
+            <img className="w-[1.5rem]" src={item.image} />
+            <h1 className="font-bold mt-1 text-md text-secondary">
               {item.title}
             </h1>
-            <p className="text-[#666666] text-sm line-clamp-2">{item.desc}</p>
+            <p className="text-[#666666] text-md line-clamp-2">{item.desc}</p>
           </div>
         ))}
       </div>

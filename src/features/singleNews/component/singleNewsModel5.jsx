@@ -2,10 +2,10 @@ import model5 from "../../../assets/images/model5.png";
 const SingleNewsModel5 = () => {
   return (
     <div className="flex flex-col space-y-2">
-      <h1 className="text-md font-bold text-[#333333]">
+      <h1 className="text-xl font-bold text-[#333333]">
         لوريم ايبسوم دولار سيت أميت
       </h1>
-      <p className="text-sm text-[#333333] leading-relaxed">
+      <p className="text-md text-[#333333] leading-relaxed">
         لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو
         أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم
         أد مينيم فينايم,كيواس نوستريد أكسير لوريم ايبسوم دولار سيت أميت
@@ -18,7 +18,7 @@ const SingleNewsModel5 = () => {
         لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد
         أكسير
       </p>
-      <img className="w-full h-[15rem] rounded-xl object-cover" src={model5} />
+      <img className="w-full h-[17rem] rounded-xl object-cover" src={model5} />
     </div>
   );
 };

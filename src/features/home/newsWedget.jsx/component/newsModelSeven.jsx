@@ -10,12 +10,12 @@ import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 const NewsModelSeven = ({ data }) => {
   // Social media icons (static - these are UI elements, not content data)
   const social = [
-    { image: LinkedInColor, name: "Linkedin", width: "1.3rem" },
-    { image: instgramColor, name: "Instagram", width: "1.3rem" },
-    { image: facebookColor, name: "Facebook", width: "1.3rem" },
-    { image: tiktok, name: "Tik Tok", width: "2.1rem" },
-    { image: twitterColor, name: "Twitter", width: "1.2rem" },
-    { image: youtubeColor, name: "Youtube", width: "1.5rem" },
+    { image: LinkedInColor, name: "Linkedin", width: "2rem" },
+    { image: instgramColor, name: "Instagram", width: "2rem" },
+    { image: facebookColor, name: "Facebook", width: "2rem" },
+    { image: tiktok, name: "Tik Tok", width: "2.5rem" },
+    { image: twitterColor, name: "Twitter", width: "1.7rem" },
+    { image: youtubeColor, name: "Youtube", width: "2rem" },
   ];
 
   // Format date function
@@ -67,23 +67,24 @@ const NewsModelSeven = ({ data }) => {
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
-      <div className="grid lg:grid-cols-12 gap-x-[5rem] lg:gap-y-0 gap-y-[2rem]">
+      <div className="grid lg:grid-cols-12 gap-y-0 gap-y-[2rem]">
         {/* first column - News Section */}
-        <div className="lg:col-span-9 col-span-1">
+        <div className="lg:col-span-8 col-span-1">
           <TitleSection title={data.title || "منوعات وثقافة"} showArrows={false} />
 
-          <div className="grid md:grid-cols-2 gap-[1rem] mt-[1rem]">
+          <div className="grid md:grid-cols-12 gap-[1rem] mt-[1rem]">
             {/* Main featured news */}
-            <div className="flex flex-col">
+           <div className = "col-span-7">
+             <div className="flex flex-col">
               <img
                 src={mainNews.image}
-                className="w-full h-[12rem] object-cover rounded-lg"
+                className="w-full h-[15rem] object-cover"
                 alt={mainNews.title}
               />
-              <h1 className="font-bold text-md text-[#333333] mt-4">
+              <h1 className="font-bold text-xl text-[#333333] mt-4">
                 {mainNews.title}
               </h1>
-              <p className="text-sm text-[#666666] mt-2 line-clamp-3">
+              <p className="text-md text-[#666666] mt-2 line-clamp-3">
                 {mainNews.description}
               </p>
               <NewsMetaInfo
@@ -92,18 +93,20 @@ const NewsModelSeven = ({ data }) => {
                 textColor="text-[#363636]"
               />
             </div>
+           </div>
 
             {/* List of other news items */}
-            <div className="flex flex-col space-y-[1rem]">
+            <div className = "col-span-5">
+              <div className="flex flex-col space-y-[1rem]">
               {sideNews.map((item) => (
                 <div key={item.id} className="md:flex gap-x-[1rem]">
                   <img
-                    className="md:w-[9rem] w-full h-[8rem] object-cover rounded-lg"
+                    className="md:w-[11rem] w-full h-[9rem] object-cover"
                     src={item.image}
                     alt={item.title}
                   />
                   <div className="flex flex-col space-y-2 justify-center">
-                    <h1 className="font-bold text-md text-[#333333] md:mt-0 mt-[1rem] line-clamp-2">
+                    <h1 className="font-bold text-lg text-[#333333] md:mt-0 mt-[1rem] line-clamp-2">
                       {item.title}
                     </h1>
                     <NewsMetaInfo
@@ -115,18 +118,19 @@ const NewsModelSeven = ({ data }) => {
                 </div>
               ))}
             </div>
+            </div>
           </div>
         </div>
 
         {/* second column - Social Media Section */}
-        <div className="lg:col-span-3 col-span-1">
+        <div className="lg:col-span-4 col-span-1 mr-[3rem]">
           <TitleSection title={"سوشال ميديا"} showArrows={false} />
           <div
             style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
-            className="w-full h-[13rem] bg-[#F6F6F6] flex justify-center items-center mt-[1rem] rounded-lg"
+            className="w-full h-[17rem] bg-[#F6F6F6] flex justify-center items-center mt-[1rem]"
           >
             <div>
-              <div className="grid grid-cols-3 gap-x-[2rem] gap-y-[2rem]">
+              <div className="grid grid-cols-3 gap-x-[3rem] gap-y-[2rem]">
                 {social.map((socialItem, index) => (
                   <div key={index} className="flex flex-col space-y-2 justify-center items-center cursor-pointer hover:opacity-80 transition">
                     <img
@@ -137,7 +141,7 @@ const NewsModelSeven = ({ data }) => {
                       }}
                       alt={socialItem.name}
                     />
-                    <p className="text-[#000000] text-sm">{socialItem.name}</p>
+                    <p className="text-[#000000] text-lg">{socialItem.name}</p>
                   </div>
                 ))}
               </div>

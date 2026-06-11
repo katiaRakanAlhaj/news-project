@@ -151,7 +151,7 @@ const NewsGrid = () => {
             >
               <img
                 src={newsItem?.image}
-                className="w-full h-[12rem] rounded-xl object-center"
+                className="w-full h-[14rem] rounded-xl object-center"
                 alt={newsItem.title}
               />
               <div

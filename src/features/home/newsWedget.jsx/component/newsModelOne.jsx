@@ -79,6 +79,18 @@ const NewsModelOne = ({
         description: "وجهات سياحية جديدة تتبنى مفاهيم الاستدامة البيئية في المنطقة..",
         time: "منذ ١٠ ساعات",
       },
+       {
+        image: seeMore3,
+        title: "الرياضة الإلكترونية",
+        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
+        time: "منذ ٨ ساعات",
+      },
+       {
+        image: seeMore3,
+        title: "الرياضة الإلكترونية",
+        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
+        time: "منذ ٨ ساعات",
+      },
     ],
     منوعات: [
       {
@@ -94,6 +106,18 @@ const NewsModelOne = ({
         time: "منذ ٥ ساعات",
       },
       {
+        image: seeMore3,
+        title: "الرياضة الإلكترونية",
+        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
+        time: "منذ ٨ ساعات",
+      },
+       {
+        image: seeMore3,
+        title: "الرياضة الإلكترونية",
+        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
+        time: "منذ ٨ ساعات",
+      },
+       {
         image: seeMore3,
         title: "الرياضة الإلكترونية",
         description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
@@ -117,7 +141,7 @@ const NewsModelOne = ({
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-[2rem] gap-y-[2rem]">
         {/* first column - Main News */}
-        <div className="lg:col-span-9">
+        <div className="lg:col-span-8">
           {/* title with pagination arrows */}
           <TitleSection 
             title={data.title || i18next.t("news_wedget.latest_news")}
@@ -160,16 +184,16 @@ const NewsModelOne = ({
         </div>
 
         {/** second column - Most Viewed (no animations) */}
-        <div className="lg:col-span-3">
-          <div className="flex flex-wrap gap-x-2 items-center mb-[0.9rem]">
-            <h1 className="font-bold text-md text-negative">
+        <div className="lg:col-span-4">
+          <div className="flex flex-wrap gap-x-6 items-center mb-[0.9rem]">
+            <h1 className="font-bold text-lg text-negative">
               {i18next.t("news_wedget.most_view")}
             </h1>
             <div className="w-[15%] h-[0.1rem] bg-negative"></div>
 
             <button
               onClick={() => setActiveTab("ترند")}
-              className={`font-bold text-md transition ${
+              className={`font-bold text-lg transition ${
                 activeTab === "ترند"
                   ? "text-negative border-b-2 border-negative"
                   : "text-primary hover:text-negative"
@@ -182,7 +206,7 @@ const NewsModelOne = ({
 
             <button
               onClick={() => setActiveTab("منوعات")}
-              className={`font-bold text-md transition ${
+              className={`font-bold text-lg transition ${
                 activeTab === "منوعات"
                   ? "text-negative border-b-2 border-negative"
                   : "text-primary hover:text-negative"
