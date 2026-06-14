@@ -88,7 +88,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
           <Route path="About_Us" element={<AboutUs />} />
-          <Route path="News" element={<News />} />
+          <Route path="categories/:id" element={<News />} />
           <Route path="News/:id" element={<SingleNews />} />
           {/* Add 404 route - this will catch all unmatched routes */}
           <Route path="*" element={<NotFound />} />

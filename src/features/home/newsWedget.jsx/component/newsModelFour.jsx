@@ -1,64 +1,66 @@
-// NewsModelFour.jsx - with shared animations and pagination
+// NewsModelFour.jsx
+
 import i18next from "i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import "swiper/css";
-import TitleSection from "../../../../ui/titleSection";
-import { containerVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
 
-const NewsModelFour = ({ 
-  data, 
-  sectionId, 
-  currentPage, 
-  totalPages, 
+import "swiper/css";
+
+import TitleSection from "../../../../ui/titleSection";
+import {
+  containerVariants,
+  CenteredSquareLoader,
+} from "../../../../ui/animationNews";
+
+const NewsModelFour = ({
+  data,
+  sectionId,
+  currentPage,
+  totalPages,
   onPageChange,
-  isLoading: externalIsLoading 
+  isLoading: externalIsLoading,
 }) => {
-  // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
+
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
-  // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
-    if (Array.isArray(items)) {
-      return items;
-    }
-    if (items && items.data && Array.isArray(items.data)) {
+    if (Array.isArray(items)) return items;
+
+    if (items?.data && Array.isArray(items.data)) {
       return items.data;
     }
+
     return [];
   };
 
-  // Extract news items from API data
   const newsItems = getItemsArray(data?.items || []);
-  
-  // Map API news items to the format needed for the component
+
   const news = newsItems.map((item) => ({
     id: item.id,
     image: item.news_image,
     type: item.category?.name || "عام",
     title: item.news_title,
     date: formatDate(item.date),
-    views: '1.2K',
+    views: "1.2k",
   }));
 
-  // Pagination handlers
   const handlePageChange = (page) => {
     if (page !== currentPage && !externalIsLoading) {
       onPageChange(sectionId, page);
     }
   };
 
-  // Don't render if no data
   if (!data || (!newsItems.length && !externalIsLoading)) {
     return null;
   }
@@ -69,10 +71,10 @@ const NewsModelFour = ({
       animate="visible"
       exit="exit"
       variants={containerVariants}
-      className="mt-8 w-full"
+      className="w-full mt-8"
     >
-      <div className="container1 mx-auto mb-[1rem]">
-        <TitleSection 
+      <div className="container1 mx-auto mb-5">
+        <TitleSection
           title={data.title || i18next.t("news_wedget.latest_news")}
           showArrows={true}
           currentPage={currentPage}
@@ -83,8 +85,7 @@ const NewsModelFour = ({
         />
       </div>
 
-      {/* Animated content with centered square loader */}
-      <div className="relative">
+      <div className="relative overflow-hidden">
         <AnimatePresence mode="wait">
           {externalIsLoading ? (
             <CenteredSquareLoader key="loader" />
@@ -95,73 +96,76 @@ const NewsModelFour = ({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="container1 mx-auto"
             >
               <Swiper
+              
                 modules={[Autoplay]}
                 loop={true}
-                spaceBetween={0}
-                slidesPerView={5}
+                centeredSlides={true}
+                slidesPerGroup={1}
+                speed={800}
+                spaceBetween={8}
                 autoplay={{
-                  delay: 3000,
+                  delay: 3500,
                   disableOnInteraction: false,
                 }}
+                className="news-slider"
                 breakpoints={{
                   320: {
-                    slidesPerView: 1,
-                    spaceBetween: 0,
+                    slidesPerView: 1.15,
                   },
                   480: {
-                    slidesPerView: 1,
-                    spaceBetween: 0,
+                    slidesPerView: 1.4,
                   },
                   640: {
-                    slidesPerView: 2,
-                    spaceBetween: 0,
+                    slidesPerView: 2.2,
                   },
                   768: {
-                    slidesPerView: 3,
-                    spaceBetween: 0,
+                    slidesPerView: 3.2,
                   },
                   1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 0,
+                    slidesPerView: 4.2,
                   },
                   1280: {
-                    slidesPerView: 5,
-                    spaceBetween: 0,
-                  },
-                  1536: {
-                    slidesPerView: 6,
-                    spaceBetween: 0,
+                    slidesPerView: 5.2,
                   },
                 }}
               >
                 {news.map((item) => (
                   <SwiperSlide key={item.id}>
-                    <div className="relative h-[24rem] overflow-hidden rounded-md group cursor-pointer mx-2">
-                      <div className={`absolute top-2 ${i18next.language == "ar" ? 'right-2' : 'left-2'} z-10`}>
-                        <span className="inline-block bg-[#005BBF] text-xs px-2 py-1 rounded-full text-white">
+                    <div className="group relative h-[28rem] overflow-hidden rounded-2xl cursor-pointer">
+                      {/* Image */}
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                      />
+
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+
+                      {/* Category */}
+                      <div
+                        className={`absolute top-4 z-20 ${
+                          i18next.language === "ar"
+                            ? "right-4"
+                            : "left-4"
+                        }`}
+                      >
+                        <span className="bg-[#005BBF] text-white text-xs px-3 py-1 rounded-full">
                           {item.type}
                         </span>
                       </div>
 
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-
-                      <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                        <h3 className="text-sm leading-5 font-bold line-clamp-3">
+                      {/* Content */}
+                      <div className="absolute bottom-0 left-0 right-0 z-20 p-5">
+                        <h3 className="text-white text-lg font-bold leading-7 line-clamp-3">
                           {item.title}
                         </h3>
 
-                        <div className="flex justify-between mt-2 text-[10px] text-gray-300">
-                          <span>{item.date}</span>
+                        <div className="flex items-center justify-between mt-4 text-xs text-gray-300">
                           <span>{item.views}</span>
+                          <span>{item.date}</span>
                         </div>
                       </div>
                     </div>
@@ -169,20 +173,22 @@ const NewsModelFour = ({
                 ))}
               </Swiper>
 
-              {/* Pagination Dots - each dot represents a page with 6 images */}
+              {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center gap-x-3 mt-8">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <div className="flex justify-center mt-8 gap-3">
+                  {Array.from(
+                    { length: totalPages },
+                    (_, i) => i + 1
+                  ).map((page) => (
                     <button
                       key={page}
-                      onClick={() => handlePageChange(page)}
                       disabled={externalIsLoading}
+                      onClick={() => handlePageChange(page)}
                       className={`transition-all duration-300 rounded-full ${
                         currentPage === page
-                          ? 'bg-negative w-3 h-3'
-                          : 'bg-gray-300 w-3 h-3 hover:bg-gray-400'
+                          ? "w-3 h-3 bg-negative"
+                          : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
                       }`}
-                      aria-label={`Go to page ${page}`}
                     />
                   ))}
                 </div>

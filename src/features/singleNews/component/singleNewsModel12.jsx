@@ -1,47 +1,12 @@
 import { useState } from "react";
 import ModelTitle from "../../../ui/modelsTitle";
 
-const SingleNewsModel12 = () => {
+const SingleNewsModel12 = ({data}) => {
   const [activeTab, setActiveTab] = useState(0);
-
-  const tabs = [
-    {
-      name: "UNAMI",
-      data: {
-        title: "المساعدات الإنسانية في العراق",
-        description:
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا .",
-      },
-    },
-    {
-      name: "UNDP",
-      data: {
-        title: "التنمية المستدامة بدعم من الأمم المتحدة",
-        description:
-          "نص عن التنمية المستدامة وجهود الأمم المتحدة في دعم العراق لتحقيق أهداف التنمية وتحسين البنية التحتية والخدمات الأساسية.",
-      },
-    },
-    {
-      name: "UNESCO",
-      data: {
-        title: "حقوق الإنسان في العراق",
-        description:
-          "نص عن حقوق الإنسان ودور الأمم المتحدة في حماية الحقوق الأساسية للمواطنين العراقيين وتعزيز سيادة القانون.",
-      },
-    },
-    {
-      name: "WHO",
-      data: {
-        title: "الحوار الوطني العراقي",
-        description:
-          "نص عن جهود الأمم المتحدة في تسهيل الحوار الوطني بين الأطراف العراقية المختلفة لتحقيق الاستقرار السياسي.",
-      },
-    },
-  ];
-
+  const tabs = data?.content || [];
   return (
     <div className="mt-[2rem]">
-      <ModelTitle title={"عمل الأمم المتحدة في العراق"} />
+      <ModelTitle title={data?.title} />
 
       {/* Tabs Header */}
       <div className="mt-[1rem] flex flex-wrap gap-2 border-b border-[#C4C4C4]">
@@ -61,14 +26,16 @@ const SingleNewsModel12 = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="mt-[1rem]">
-        <h2 className="text-[#000000] font-bold text-lg mb-4">
-          {tabs[activeTab]?.data?.title}
-        </h2>
-        <p className="text-[#000000] text-md leading-relaxed">
-          {tabs[activeTab]?.data?.description}
-        </p>
-      </div>
+      {tabs?.length > 0 && (
+        <div className="mt-[1rem]">
+          <h2 className="text-[#000000] font-bold text-lg mb-4">
+            {tabs[activeTab]?.title}
+          </h2>
+          <p className="text-[#000000] text-md leading-relaxed">
+            {tabs[activeTab]?.description}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

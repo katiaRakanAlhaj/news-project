@@ -1,62 +1,22 @@
 import ModelTitle from "../../../ui/modelsTitle";
-import Prioritie1 from "../../../assets/images/Prioritie1.svg";
-import Priorities2 from "../../../assets/images/Priorities2.svg";
-import Priorities3 from "../../../assets/images/Priorities3.svg";
-import Priorities4 from "../../../assets/images/Priorities4.svg";
-import Priorities5 from "../../../assets/images/Priorities5.svg";
-import Priorities6 from "../../../assets/images/Priorities6.svg";
-const SingleNewsModel13 = () => {
-  const items = [
-    {
-      image: Prioritie1,
-      title: "بناء السلام والاستقرار",
-      desc: "تعزيز المؤسسات الوطنية وتشجيع المصالحة لضمان السلام طويل الأمد.",
-    },
-    {
-      image: Priorities2,
-      title: "الاستقرار الإقليمي",
-      desc: "تعزيز الحلول الدبلوماسية للنزاعات الإقليمية وتشجيع التعاون.",
-    },
-    {
-      image: Priorities3,
-      title: "الدبلوماسية المناخية",
-      desc: "معالجة ندرة المياه والتصحر، وتعزيز مبادرات الطاقة الخضراء.",
-    },
-    {
-      image: Priorities4,
-      title: "حقوق الإنسان",
-      desc: "صون حقوق الإنسان، وحماية الفئات الضعيفة، وضمان المساءلة.",
-    },
-    {
-      image: Priorities5,
-      title: "التنمية المستدامة",
-      desc: "مواءمة الخطط الوطنية مع أهداف التنمية المستدامة (SDGs) لتعزيز النمو الاقتصادي الشامل.",
-    },
-    {
-      image: Priorities6,
-      title: "تمويل التنمية",
-      desc: "تأمين الدعم والاستثمار الدوليين لإعادة الإعمار بعد النزاع.",
-    },
-  ];
+const SingleNewsModel13 = ({ data }) => {
   return (
     <div className="mt-[2rem]">
-      <ModelTitle title={"أولويات العراق في الأمم المتحدة"} />
-      <p className="text-[#666666] text-md mt-3">
-        لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو
-        أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم
-        أد مينيم فينايم,كيواس نوستريد أكسير
-      </p>
+      <ModelTitle title={data?.title} />
+      <p className="text-[#666666] text-md mt-3">{data?.description} </p>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-[1rem] gap-[2rem]">
-        {items?.map((item) => (
+        {data?.content?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}
             className="w-full h-[10rem] flex flex-col space-y-2 rounded-xl  p-[1rem]"
           >
-            <img className="w-[1.5rem]" src={item.image} />
+            <img className="w-[1.5rem]" src={item.icon} />
             <h1 className="font-bold mt-1 text-md text-secondary">
               {item.title}
             </h1>
-            <p className="text-[#666666] text-md line-clamp-2">{item.desc}</p>
+            <p className="text-[#666666] text-md line-clamp-2">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>

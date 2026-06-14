@@ -59,7 +59,7 @@ html::-webkit-scrollbar {
 }
 
 .container3 {
-    max-width: 63%
+    max-width: 80%
 }
 
 .container4 {
@@ -262,4 +262,22 @@ html::-webkit-scrollbar {
     background: #005bbf;
     width: 24px;
     border-radius: 9999px;
+}
+
+.news-slider {
+    overflow: visible !important;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.news-slider .swiper-wrapper {
+    align-items: stretch;
+}
+
+.news-slider .swiper-slide {
+    height: auto;
+}
+
+.news-slider .swiper-slide img {
+    display: block;
 }

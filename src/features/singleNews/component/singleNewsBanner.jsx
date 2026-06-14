@@ -3,26 +3,36 @@ import twitter from "../../../assets/images/twitter.svg";
 import instgramColor from "../../../assets/images/instgramColor.svg";
 import facebookBanner from "../../../assets/images/facebookBanner.svg";
 import linkedInColor from "../../../assets/images/linkedInColor.svg";
-const SinlgeNewsBanner = () => {
+const SinlgeNewsBanner = ({singleNewsData}) => {
   const socialIcon = [
     { icon: twitter, width: "2rem" },
     { icon: instgramColor, width: "1.5rem" },
     { icon: facebookBanner, width: "1.5rem" },
     { icon: linkedInColor, width: "1.5rem" },
   ];
+   const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
   return (
     <div className="mt-[1rem]">
       <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-        <p className="text-white font-[700] text-md mt-1">سياسة</p>
+        <p className="text-white font-[700] text-md mt-1">{singleNewsData?.category}</p>
       </div>
       <h1 className="text-[#373737] lg:text-3xl text-lg font-bold mt-4">
-        أكسيوس: اتفاق وشيك بين واشنطن وطهران لإنهاء الحرب
+       {singleNewsData?.news_title}
       </h1>
-      <p className="text-[#282828] text-md mt-3">الخميس، 18 مايو 2024</p>
+      <p className="text-[#282828] text-md mt-3">{formatDate(singleNewsData?.date)}</p>
       <div className="relative mt-3">
         <img
           style={{ boxShadow: "0px 20px 25px -5px #0000001A" }}
-          src={singleNewsBanner}
+          src={singleNewsData?.news_image}
           className="w-full h-[26rem] object-cover rounded-xl"
           alt="news banner"
         />

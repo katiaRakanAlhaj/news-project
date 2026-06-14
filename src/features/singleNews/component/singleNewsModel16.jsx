@@ -4,7 +4,7 @@ import united3 from "../../../assets/images/united3.png";
 import united4 from "../../../assets/images/united4.png";
 import ModelTitle from "../../../ui/modelsTitle";
 
-const SingleNewsModel16 = () => {
+const SingleNewsModel16 = ({data}) => {
   const items = [
     {
       title: "ECOSOC",
@@ -33,11 +33,11 @@ const SingleNewsModel16 = () => {
   ];
   return (
     <div className="mt-[2rem]">
-      <ModelTitle title={"اختصارات خاصة بالأمم المتحدة"} />
+      <ModelTitle title={data?.title} />
       <div className="grid md:grid-cols-2 gap-[2rem] mt-[1rem]">
-        {items?.map((item) => (
+        {data?.content?.map((item) => (
           <div className="flex gap-x-[1rem]">
-            <div className="h-[26.5rem] w-[0.15rem] bg-[#005BBF]"></div>
+            <div className="h-[30.5rem] w-[0.15rem] bg-[#005BBF]"></div>
             <div className="flex flex-col space-y-2 mt-[1rem]">
               <h1 className="text-secondary font-bold text-lg">
                 {item?.title}

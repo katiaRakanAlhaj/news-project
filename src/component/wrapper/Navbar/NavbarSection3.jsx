@@ -54,6 +54,11 @@ const NavbarSection3 = ({ categoryData }) => {
     }
   };
 
+  const handleCategoryClick = (categoryId) => {
+    const currentLang = getCurrentLang();
+    navigate(`/${currentLang}/categories/${categoryId}`);
+  };
+
   const currentLang = getCurrentLang();
 
   return (
@@ -61,14 +66,18 @@ const NavbarSection3 = ({ categoryData }) => {
       <div className="container1 mx-auto h-full">
         <div className="flex w-full gap-x-[2rem] h-full items-center justify-between">
           <div className="flex gap-x-[2rem] items-center">
-            <Link to="/">
+            <Link to={`/${currentLang}`}>
               <p className="text-white text-md">{i18next.t("menu.home")}</p>
             </Link>
             <div className="flex gap-x-[2rem]">
-              {categoryData?.data?.map((categoryData) => (
-                <Link to="/News" key={categoryData.id}>
-                  <p className="text-white text-md">{categoryData.name}</p>
-                </Link>
+              {categoryData?.data?.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className="text-white text-md hover:text-[#0058C5] transition-colors duration-200 cursor-pointer bg-transparent border-none"
+                >
+                  {category.name}
+                </button>
               ))}
             </div>
           </div>

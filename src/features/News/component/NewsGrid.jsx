@@ -1,180 +1,77 @@
 import { useState } from "react";
-import news1 from "../../../assets/images/news1.png";
-import news2 from "../../../assets/images/news2.png";
-import news3 from "../../../assets/images/news3.png";
-import news4 from "../../../assets/images/news4.png";
-import news5 from "../../../assets/images/news5.png";
 import NewsMetaInfo from "../../../ui/dateAndViewsSection";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
 
-const NewsGrid = () => {
+const NewsGrid = ({ categoryData }) => {
   const navigate = useNavigate();
-  const allNewsItems = [
-    {
-      id: 1,
-      type: "سياسة",
-      image: news1,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 2,
-      type: "سياسة",
-      image: news2,
-      title:
-        "متمردون ومسيّرات وأموال من الخارج.. مكونات ملف ينذر بصراع بين السودان ...",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 3,
-      type: "سياسة",
-      image: news3,
-      title: "سلوان.. حين يُجبر الفلسطيني على هدم بيته بيده أو دفع أجرة الهدم",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 4,
-      type: "سياسة",
-      image: news4,
-      title: "القدس.. جنود الاحتلال ينكّلون بطفل مصاب بمتلازمة داون",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 5,
-      type: "سياسة",
-      image: news5,
-      title:
-        "تحقيق يكشف تستر الجيش الإسرائيلي على بيانات تسريح آلاف الجنود لأسباب نفسية",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 6,
-      type: "سياسة",
-      image: news1,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 7,
-      type: "سياسة",
-      image: news2,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 8,
-      type: "سياسة",
-      image: news3,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 9,
-      type: "سياسة",
-      image: news4,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 10,
-      type: "سياسة",
-      image: news1,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 11,
-      type: "سياسة",
-      image: news2,
-      title:
-        "متمردون ومسيّرات وأموال من الخارج.. مكونات ملف ينذر بصراع بين السودان ...",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 12,
-      type: "سياسة",
-      image: news3,
-      title: "سلوان.. حين يُجبر الفلسطيني على هدم بيته بيده أو دفع أجرة الهدم",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 13,
-      type: "سياسة",
-      image: news4,
-      title: "القدس.. جنود الاحتلال ينكّلون بطفل مصاب بمتلازمة داون",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 14,
-      type: "سياسة",
-      image: news5,
-      title:
-        "تحقيق يكشف تستر الجيش الإسرائيلي على بيانات تسريح آلاف الجنود لأسباب نفسية",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-    {
-      id: 15,
-      type: "سياسة",
-      image: news1,
-      title: "تزامنا مع اشتعال جبهة لبنان.. يوم دام في قطاع غزة",
-      desc: "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير انيم أد مينيم فينايم,كيواس نوستريد",
-    },
-  ];
+  
+  // Use API data instead of hardcoded data
+  const allNewsItems = categoryData?.news || [];
+  
+  // Format date function
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
-  const [visibleCount, setVisibleCount] = useState(9);
-  const itemsToLoad = 6;
   const handleNewsClick = (id) => {
-    // Add this function
     navigate(`/News/${id}`);
   };
-  const handleLoadMore = () => {
-    setVisibleCount((prevCount) =>
-      Math.min(prevCount + itemsToLoad, allNewsItems.length),
-    );
-  };
 
-  const visibleNewsItems = allNewsItems.slice(0, visibleCount);
-  const hasMoreItems = visibleCount < allNewsItems.length;
+  // Show all news items without pagination for now
+  const visibleNewsItems = allNewsItems;
+
+  if (!allNewsItems || allNewsItems.length === 0) {
+    return (
+      <div className="text-center text-gray-500 py-8">
+        No news found in this category
+      </div>
+    );
+  }
 
   return (
     <div>
       <div className="flex flex-col lg:space-y-4 space-y-6">
         {visibleNewsItems?.map((newsItem, index) => (
           <div
-            key={index}
-            className="grid md:grid-cols-2 gap-x-3 lg:gap-y-0 gap-y-[2rem]"
+            key={newsItem.id || index}
+            className="grid md:grid-cols-2 gap-x-3 lg:gap-y-0 gap-y-[2rem] cursor-pointer"
+            onClick={() => handleNewsClick(newsItem.id)}
           >
-            <div
-              onClick={() => handleNewsClick(newsItem.id)} // Add this
-              className="relative"
-            >
+            <div className="relative">
               <img
-                src={newsItem?.image}
-                className="w-full h-[14rem] rounded-xl object-center"
-                alt={newsItem.title}
+                src={newsItem?.news_image}
+                className="w-full h-[16rem] rounded-xl object-cover"
+                alt={newsItem.news_title}
               />
               <div
                 className={`absolute ${i18next.language == "ar" ? "right-[0.5rem]" : "left-[0.5rem]"} top-[0.5rem] pointer-events-none`}
               >
-                <div className="w-[5rem] h-[1.8rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-                  <p className="text-white font-[400] text-sm mt-1">
-                    {newsItem.type}
+                <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
+                  <p className="text-white font-[700] text-md mt-1">
+                    {newsItem.category?.name || categoryData?.name || "اخبار"}
                   </p>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <h1 className="text-[#333333] text-[1.1rem] font-bold leading-relaxed">
-                {newsItem?.title}
+              <h1 className="text-[#333333] text-xl font-bold leading-relaxed">
+                {newsItem?.news_title}
               </h1>
-              <p className="text-[#666666] mt-1 text-sm leading-relaxed">
-                {newsItem.desc}
+              <p className="text-[#666666] mt-1 text-lg leading-relaxed line-clamp-3">
+                {newsItem.news_description}
               </p>
               <div className="absolute lg:bottom-[0.4rem] bottom-[-1rem] pointer-events-none">
                 <NewsMetaInfo
-                  dateText={"الخميس، 18 مايو 2024"}
-                  viewsText={"1.2k"}
+                  dateText={formatDate(newsItem.date)}
+                  viewsText={'1.2K'}
                   textColor="text-[#6B7280]"
                 />
               </div>
@@ -182,16 +79,6 @@ const NewsGrid = () => {
           </div>
         ))}
       </div>
-      {hasMoreItems && (
-        <div className="flex justify-center items-center mt-[2rem]">
-          <button
-            onClick={handleLoadMore}
-            className="flex justify-center items-center w-[14rem] cursor-pointer rounded-md text-white text-sm font-bold h-[2.5rem] bg-[#005BBF] hover:bg-[#004a99] transition-colors"
-          >
-            <p className="mt-1">{i18next.t("buttons.see_more")}</p>
-          </button>
-        </div>
-      )}
     </div>
   );
 };

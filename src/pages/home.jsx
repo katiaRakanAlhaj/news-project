@@ -30,7 +30,7 @@ const newsComponents = {
   7: NewsModelOne,
   8: NewsModelTwo,
   9: NewsModelThree,
-  // 10: NewsModelFour,
+  10: NewsModelFour,
   11: NewsModelFive,
   12: NewsModelSix,
   13: NewsModelSeven,
