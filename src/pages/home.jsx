@@ -18,6 +18,7 @@ import NewsModelSeven from "../features/home/newsWedget.jsx/component/newsModelS
 import NewsModelSix from "../features/home/newsWedget.jsx/component/newsModelSix";
 import NewsModelThree from "../features/home/newsWedget.jsx/component/newsModelThree";
 import NewsModelTwo from "../features/home/newsWedget.jsx/component/newsModelTwo";
+import { useFetchContact } from "../features/contact/hook/useFetchContact";
 
 const heroComponents = {
   1: ModelOneHero,
@@ -44,6 +45,7 @@ const mediaComponents = {
 };
 
 const Home = () => {
+  const {data:contactData , isLoading:contactDataLoading,error:contactDataError} = useFetchContact();
   // Get all sections
   const { data: homePageData, isLoading, error } = useFetchHomePage();
   
@@ -224,6 +226,7 @@ const Home = () => {
             totalPages={pagination.lastPage}
             onPageChange={handlePageChange}
             isLoading={isLoading}
+            contactData = {contactData}
           />
         );
       })}

@@ -7,15 +7,15 @@ import tiktok from "../../../../assets/images/tiktok.svg";
 import TitleSection from "../../../../ui/titleSection";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 
-const NewsModelSeven = ({ data }) => {
+const NewsModelSeven = ({ data , contactData }) => {
   // Social media icons (static - these are UI elements, not content data)
   const social = [
-    { image: LinkedInColor, name: "Linkedin", width: "2rem" },
-    { image: instgramColor, name: "Instagram", width: "2rem" },
-    { image: facebookColor, name: "Facebook", width: "2rem" },
-    { image: tiktok, name: "Tik Tok", width: "2.5rem" },
-    { image: twitterColor, name: "Twitter", width: "1.7rem" },
-    { image: youtubeColor, name: "Youtube", width: "2rem" },
+    { image: LinkedInColor, name: "Linkedin", width: "2rem" , url:contactData?.data?.linkedin },
+    { image: instgramColor, name: "Instagram", width: "2rem" , url:contactData?.data?.instagram },
+    { image: facebookColor, name: "Facebook", width: "2rem" , url:contactData?.data?.facebook },
+    { image: tiktok, name: "Tik Tok", width: "2.5rem" ,url:contactData?.data?.tiktok},
+    { image: twitterColor, name: "Twitter", width: "1.7rem" ,url:contactData?.data?.x},
+    { image: youtubeColor, name: "Youtube", width: "2rem" ,url:contactData?.data?.youtube},
   ];
 
   // Format date function
@@ -130,9 +130,16 @@ const NewsModelSeven = ({ data }) => {
             className="w-full h-[17rem] bg-[#F6F6F6] flex justify-center items-center mt-[1rem]"
           >
             <div>
-              <div className="grid grid-cols-3 gap-x-[3rem] gap-y-[2rem]">
+               <div className="grid grid-cols-3 gap-x-[3rem] gap-y-[2rem]">
                 {social.map((socialItem, index) => (
-                  <div key={index} className="flex flex-col space-y-2 justify-center items-center cursor-pointer hover:opacity-80 transition">
+                  <a
+                    key={index}
+                    href={socialItem.url || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col space-y-2 justify-center items-center cursor-pointer hover:opacity-80 transition"
+                    style={{ textDecoration: 'none' }}
+                  >
                     <img
                       src={socialItem.image}
                       style={{
@@ -142,7 +149,7 @@ const NewsModelSeven = ({ data }) => {
                       alt={socialItem.name}
                     />
                     <p className="text-[#000000] text-lg">{socialItem.name}</p>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>

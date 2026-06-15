@@ -14,7 +14,7 @@ const SingleNewsModel7 = ({data}) => {
             </div>
             <div className="w-full">
               <h1 className="text-secondary text-md">{item.title}</h1>
-              <p className="text-[#666666] text-sm">1954</p>
+              <p className="text-[#666666] text-sm">{item.year}</p>
               <p className="text-md text-[#666666]">{item.description}</p>
               {index !== data?.content?.length - 1 && (
                 <div className="mt-[0.8rem] w-full h-[0.01rem] bg-[#C4C4C4]"></div>
