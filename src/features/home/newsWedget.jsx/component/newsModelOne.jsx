@@ -1,6 +1,6 @@
 // NewsModelOne.jsx - with shared animations
 import i18next from "i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import seeMore1 from "../../../../assets/images/seeMore1.png";
 import seeMore2 from "../../../../assets/images/seeMore2.png";
@@ -9,6 +9,9 @@ import NewsCard from "../../../../ui/newsCard";
 import MostViewedSection from "../../../../ui/MostViewedSection";
 import TitleSection from "../../../../ui/titleSection";
 import { containerVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
+import { useFetchCategories, useFetchCategoryById } from "../../../News/hook/useFetchNews";
+import { useParams } from "react-router-dom";
+import React from "react";
 
 const NewsModelOne = ({ 
   data, 
@@ -16,15 +19,57 @@ const NewsModelOne = ({
   currentPage, 
   totalPages, 
   onPageChange,
-  isLoading: externalIsLoading 
+  isLoading: externalIsLoading,
+  diffrentNewsData // This is the data for "منوعات"
 }) => {
   const [activeTab, setActiveTab] = useState("ترند");
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [trendCategoryId, setTrendCategoryId] = useState(null);
+  const {id} = useParams();
 
-  // Format date function
-  const formatDate = (dateString) => {
+  const {
+    data: categoryData,
+    isLoading: categoryDataLoading,
+    error: categoryDataError,
+  } = useFetchCategories();
+
+  const {
+    data: categoryByIdData,
+    isLoading: categoryByIdDataLoading,
+    error: categoryByIdDataError,
+  } = useFetchCategoryById(selectedCategoryId);
+
+  // Find "ترند" category from the API response
+  useEffect(() => {
+    if (categoryData?.data) {
+      const trendCategory = categoryData.data.find(
+        category => category.name === "ترند"
+      );
+      
+      if (trendCategory) {
+        setTrendCategoryId(trendCategory.id);
+        setSelectedCategoryId(trendCategory.id);
+      }
+    }
+  }, [categoryData]);
+
+  // Format date function for Arabic
+  const formatDateArabic = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
     return date.toLocaleDateString('ar-EG', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Format date function for English (if needed)
+  const formatDateEnglish = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
@@ -39,7 +84,7 @@ const NewsModelOne = ({
   const news = newsItems.map((item) => ({
     image: item.news_image,
     title: item.news_title,
-    date: formatDate(item.date),
+    date: formatDateArabic(item.date),
     views: item.views || "1.2k",
     type: item.category?.name,
     id: item.id
@@ -58,72 +103,44 @@ const NewsModelOne = ({
     }
   };
 
-  // Most viewed data (still static - consider making this dynamic too)
+  // Handle tab click
+  const handleTabClick = (tabName, categoryId = null) => {
+    setActiveTab(tabName);
+    if (categoryId) {
+      setSelectedCategoryId(categoryId);
+    }
+  };
+
+  // Transform category data for MostViewedSection (for "ترند")
+  const getTrendCategoryNews = () => {
+    if (categoryByIdData?.news) {
+      return categoryByIdData.news.map((item, index) => ({
+        image: item.news_image || seeMore1,
+        title: item.news_title,
+        description: item.news_description?.substring(0, 100) + "..." || "",
+        time: formatDateArabic(item.date) || `منذ ${index + 2} ساعات`,
+      }));
+    }
+    return [];
+  };
+
+  // Transform different news data for "منوعات" with Arabic dates
+  const getDifferentNews = () => {
+    if (diffrentNewsData?.data) {
+      return diffrentNewsData.data.map((item, index) => ({
+        image: item.news_image || seeMore1,
+        title: item.news_title,
+        description: item.news_description?.substring(0, 100) + "..." || "",
+        time: formatDateArabic(item.date) || `منذ ${index + 2} ساعات`,
+      }));
+    }
+    return [];
+  };
+
+  // Most viewed data from API for "ترند" and diffrentNewsData for "منوعات"
   const mostViewedData = {
-    ترند: [
-      {
-        image: seeMore1,
-        title: "الاستدامة في التصميم الداخلي",
-        description: "سجلت دول مجلس التعاون الخليجي أداء متقدما في مؤشر الحرية الاقتصادية لعام 2026..",
-        time: "منذ ٤ ساعات",
-      },
-      {
-        image: seeMore2,
-        title: "الذكاء الاصطناعي في الصحافة",
-        description: "تقنيات الذكاء الاصطناعي تُحدث ثورة في مجال الإعلام والصحافة الرقمية..",
-        time: "منذ ٦ ساعات",
-      },
-      {
-        image: seeMore3,
-        title: "السياحة المستدامة",
-        description: "وجهات سياحية جديدة تتبنى مفاهيم الاستدامة البيئية في المنطقة..",
-        time: "منذ ١٠ ساعات",
-      },
-       {
-        image: seeMore3,
-        title: "الرياضة الإلكترونية",
-        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
-        time: "منذ ٨ ساعات",
-      },
-       {
-        image: seeMore3,
-        title: "الرياضة الإلكترونية",
-        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
-        time: "منذ ٨ ساعات",
-      },
-    ],
-    منوعات: [
-      {
-        image: seeMore1,
-        title: "أحدث صيحات الموضة",
-        description: "عروض الأزياء العالمية تكشف عن أحدث الصيحات لموسم الربيع والصيف..",
-        time: "منذ ساعتين",
-      },
-      {
-        image: seeMore2,
-        title: "تكنولوجيا الفضاء",
-        description: "دول عربية تطلق مشاريع طموحة لاستكشاف الفضاء خلال السنوات القادمة..",
-        time: "منذ ٥ ساعات",
-      },
-      {
-        image: seeMore3,
-        title: "الرياضة الإلكترونية",
-        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
-        time: "منذ ٨ ساعات",
-      },
-       {
-        image: seeMore3,
-        title: "الرياضة الإلكترونية",
-        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
-        time: "منذ ٨ ساعات",
-      },
-       {
-        image: seeMore3,
-        title: "الرياضة الإلكترونية",
-        description: "بطولات الرياضة الإلكترونية تشهد إقبالاً غير مسبوق من الشباب العربي..",
-        time: "منذ ٨ ساعات",
-      },
-    ],
+    ترند: getTrendCategoryNews(),
+    منوعات: getDifferentNews()
   };
 
   // Don't render if no data
@@ -183,7 +200,7 @@ const NewsModelOne = ({
           </div>
         </div>
 
-        {/** second column - Most Viewed (no animations) */}
+        {/** second column - Most Viewed */}
         <div className="lg:col-span-4">
           <div className="flex flex-wrap gap-x-6 items-center mb-[0.9rem]">
             <h1 className="font-bold text-lg text-negative">
@@ -191,21 +208,26 @@ const NewsModelOne = ({
             </h1>
             <div className="w-[15%] h-[0.1rem] bg-negative"></div>
 
-            <button
-              onClick={() => setActiveTab("ترند")}
-              className={`font-bold text-lg transition ${
-                activeTab === "ترند"
-                  ? "text-negative border-b-2 border-negative"
-                  : "text-primary hover:text-negative"
-              }`}
-            >
-              ترند
-            </button>
+            {/* "ترند" Tab Button - from API */}
+            {trendCategoryId && (
+              <>
+                <button
+                  onClick={() => handleTabClick("ترند", trendCategoryId)}
+                  className={`font-bold text-lg transition ${
+                    activeTab === "ترند"
+                      ? "text-negative border-b-2 border-negative"
+                      : "text-primary hover:text-negative"
+                  }`}
+                >
+                  ترند
+                </button>
+                <div className="w-[15%] h-[0.1rem] bg-negative"></div>
+              </>
+            )}
 
-            <div className="w-[15%] h-[0.1rem] bg-negative"></div>
-
+            {/* "منوعات" Tab Button - from diffrentNewsData */}
             <button
-              onClick={() => setActiveTab("منوعات")}
+              onClick={() => handleTabClick("منوعات")}
               className={`font-bold text-lg transition ${
                 activeTab === "منوعات"
                   ? "text-negative border-b-2 border-negative"
@@ -216,10 +238,17 @@ const NewsModelOne = ({
             </button>
           </div>
 
-          <MostViewedSection
-            activeTab={activeTab}
-            mostViewedData={mostViewedData}
-          />
+          {/* Show loading state for "ترند" data */}
+          {activeTab === "ترند" && categoryByIdDataLoading ? (
+            <div className="flex justify-center items-center min-h-[200px]">
+              <CenteredSquareLoader />
+            </div>
+          ) : (
+            <MostViewedSection
+              activeTab={activeTab}
+              mostViewedData={mostViewedData}
+            />
+          )}
         </div>
       </div>
     </motion.div>

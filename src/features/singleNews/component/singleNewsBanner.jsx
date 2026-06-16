@@ -3,32 +3,36 @@ import twitter from "../../../assets/images/twitter.svg";
 import instgramColor from "../../../assets/images/instgramColor.svg";
 import facebookBanner from "../../../assets/images/facebookBanner.svg";
 import linkedInColor from "../../../assets/images/linkedInColor.svg";
-const SinlgeNewsBanner = ({singleNewsData}) => {
+const SinlgeNewsBanner = ({ singleNewsData, contactData }) => {
   const socialIcon = [
-    { icon: twitter, width: "2rem" },
-    { icon: instgramColor, width: "1.5rem" },
-    { icon: facebookBanner, width: "1.5rem" },
-    { icon: linkedInColor, width: "1.5rem" },
+    { icon: twitter, width: "2rem", url: contactData?.data?.x },
+    { icon: instgramColor, width: "1.5rem", url: contactData?.data?.instagram },
+    { icon: facebookBanner, width: "1.5rem", url: contactData?.data?.facebook },
+    { icon: linkedInColor, width: "1.5rem", url: contactData?.data?.linkedin },
   ];
-   const formatDate = (dateString) => {
+  const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
   return (
     <div className="mt-[1rem]">
       <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-        <p className="text-white font-[700] text-md mt-1">{singleNewsData?.category}</p>
+        <p className="text-white font-[700] text-md mt-1">
+          {singleNewsData?.category}
+        </p>
       </div>
       <h1 className="text-[#373737] lg:text-3xl text-lg font-bold mt-4">
-       {singleNewsData?.news_title}
+        {singleNewsData?.news_title}
       </h1>
-      <p className="text-[#282828] text-md mt-3">{formatDate(singleNewsData?.date)}</p>
+      <p className="text-[#282828] text-md mt-3">
+        {formatDate(singleNewsData?.date)}
+      </p>
       <div className="relative mt-3">
         <img
           style={{ boxShadow: "0px 20px 25px -5px #0000001A" }}
@@ -47,13 +51,19 @@ const SinlgeNewsBanner = ({singleNewsData}) => {
           <div className="w-[14rem] h-[2.5rem] rounded-tr-xl bg-white flex justify-center items-center gap-x-[2rem]">
             {socialIcon?.map((socialIcon, index) => {
               return (
-                <img
-                  className="cursor-pointer"
-                  style={{ width: socialIcon?.width }}
+                <a
                   key={index}
-                  src={socialIcon?.icon}
-                  alt="social icon"
-                />
+                  href={socialIcon?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer"
+                >
+                  <img
+                    style={{ width: socialIcon?.width }}
+                    src={socialIcon?.icon}
+                    alt="social icon"
+                  />
+                </a>
               );
             })}
           </div>

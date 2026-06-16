@@ -1,5 +1,4 @@
 import footerbg from "../../assets/images/footerbg.png";
-import logoFooter from "../../assets/images/logoFooter.svg";
 import linkedIn from "../../assets/images/linkedInFooter.svg";
 import facebookFooter from "../../assets/images/facebookFooter.svg";
 import twitterFooter from "../../assets/images/twitterFooter.svg";
@@ -45,9 +44,8 @@ const Footer = ({ categoryData, footerData }) => {
             <img
               src={footerData?.data?.logo}
               alt="logo"
-              className="w-[6rem] mb-4"
+              className="w-[6rem] mb-4 brightness-0 invert"
             />
-
             <p className="text-md leading-7 text-gray-300 max-w-[260px]">
               {footerData?.data?.description}
             </p>

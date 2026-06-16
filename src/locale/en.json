@@ -20,6 +20,17 @@
         "surname": "Surname",
         "subject": "Subject",
         "text": "Text",
-        "send": "Send"
+        "send": "Send",
+        "success_message": "تم إرسال الرسالة بنجاح!",
+        "failed_message": "Failed to send message. Please try again.",
+        "sending": "sending..."
+    },
+    "validation": {
+        "first_name_required": "First name is required",
+        "surname_required": "Surname is required",
+        "email_required": "Email is required",
+        "invalid_email": "Invalid email address",
+        "subject_required": "Subject is required",
+        "message_required": "Message is required"
     }
 }

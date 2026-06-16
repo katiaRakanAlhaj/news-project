@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { fetchCategories, fetchCategoryById, fetchLatestNews, fetchNewsById } from "../api/fetchNews";
+import { fetchCategories, fetchCategoryById, fetchDifferentNews, fetchLatestNews, fetchNewsById } from "../api/fetchNews";
 export const useFetchCategories = () => {
     return useQuery({
         queryKey: ["categories"],
@@ -25,6 +25,13 @@ export const useFetchLatestNews = () => {
     return useQuery({
         queryKey: ["latest-news"],
         queryFn: fetchLatestNews,
+
+    });
+}
+export const usefetchDifferentNews = () => {
+    return useQuery({
+        queryKey: ["different-news"],
+        queryFn: fetchDifferentNews,
 
     });
 }

@@ -15,3 +15,7 @@ export const fetchLatestNews = async() => {
     const response = await client.get("/latest-news");
     return response.data || []; // Return empty array if no data
 };
+export const fetchDifferentNews = async() => {
+    const response = await client.get("/different-news");
+    return response.data || []; // Return empty array if no data
+};

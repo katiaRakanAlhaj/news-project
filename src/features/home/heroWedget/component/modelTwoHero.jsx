@@ -1,26 +1,47 @@
+// src/features/home/heroWedget/component/modelTwoHero.js
 import i18next from "i18next";
 
-const ModelTwoHero = ({ data }) => {
-  // Check if data exists and has items
-  if (!data || !data.items || data.items.length === 0) {
-    return null; // or return a loading/empty state
+const ModelTwoHero = ({ data, dataKey = "data" }) => {
+  // Handle different data structures
+  let items = [];
+  
+  if (Array.isArray(data)) {
+    items = data;
+  } else if (data && data[dataKey] && Array.isArray(data[dataKey])) {
+    items = data[dataKey];
+  } else if (data && data.items && Array.isArray(data.items)) {
+    items = data.items;
   }
+
+  // Check if we have items
+  if (!items || items.length === 0) {
+    return null;
+  }
+
+  // Take first 3 items
+  const firstColumnItem = items.slice(0, 1);
+  const secondColumnItems = items.slice(1, 3);
+
+  // Function to get category name - dynamic from API response
+  const getCategoryName = (item) => {
+    // If category object exists with name property
+    if (item.category?.name) {
+      return item.category.name;
+    }
+
+  };
 
   // Format the date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
+    return date.toLocaleDateString(i18next.language === 'ar' ? 'ar-EG' : 'en-US', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
       day: 'numeric' 
     });
   };
-
-  // Split items: first item in first column, remaining items (2) in second column
-  const firstColumnItem = data.items.slice(0, 1); // First item only
-  const secondColumnItems = data.items.slice(1, 3); // Next 2 items
 
   return (
     <div className="container1 mx-auto h-auto">
@@ -49,7 +70,7 @@ const ModelTwoHero = ({ data }) => {
               >
                 <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
                   <p className="text-white font-[700] text-md mt-1">
-                    {item.category?.name || "عام"}
+                    {getCategoryName(item)}
                   </p>
                 </div>
                 <p className="text-2xl font-bold text-white w-[100%] leading-relaxed mt-4">
@@ -83,10 +104,10 @@ const ModelTwoHero = ({ data }) => {
                     "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
                 }}
               ></div>
-              <div className="absolute right-[1.5rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
+              <div className={`absolute ${i18next.language === 'ar' ? 'right-[1.5rem]' : 'left-[1.5rem]'} bottom-[1.5rem] pointer-events-none`}>
                 <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
                   <p className="text-white font-[700] text-md mt-1">
-                    {item.category?.name || "عام"}
+                    {getCategoryName(item)}
                   </p>
                 </div>
                 <p className="text-lg font-bold text-white w-full leading-relaxed mt-4">

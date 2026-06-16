@@ -17,6 +17,7 @@ const NewsModelEight = ({
   onPageChange,
   isLoading: externalIsLoading,
 }) => {
+  console.log("NewsModelEight",data)
   // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";

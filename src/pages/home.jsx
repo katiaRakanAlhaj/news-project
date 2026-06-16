@@ -19,6 +19,12 @@ import NewsModelSix from "../features/home/newsWedget.jsx/component/newsModelSix
 import NewsModelThree from "../features/home/newsWedget.jsx/component/newsModelThree";
 import NewsModelTwo from "../features/home/newsWedget.jsx/component/newsModelTwo";
 import { useFetchContact } from "../features/contact/hook/useFetchContact";
+import {
+  useFetchCategories,
+  useFetchCategoryById,
+  usefetchDifferentNews,
+} from "../features/News/hook/useFetchNews";
+import { useParams } from "react-router-dom";
 
 const heroComponents = {
   1: ModelOneHero,
@@ -45,10 +51,20 @@ const mediaComponents = {
 };
 
 const Home = () => {
-  const {data:contactData , isLoading:contactDataLoading,error:contactDataError} = useFetchContact();
+  const { id } = useParams();
+  const {
+    data: contactData,
+    isLoading: contactDataLoading,
+    error: contactDataError,
+  } = useFetchContact();
   // Get all sections
   const { data: homePageData, isLoading, error } = useFetchHomePage();
-  
+  const {
+    data: diffrentNewsData,
+    isLoading: diffrentNewsDataLoading,
+    error: diffrentNewsDataError,
+  } = usefetchDifferentNews();
+
   // State to track pages per section
   const [sectionPages, setSectionPages] = useState({});
   // Store paginated data for each section
@@ -58,19 +74,25 @@ const Home = () => {
 
   const handlePageChange = (sectionId, newPage) => {
     // Set loading state for this section
-    setLoadingSections(prev => ({ ...prev, [sectionId]: true }));
-    setSectionPages(prev => ({ ...prev, [sectionId]: newPage }));
+    setLoadingSections((prev) => ({ ...prev, [sectionId]: true }));
+    setSectionPages((prev) => ({ ...prev, [sectionId]: newPage }));
   };
 
   // Prepare queries for paginated sections (include media sections)
-  const sectionsNeedingPagination = homePageData?.data?.filter(
-    item => (item.home_model_id >= 7 || item.home_model_id === 5 || item.home_model_id === 6)
-  ) || [];
-  
+  const sectionsNeedingPagination =
+    homePageData?.data?.filter(
+      (item) =>
+        item.home_model_id >= 7 ||
+        item.home_model_id === 5 ||
+        item.home_model_id === 6,
+    ) || [];
+
   // Create a map of section ID to its query
   const sectionQueryMap = sectionsNeedingPagination
-    .filter(section => sectionPages[section.id] && sectionPages[section.id] !== 1)
-    .map(section => ({
+    .filter(
+      (section) => sectionPages[section.id] && sectionPages[section.id] !== 1,
+    )
+    .map((section) => ({
       sectionId: section.id,
       page: sectionPages[section.id],
       queryKey: ["home-page", section.id, sectionPages[section.id]],
@@ -79,8 +101,8 @@ const Home = () => {
 
   // Execute all pagination queries in parallel
   const paginationResults = useQueries({
-    queries: sectionQueryMap.map(q => ({ 
-      queryKey: q.queryKey, 
+    queries: sectionQueryMap.map((q) => ({
+      queryKey: q.queryKey,
       queryFn: q.queryFn,
       placeholderData: (previousData) => previousData,
     })),
@@ -90,26 +112,28 @@ const Home = () => {
   useEffect(() => {
     sectionQueryMap.forEach((query, index) => {
       const result = paginationResults[index];
-      
+
       // When data is successfully fetched
       if (result?.data?.data && !result.isLoading) {
-        const foundSection = result.data.data.find(item => item.id === query.sectionId);
+        const foundSection = result.data.data.find(
+          (item) => item.id === query.sectionId,
+        );
         if (foundSection) {
-          setPaginatedData(prev => ({
+          setPaginatedData((prev) => ({
             ...prev,
             [query.sectionId]: {
               data: foundSection,
               page: query.page,
-            }
+            },
           }));
           // Clear loading state for this section
-          setLoadingSections(prev => ({ ...prev, [query.sectionId]: false }));
+          setLoadingSections((prev) => ({ ...prev, [query.sectionId]: false }));
         }
       }
-      
+
       // If there's an error, still clear loading state
       if (result?.isError) {
-        setLoadingSections(prev => ({ ...prev, [query.sectionId]: false }));
+        setLoadingSections((prev) => ({ ...prev, [query.sectionId]: false }));
       }
     });
   }, [paginationResults, sectionQueryMap]);
@@ -129,18 +153,18 @@ const Home = () => {
   // Get section data (either from initial load or paginated)
   const getSectionData = (section) => {
     const currentPage = sectionPages[section.id];
-    
+
     // If on page 1, use initial data
     if (!currentPage || currentPage === 1) {
       return section;
     }
-    
+
     // Check if we have paginated data for this section
     const paginated = paginatedData[section.id];
     if (paginated && paginated.page === currentPage) {
       return paginated.data;
     }
-    
+
     // Return initial data while loading (prevents empty state)
     return section;
   };
@@ -168,8 +192,14 @@ const Home = () => {
     );
   }
 
-  const heroSections = homePageData?.data?.filter(item => item.home_model_id >= 1 && item.home_model_id <= 4) || [];
-  const mediaSections = homePageData?.data?.filter(item => item.home_model_id === 5 || item.home_model_id === 6) || [];
+  const heroSections =
+    homePageData?.data?.filter(
+      (item) => item.home_model_id >= 1 && item.home_model_id <= 4,
+    ) || [];
+  const mediaSections =
+    homePageData?.data?.filter(
+      (item) => item.home_model_id === 5 || item.home_model_id === 6,
+    ) || [];
 
   return (
     <div className="lg:mt-0 mt-[6rem]">
@@ -180,19 +210,19 @@ const Home = () => {
           <HeroComponent key={`hero-${section.id}`} data={section} />
         ) : null;
       })}
-      
+
       {/* Media Sections - UPDATED to include pagination props */}
       {mediaSections.map((section) => {
         const MediaComponent = mediaComponents[section.home_model_id];
         if (!MediaComponent) return null;
-        
+
         const currentPage = sectionPages[section.id] || 1;
         const pagination = getPaginationInfo(section.items);
         const isLoading = isSectionLoading(section.id);
         const sectionData = getSectionData(section);
-        
+
         return (
-          <MediaComponent 
+          <MediaComponent
             key={`media-${section.id}`}
             data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
             sectionId={section.id}
@@ -203,33 +233,36 @@ const Home = () => {
           />
         );
       })}
-      
+
       {/* News Sections */}
-      {sectionsNeedingPagination.filter(section => section.home_model_id >= 7).map((section) => {
-        const NewsComponent = newsComponents[section.home_model_id];
-        if (!NewsComponent) return null;
-        
-        const sectionData = getSectionData(section);
-        const currentPage = sectionPages[section.id] || 1;
-        const pagination = getPaginationInfo(sectionData.items);
-        const isLoading = isSectionLoading(section.id);
-        
-        return (
-          <NewsComponent 
-            key={`news-${section.id}`}
-            data={{
-              ...sectionData,
-              items: getItemsArray(sectionData.items),
-            }}
-            sectionId={section.id}
-            currentPage={currentPage}
-            totalPages={pagination.lastPage}
-            onPageChange={handlePageChange}
-            isLoading={isLoading}
-            contactData = {contactData}
-          />
-        );
-      })}
+      {sectionsNeedingPagination
+        .filter((section) => section.home_model_id >= 7)
+        .map((section) => {
+          const NewsComponent = newsComponents[section.home_model_id];
+          if (!NewsComponent) return null;
+
+          const sectionData = getSectionData(section);
+          const currentPage = sectionPages[section.id] || 1;
+          const pagination = getPaginationInfo(sectionData.items);
+          const isLoading = isSectionLoading(section.id);
+
+          return (
+            <NewsComponent
+              key={`news-${section.id}`}
+              data={{
+                ...sectionData,
+                items: getItemsArray(sectionData.items),
+              }}
+              sectionId={section.id}
+              currentPage={currentPage}
+              totalPages={pagination.lastPage}
+              onPageChange={handlePageChange}
+              isLoading={isLoading}
+              contactData={contactData}
+              diffrentNewsData={diffrentNewsData}
+            />
+          );
+        })}
     </div>
   );
 };

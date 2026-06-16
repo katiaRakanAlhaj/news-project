@@ -20,6 +20,17 @@
         "surname": "الاسم الثاني",
         "subject": "الموضوع",
         "text": "النص",
-        "send": "ارسال"
+        "send": "ارسال",
+        "success_message": "تم إرسال الرسالة بنجاح!",
+        "failed_message": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+        "sending": "ارسال..."
+    },
+    "validation": {
+        "first_name_required": "الاسم الأول مطلوب",
+        "surname_required": "اسم العائلة مطلوب",
+        "email_required": "البريد الإلكتروني مطلوب",
+        "invalid_email": "عنوان البريد الإلكتروني غير صحيح",
+        "subject_required": "الموضوع مطلوب",
+        "message_required": "الرسالة مطلوبة"
     }
 }
