@@ -51,7 +51,7 @@ const NewsModelSix = ({
     image: mainNewsLeft.news_image,
     title: mainNewsLeft.news_title,
     date: formatDate(mainNewsLeft.date),
-    views: '1.2K',
+    views: mainNewsLeft.views_count,
   } : null;
 
   const mainNewsRightData = mainNewsRight ? {
@@ -59,7 +59,7 @@ const NewsModelSix = ({
     image: mainNewsRight.news_image,
     title: mainNewsRight.news_title,
     date: formatDate(mainNewsRight.date),
-    views: '1.2K',
+    views: mainNewsRight.views_count,
   } : null;
 
   // Format small news data

@@ -52,7 +52,7 @@ const NewsModelSeven = ({ data , contactData }) => {
     title: item.news_title,
     description: item.news_description || "لا يوجد وصف متاح",
     date: formatDate(item.date),
-    views: '1.2K',
+    views: item.views_count,
   }));
 
   // Don't render if no data

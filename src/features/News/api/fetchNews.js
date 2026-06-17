@@ -19,3 +19,7 @@ export const fetchDifferentNews = async() => {
     const response = await client.get("/different-news");
     return response.data || []; // Return empty array if no data
 };
+export const fetchMostViewedNews = async() => {
+    const response = await client.get("/most-viewed-news");
+    return response.data || []; // Return empty array if no data
+};

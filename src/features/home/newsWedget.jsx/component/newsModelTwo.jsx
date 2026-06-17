@@ -35,7 +35,7 @@ const NewsModelTwo = ({
     title: item.news_title,
     description: item.news_description || "لا يوجد وصف متاح",
     date: formatDate(item.date),
-    views: "1.2k",
+    views: item.views_count,
     type: item.category?.name || "عام",
   }));
 

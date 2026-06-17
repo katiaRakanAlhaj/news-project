@@ -17,8 +17,6 @@ const NewsModelEight = ({
   onPageChange,
   isLoading: externalIsLoading,
 }) => {
-  console.log("NewsModelEight",data)
-  // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -48,7 +46,7 @@ const NewsModelEight = ({
         title: news.news_title,
         description: news.news_description || "",
         date: formatDate(news.date),
-        views: "1.2K",
+        views: news.views_count,
       }));
     });
 

@@ -20,11 +20,13 @@ const NewsModelOne = ({
   totalPages, 
   onPageChange,
   isLoading: externalIsLoading,
-  diffrentNewsData // This is the data for "منوعات"
+  diffrentNewsData,
+  mostViewdNewsData 
 }) => {
-  const [activeTab, setActiveTab] = useState("ترند");
+  const [activeTab, setActiveTab] = useState(null); // Changed from "ترند" to null
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [trendCategoryId, setTrendCategoryId] = useState(null);
+  const [showMostViewed, setShowMostViewed] = useState(true); // Changed from false to true
   const {id} = useParams();
 
   const {
@@ -48,7 +50,8 @@ const NewsModelOne = ({
       
       if (trendCategory) {
         setTrendCategoryId(trendCategory.id);
-        setSelectedCategoryId(trendCategory.id);
+        // Don't auto-select trend category anymore
+        // setSelectedCategoryId(trendCategory.id);
       }
     }
   }, [categoryData]);
@@ -65,18 +68,6 @@ const NewsModelOne = ({
     });
   };
 
-  // Format date function for English (if needed)
-  const formatDateEnglish = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
-
   // Extract news items from API data
   const newsItems = data?.items || [];
   
@@ -85,7 +76,7 @@ const NewsModelOne = ({
     image: item.news_image,
     title: item.news_title,
     date: formatDateArabic(item.date),
-    views: item.views || "1.2k",
+    views: item.views_count,
     type: item.category?.name,
     id: item.id
   }));
@@ -106,12 +97,19 @@ const NewsModelOne = ({
   // Handle tab click
   const handleTabClick = (tabName, categoryId = null) => {
     setActiveTab(tabName);
+    setShowMostViewed(false);
     if (categoryId) {
       setSelectedCategoryId(categoryId);
     }
   };
 
-  // Transform category data for MostViewedSection (for "ترند")
+  // Handle "الأكثر مشاهدة" header click
+  const handleMostViewedClick = () => {
+    setShowMostViewed(true);
+    setActiveTab(null); // Clear active tab
+  };
+
+  // Transform category data for "ترند"
   const getTrendCategoryNews = () => {
     if (categoryByIdData?.news) {
       return categoryByIdData.news.map((item, index) => ({
@@ -124,7 +122,7 @@ const NewsModelOne = ({
     return [];
   };
 
-  // Transform different news data for "منوعات" with Arabic dates
+  // Transform different news data for "منوعات"
   const getDifferentNews = () => {
     if (diffrentNewsData?.data) {
       return diffrentNewsData.data.map((item, index) => ({
@@ -137,10 +135,28 @@ const NewsModelOne = ({
     return [];
   };
 
-  // Most viewed data from API for "ترند" and diffrentNewsData for "منوعات"
+  // Transform most viewed news data
+  const getMostViewedNews = () => {
+    if (mostViewdNewsData?.data) {
+      // Sort by views_count in descending order
+      const sortedData = [...mostViewdNewsData.data].sort((a, b) => b.views_count - a.views_count);
+      
+      return sortedData.map((item, index) => ({
+        image: item.news_image || seeMore1,
+        title: item.news_title,
+        description: item.news_description?.substring(0, 100) + "..." || "",
+        time: formatDateArabic(item.date) || `منذ ${index + 2} ساعات`,
+        views: item.views_count || 0,
+      }));
+    }
+    return [];
+  };
+
+  // Most viewed data from API
   const mostViewedData = {
     ترند: getTrendCategoryNews(),
-    منوعات: getDifferentNews()
+    منوعات: getDifferentNews(),
+    الأكثر_مشاهدة: getMostViewedNews()
   };
 
   // Don't render if no data
@@ -203,7 +219,15 @@ const NewsModelOne = ({
         {/** second column - Most Viewed */}
         <div className="lg:col-span-4">
           <div className="flex flex-wrap gap-x-6 items-center mb-[0.9rem]">
-            <h1 className="font-bold text-lg text-negative">
+            {/* "الأكثر مشاهدة" Header - Clickable */}
+            <h1 
+              className={`font-bold text-lg cursor-pointer transition ${
+                showMostViewed
+                  ? "text-negative border-b-2 border-negative"
+                  : "text-negative hover:text-primary"
+              }`}
+              onClick={handleMostViewedClick}
+            >
               {i18next.t("news_wedget.most_view")}
             </h1>
             <div className="w-[15%] h-[0.1rem] bg-negative"></div>
@@ -245,7 +269,7 @@ const NewsModelOne = ({
             </div>
           ) : (
             <MostViewedSection
-              activeTab={activeTab}
+              activeTab={showMostViewed ? "الأكثر_مشاهدة" : activeTab}
               mostViewedData={mostViewedData}
             />
           )}

@@ -37,7 +37,7 @@ const NewsModelNine = ({
     image: item.news_image,
     title: item.news_title,
     date: formatDate(item.date),
-    views: item.views || "0",
+    views: item.views_count || "0",
     type: item.category?.name,
   }));
 

@@ -30,7 +30,7 @@ const OurHistory = ({aboutusData}) => {
       <div className="container1 mx-auto">
         <AboutUsTitle title={"محطات في تاريخنا"} />
         <div className="lg:block hidden">
-          <div className="container4 mx-auto">
+          <div className="container6 mx-auto">
             <OurHistoryComponent aboutusData={aboutusData} />
           </div>
         </div>

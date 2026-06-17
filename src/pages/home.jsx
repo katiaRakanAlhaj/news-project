@@ -1,4 +1,4 @@
-// Home.jsx - Fixed version with working arrows for media
+// Home.jsx
 import { useState, useEffect } from "react";
 import { useQueries } from "@tanstack/react-query";
 import ModelFourHero from "../features/home/heroWedget/component/modelFourHero";
@@ -23,8 +23,11 @@ import {
   useFetchCategories,
   useFetchCategoryById,
   usefetchDifferentNews,
+  usefetchMostViewedNews,
 } from "../features/News/hook/useFetchNews";
 import { useParams } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import MetaHelmet from "../component/metaHelmet/metaHelmet";
 
 const heroComponents = {
   1: ModelOneHero,
@@ -57,6 +60,7 @@ const Home = () => {
     isLoading: contactDataLoading,
     error: contactDataError,
   } = useFetchContact();
+
   // Get all sections
   const { data: homePageData, isLoading, error } = useFetchHomePage();
   const {
@@ -64,7 +68,11 @@ const Home = () => {
     isLoading: diffrentNewsDataLoading,
     error: diffrentNewsDataError,
   } = usefetchDifferentNews();
-
+  const {
+    data: mostViewdNewsData,
+    isLoading: mostViewdNewsDataLoading,
+    error: mostViewdNewsDataError,
+  } = usefetchMostViewedNews();
   // State to track pages per section
   const [sectionPages, setSectionPages] = useState({});
   // Store paginated data for each section
@@ -73,7 +81,6 @@ const Home = () => {
   const [loadingSections, setLoadingSections] = useState({});
 
   const handlePageChange = (sectionId, newPage) => {
-    // Set loading state for this section
     setLoadingSections((prev) => ({ ...prev, [sectionId]: true }));
     setSectionPages((prev) => ({ ...prev, [sectionId]: newPage }));
   };
@@ -113,7 +120,6 @@ const Home = () => {
     sectionQueryMap.forEach((query, index) => {
       const result = paginationResults[index];
 
-      // When data is successfully fetched
       if (result?.data?.data && !result.isLoading) {
         const foundSection = result.data.data.find(
           (item) => item.id === query.sectionId,
@@ -126,12 +132,10 @@ const Home = () => {
               page: query.page,
             },
           }));
-          // Clear loading state for this section
           setLoadingSections((prev) => ({ ...prev, [query.sectionId]: false }));
         }
       }
 
-      // If there's an error, still clear loading state
       if (result?.isError) {
         setLoadingSections((prev) => ({ ...prev, [query.sectionId]: false }));
       }
@@ -154,18 +158,15 @@ const Home = () => {
   const getSectionData = (section) => {
     const currentPage = sectionPages[section.id];
 
-    // If on page 1, use initial data
     if (!currentPage || currentPage === 1) {
       return section;
     }
 
-    // Check if we have paginated data for this section
     const paginated = paginatedData[section.id];
     if (paginated && paginated.page === currentPage) {
       return paginated.data;
     }
 
-    // Return initial data while loading (prevents empty state)
     return section;
   };
 
@@ -202,68 +203,73 @@ const Home = () => {
     ) || [];
 
   return (
-    <div className="lg:mt-0 mt-[6rem]">
-      {/* Hero Sections */}
-      {heroSections.map((section) => {
-        const HeroComponent = heroComponents[section.home_model_id];
-        return HeroComponent ? (
-          <HeroComponent key={`hero-${section.id}`} data={section} />
-        ) : null;
-      })}
+    <HelmetProvider>
+      <MetaHelmet title={"Home"} description={"Home"} />
+      <div className="lg:mt-0 mt-[6rem]">
+        {/* Hero Sections */}
+        {heroSections.map((section) => {
+          const HeroComponent = heroComponents[section.home_model_id];
+          return HeroComponent ? (
+            <HeroComponent key={`hero-${section.id}`} data={section} />
+          ) : null;
+        })}
 
-      {/* Media Sections - UPDATED to include pagination props */}
-      {mediaSections.map((section) => {
-        const MediaComponent = mediaComponents[section.home_model_id];
-        if (!MediaComponent) return null;
+        {/* Media Sections */}
+        {mediaSections.map((section) => {
+          const MediaComponent = mediaComponents[section.home_model_id];
+          if (!MediaComponent) return null;
 
-        const currentPage = sectionPages[section.id] || 1;
-        const pagination = getPaginationInfo(section.items);
-        const isLoading = isSectionLoading(section.id);
-        const sectionData = getSectionData(section);
-
-        return (
-          <MediaComponent
-            key={`media-${section.id}`}
-            data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
-            sectionId={section.id}
-            currentPage={currentPage}
-            totalPages={pagination.lastPage}
-            onPageChange={handlePageChange}
-            isLoading={isLoading}
-          />
-        );
-      })}
-
-      {/* News Sections */}
-      {sectionsNeedingPagination
-        .filter((section) => section.home_model_id >= 7)
-        .map((section) => {
-          const NewsComponent = newsComponents[section.home_model_id];
-          if (!NewsComponent) return null;
-
-          const sectionData = getSectionData(section);
           const currentPage = sectionPages[section.id] || 1;
-          const pagination = getPaginationInfo(sectionData.items);
+          const pagination = getPaginationInfo(section.items);
           const isLoading = isSectionLoading(section.id);
+          const sectionData = getSectionData(section);
 
           return (
-            <NewsComponent
-              key={`news-${section.id}`}
-              data={{
-                ...sectionData,
-                items: getItemsArray(sectionData.items),
-              }}
+            <MediaComponent
+              key={`media-${section.id}`}
+              data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
               sectionId={section.id}
               currentPage={currentPage}
               totalPages={pagination.lastPage}
               onPageChange={handlePageChange}
               isLoading={isLoading}
-              contactData={contactData}
-              diffrentNewsData={diffrentNewsData}
             />
           );
         })}
-    </div>
+
+        {/* News Sections */}
+        {sectionsNeedingPagination
+          .filter((section) => section.home_model_id >= 7)
+          .map((section) => {
+            const NewsComponent = newsComponents[section.home_model_id];
+            if (!NewsComponent) return null;
+
+            const sectionData = getSectionData(section);
+            const currentPage = sectionPages[section.id] || 1;
+            const pagination = getPaginationInfo(sectionData.items);
+            const isLoading = isSectionLoading(section.id);
+
+            return (
+              <NewsComponent
+                key={`news-${section.id}`}
+                data={{
+                  ...sectionData,
+                  items: getItemsArray(sectionData.items),
+                }}
+                sectionId={section.id}
+                homePageId={section.id} // Pass the section id as homePageId
+                currentPage={currentPage}
+                totalPages={pagination.lastPage}
+                onPageChange={handlePageChange}
+                isLoading={isLoading}
+                contactData={contactData}
+                diffrentNewsData={diffrentNewsData}
+                mostViewdNewsData={mostViewdNewsData}
+              />
+            );
+          })}
+      </div>
+    </HelmetProvider>
   );
 };
 

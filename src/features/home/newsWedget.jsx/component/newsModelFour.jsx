@@ -52,7 +52,7 @@ const NewsModelFour = ({
     type: item.category?.name || "عام",
     title: item.news_title,
     date: formatDate(item.date),
-    views: "1.2k",
+    views: item.views_count,
   }));
 
   const handlePageChange = (page) => {
