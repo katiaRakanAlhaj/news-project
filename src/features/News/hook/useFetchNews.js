@@ -7,11 +7,12 @@ export const useFetchCategories = () => {
 
     });
 }
-export const useFetchCategoryById = (id) => {
+export const useFetchCategoryById = (id, page = 1) => {
     return useQuery({
-        queryKey: ["categories", id],
-        queryFn: () => fetchCategoryById(id),
+        queryKey: ["categories", id, page],
+        queryFn: () => fetchCategoryById(id, page),
         enabled: !!id, // Only run the query if we have an ID
+        keepPreviousData: true, // Keep previous data while fetching new page
     });
 };
 export const useFetchNewsById = (id) => {

@@ -3,7 +3,11 @@ import twitter from "../../../assets/images/twitter.svg";
 import instgramColor from "../../../assets/images/instgramColor.svg";
 import facebookBanner from "../../../assets/images/facebookBanner.svg";
 import linkedInColor from "../../../assets/images/linkedInColor.svg";
+import { useTheme } from "../../../context/ThemeContext";
 const SinlgeNewsBanner = ({ singleNewsData, contactData }) => {
+  const { isDarkMode } = useTheme();
+  const iconWhiteFilter =
+    "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)";
   const socialIcon = [
     { icon: twitter, width: "2rem", url: contactData?.data?.x },
     { icon: instgramColor, width: "1.5rem", url: contactData?.data?.instagram },
@@ -59,9 +63,13 @@ const SinlgeNewsBanner = ({ singleNewsData, contactData }) => {
                   className="cursor-pointer"
                 >
                   <img
-                    style={{ width: socialIcon?.width }}
+                    style={{
+                      width: socialIcon?.width,
+                      filter: isDarkMode ? iconWhiteFilter : "none",
+                      transition: "filter 0.3s ease",
+                    }}
                     src={socialIcon?.icon}
-                    alt="social icon"
+                    alt={`social icon ${index + 1}`}
                   />
                 </a>
               );

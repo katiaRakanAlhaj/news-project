@@ -7,6 +7,9 @@ import OurGlobalPresence from "../features/aboutUs/component/our_global_presence
 import OurHistory from "../features/aboutUs/component/our_history";
 import { useFetchAboutUsPage } from "../features/aboutUs/hook/useFetchAboutUs";
 import MetaHelmet from "../component/metaHelmet/metaHelmet";
+import Loader from "../component/loader/loader";
+import ErrorMessageNetwork from "../component/errorMessage/errorMessage";
+import ScrollToTop from "../component/scrollToTop/scrollToTop";
 
 const AboutUs = () => {
   const {
@@ -14,8 +17,15 @@ const AboutUs = () => {
     isLoading: aboutusDataLoading,
     error: aboutusDataError,
   } = useFetchAboutUsPage();
+  if (aboutusDataLoading) {
+    return <Loader />;
+  }
+  if (aboutusDataError) {
+    return <ErrorMessageNetwork />;
+  }
   return (
     <HelmetProvider>
+      <ScrollToTop/>
       <MetaHelmet
         title={aboutusData?.data?.meta_title}
         description={aboutusData?.data?.meta_description}

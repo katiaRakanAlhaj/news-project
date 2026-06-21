@@ -17,6 +17,7 @@ import { usePollResults } from "../../heroWedget/hook/useFetchPollResults";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { usefetchAds } from "../../heroWedget/hook/useFetchAds";
+import { Link } from "react-router-dom";
 
 // Poll Component - handles individual poll
 const PollComponent = ({ pollId }) => {
@@ -193,6 +194,7 @@ const NewsModelFive = ({
   totalPages,
   onPageChange,
   isLoading: externalIsLoading,
+  currentLang,
 }) => {
   // Fetch all polls
   const {
@@ -343,14 +345,16 @@ const NewsModelFive = ({
                     className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]"
                   >
                     {news.map((item, index) => (
-                      <NewsCard
-                        key={item.id || index}
-                        image={item.image}
-                        title={item.title}
-                        date={item.date}
-                        views={item.views}
-                        type={item.type}
-                      />
+                      <Link to={`/${currentLang}/News/${item.id}`}>
+                        <NewsCard
+                          key={item.id || index}
+                          image={item.image}
+                          title={item.title}
+                          date={item.date}
+                          views={item.views}
+                          type={item.type}
+                        />
+                      </Link>
                     ))}
                   </motion.div>
                 )}
@@ -393,7 +397,9 @@ const NewsModelFive = ({
                 </div>
               ) : isAdError ? (
                 <div className="w-full h-[19rem] bg-[#E5E7EB] border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                  <p className="text-red-500 text-xs">حدث خطأ في تحميل الإعلان</p>
+                  <p className="text-red-500 text-xs">
+                    حدث خطأ في تحميل الإعلان
+                  </p>
                 </div>
               ) : matchingAd ? (
                 // Show the matching ad for this section

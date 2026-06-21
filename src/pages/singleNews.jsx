@@ -17,6 +17,9 @@ import {
 import { useFetchContact } from "../features/contact/hook/useFetchContact";
 import { HelmetProvider } from "react-helmet-async";
 import MetaHelmet from "../component/metaHelmet/metaHelmet";
+import Loader from "../component/loader/loader";
+import ErrorMessageNetwork from "../component/errorMessage/errorMessage";
+import ScrollToTop from "../component/scrollToTop/scrollToTop";
 
 const SingleNews = () => {
   const { id } = useParams();
@@ -35,7 +38,12 @@ const SingleNews = () => {
     isLoading: latestNewsDataLoading,
     error: latestNewsDataError,
   } = useFetchLatestNews();
-
+  if (singleNewsDataLoading || contactDataLoading || latestNewsDataLoading) {
+    return <Loader />;
+  }
+  if (singleNewsDataError || contactDataError || latestNewsDataError) {
+    return <ErrorMessageNetwork />;
+  }
   // Format the date for the most viewed section
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -105,6 +113,7 @@ const SingleNews = () => {
   const categoryName = singleNewsData?.category;
   return (
     <HelmetProvider>
+      <ScrollToTop/>
       <MetaHelmet title={categoryName} description={categoryName} />
       <div className="container1 mx-auto lg:mt-0 mt-[5rem]">
         <SinlgeNewsBanner

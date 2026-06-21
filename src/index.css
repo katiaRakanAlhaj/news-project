@@ -289,3 +289,96 @@ html::-webkit-scrollbar {
 .news-slider .swiper-slide img {
     display: block;
 }
+
+
+/* dark-mode.css */
+
+.dark {
+    /* Backgrounds */
+    --bg-main: #1a1a1a;
+    --bg-card: #2d2d2d;
+    --bg-input: #3d3d3d;
+    --bg-hover: #404040;
+    --bg-header: #1a1a1a;
+    --bg-footer: #1a1a1a;
+    --bg-navbar: #1a1a1a;
+    /* Text */
+    --text-main: #ffffff;
+    --text-secondary: #e0e0e0;
+    --text-muted: #a0a0a0;
+    /* Borders */
+    --border-main: #404040;
+    --border-light: #333333;
+    /* Shadows */
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+
+/* Apply dark mode globally */
+
+.dark,
+.dark * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark body {
+    background-color: var(--bg-main) !important;
+}
+
+
+/* Solution: Increase specificity */
+
+.dark .text-primary {
+    color: white !important;
+    /* Option 1: Use !important (not recommended) */
+}
+
+
+/* Option 1: Wrap all in .dark */
+
+.dark {
+    .text-secondary,
+    .text-\[\#666666\],
+    .text-\[\#333333\],
+    .text-\[\#363636\],
+    .text-\[\#373737\],
+    .text-\[\#282828\],
+    .text-\[\#121C2A\],
+    .text-\[\#000000\],
+    .text-\[\#1B1C1C\],
+    .text-\[\#5F5E5E\],
+    .text-\[\#002F3C\],
+    .text-\[\#474747\] {
+        color: white !important;
+    }
+}
+
+.dark {
+    .bg-white,
+    .bg-\[\#5F5E5E\],
+    .bg-\[\#F3F4F5\],
+    .bg-\[\#001926\],
+    .bg-\[\#FFFFFF\],
+    .bg-\[\#EDEEEF\] {
+        background-color: #1a1a1a;
+    }
+}
+
+
+/* In your index.css or App.css */
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+    color: white !important;
+}
+
+.dark input,
+.dark textarea {
+    color: white !important;
+}
+
+.dark input:focus,
+.dark textarea:focus {
+    outline: none;
+    border-color: #005BBF !important;
+}

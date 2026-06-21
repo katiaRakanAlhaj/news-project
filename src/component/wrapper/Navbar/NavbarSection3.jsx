@@ -56,7 +56,7 @@ const NavbarSection3 = ({ categoryData }) => {
 
   const handleCategoryClick = (categoryId) => {
     const currentLang = getCurrentLang();
-    navigate(`/${currentLang}/categories/${categoryId}`);
+    navigate(`/${currentLang}/category/${categoryId}`);
   };
 
   const currentLang = getCurrentLang();

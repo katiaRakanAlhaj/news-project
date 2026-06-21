@@ -1,21 +1,23 @@
-import { useState } from "react";
+// NewsModelEight.jsx
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import arrow1 from "../../../../assets/images/arrow1.svg";
 import arrow2 from "../../../../assets/images/arrow2.svg";
-import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import {
   containerVariants,
   imageVariants,
   CenteredSquareLoader,
 } from "../../../../ui/animationNews";
+import { useTheme } from "../../../../context/ThemeContext";
 
 const NewsModelEight = ({
   data,
   sectionId,
-  currentPage: apiCurrentPage,
-  totalPages: apiTotalPages,
   onPageChange,
+  onCategoryChange, // New prop for category tracking
   isLoading: externalIsLoading,
+  categoryPages,
 }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -27,7 +29,7 @@ const NewsModelEight = ({
       day: "numeric",
     });
   };
-
+  const { isDarkMode } = useTheme();
   // Process API data structure - items is an array of categories with their news
   const processApiData = (apiData) => {
     if (!apiData || !apiData.items || !Array.isArray(apiData.items)) {
@@ -38,16 +40,29 @@ const NewsModelEight = ({
 
     apiData.items.forEach((categoryItem) => {
       const categoryName = categoryItem.name;
-      const newsArray = categoryItem.news || [];
+      const categoryId = categoryItem.id;
 
-      newsDataMap[categoryName] = newsArray.map((news) => ({
-        id: news.id,
-        image: news.news_image,
-        title: news.news_title,
-        description: news.news_description || "",
-        date: formatDate(news.date),
-        views: news.views_count,
-      }));
+      // news is an object with 'data' array
+      const newsObject = categoryItem.news || { data: [] };
+      const newsArray = newsObject.data || [];
+
+      // Get pagination info
+      const currentPage = newsObject.current_page || 1;
+      const lastPage = newsObject.last_page || 1;
+
+      newsDataMap[categoryName] = {
+        id: categoryId,
+        currentPage: currentPage,
+        lastPage: lastPage,
+        news: newsArray.map((news) => ({
+          id: news.id,
+          image: news.news_image,
+          title: news.news_title,
+          description: news.news_description || "",
+          date: formatDate(news.date),
+          views: news.views_count,
+        })),
+      };
     });
 
     return newsDataMap;
@@ -64,15 +79,53 @@ const NewsModelEight = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Update active category when data changes
+  useEffect(() => {
+    if (categories.length > 0 && !categories.includes(activeCategory)) {
+      setActiveCategory(categories[0]);
+      // Notify parent about the initial category
+      const categoryData = newsData[categories[0]];
+      if (categoryData && onCategoryChange) {
+        onCategoryChange(sectionId, categoryData.id);
+      }
+    }
+  }, [categories, activeCategory, sectionId, onCategoryChange, newsData]);
+
   // Get current category news
-  const currentNews = newsData[activeCategory] || [];
+  const currentCategoryData = newsData[activeCategory] || {
+    news: [],
+    id: null,
+    currentPage: 1,
+    lastPage: 1,
+  };
+  const currentNews = currentCategoryData.news || [];
+  const currentCategoryId = currentCategoryData.id;
+
+  // Get the current page for this specific category from categoryPages state
+  const categoryKey = `${sectionId}-${currentCategoryId}`;
+  const currentCategoryCurrentPage =
+    categoryPages?.[categoryKey] || currentCategoryData.currentPage || 1;
+  const currentCategoryLastPage = currentCategoryData.lastPage || 1;
+
+  // Check if this category is currently loading
+  const isLoadingCategory =
+    externalIsLoading ||
+    (categoryPages?.[categoryKey] &&
+      categoryPages[categoryKey] !== currentCategoryData.currentPage);
+
   const mainNews = currentNews[0];
   const remainingNews = currentNews.slice(1);
 
-  // Pagination settings for local category pagination
+  // Pagination settings for local category pagination (items per page)
   const itemsPerPage = 8;
   const totalLocalPages = Math.ceil(remainingNews.length / itemsPerPage);
 
+  // Reset local page when category changes or data updates
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [activeCategory, currentCategoryCurrentPage]);
+
+  // Handle local pagination (navigating through items within the current page)
   const handleNextLocal = () => {
     if (currentPage < totalLocalPages - 1) {
       setCurrentPage(currentPage + 1);
@@ -85,22 +138,27 @@ const NewsModelEight = ({
     }
   };
 
-  // API pagination handlers
+  // API pagination handlers with section ID and category ID
   const handlePrevApiPage = () => {
-    if (apiCurrentPage > 1 && !externalIsLoading) {
-      onPageChange(sectionId, apiCurrentPage - 1);
+    if (currentCategoryCurrentPage > 1 && !isLoadingCategory) {
+      onPageChange(
+        sectionId,
+        currentCategoryCurrentPage - 1,
+        currentCategoryId,
+      );
     }
   };
 
   const handleNextApiPage = () => {
-    if (apiCurrentPage < apiTotalPages && !externalIsLoading) {
-      onPageChange(sectionId, apiCurrentPage + 1);
-    }
-  };
-
-  const handleApiPageClick = (page) => {
-    if (page !== apiCurrentPage && !externalIsLoading) {
-      onPageChange(sectionId, page);
+    if (
+      currentCategoryCurrentPage < currentCategoryLastPage &&
+      !isLoadingCategory
+    ) {
+      onPageChange(
+        sectionId,
+        currentCategoryCurrentPage + 1,
+        currentCategoryId,
+      );
     }
   };
 
@@ -113,14 +171,34 @@ const NewsModelEight = ({
   const rightColumnNews = paginatedNews.slice(4, 8);
 
   const handleCategoryClick = (category) => {
+    const categoryData = newsData[category];
+    const categoryId = categoryData?.id || null;
+
     setActiveCategory(category);
     setCurrentPage(0);
     setIsMobileMenuOpen(false);
+
+    // Notify parent about category change
+    if (onCategoryChange) {
+      onCategoryChange(sectionId, categoryId);
+    }
+
+    // Reset to first page with new category
+    onPageChange(sectionId, 1, categoryId);
   };
 
   // Don't render if no data or no categories
-  if (!data || (!categories.length && !externalIsLoading)) {
+  if (!data || (!categories.length && !isLoadingCategory)) {
     return null;
+  }
+
+  // Show loading if no news and still loading
+  if (isLoadingCategory && currentNews.length === 0) {
+    return (
+      <div className="min-h-[400px]">
+        <CenteredSquareLoader key="loader" />
+      </div>
+    );
   }
 
   return (
@@ -131,105 +209,21 @@ const NewsModelEight = ({
       variants={containerVariants}
       className="container1 mx-auto mt-[2rem] px-[1rem] sm:px-[1.5rem] md:px-0"
     >
-      {/* API Pagination Dots at the top */}
-      {apiTotalPages > 1 && (
-        <motion.div
-          variants={imageVariants}
-          className="flex justify-end items-center gap-10 mb-4"
-        >
-          <button
-            onClick={handlePrevApiPage}
-            disabled={apiCurrentPage <= 1 || externalIsLoading}
-            className={`w-6 h-6 rounded-full flex items-center justify-center transition ${
-              apiCurrentPage <= 1 || externalIsLoading
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-gray-200 text-gray-700 hover:bg-negative hover:text-white"
-            }`}
-          >
-            <svg
-              className="w-3 h-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-
-          <div className="flex gap-1">
-            {Array.from({ length: Math.min(apiTotalPages, 5) }, (_, i) => {
-              let pageNumber = i + 1;
-              if (apiTotalPages > 5 && apiCurrentPage > 3) {
-                if (i === 0) pageNumber = 1;
-                else if (i === 1)
-                  return (
-                    <span key="ellipsis1" className="px-1">
-                      ...
-                    </span>
-                  );
-                else if (i === 4) pageNumber = apiTotalPages;
-                else pageNumber = apiCurrentPage + (i - 2);
-              }
-              return (
-                <button
-                  key={pageNumber}
-                  onClick={() => handleApiPageClick(pageNumber)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    apiCurrentPage === pageNumber
-                      ? "bg-negative w-4"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
-                />
-              );
-            })}
-          </div>
-
-          <button
-            onClick={handleNextApiPage}
-            disabled={apiCurrentPage >= apiTotalPages || externalIsLoading}
-            className={`w-6 h-6 rounded-full flex items-center justify-center transition ${
-              apiCurrentPage >= apiTotalPages || externalIsLoading
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-gray-200 text-gray-700 hover:bg-negative hover:text-white"
-            }`}
-          >
-            <svg
-              className="w-3 h-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-        </motion.div>
-      )}
-
       {/* Categories Section */}
       <AnimatePresence mode="wait">
-        {externalIsLoading ? (
-          <div className="min-h-[400px]">
+        {isLoadingCategory && currentNews.length > 0 ? (
+          <div className="min-h-[200px] flex items-center justify-center">
             <CenteredSquareLoader key="loader" />
           </div>
         ) : (
           <motion.div
-            key={apiCurrentPage}
+            key={`${currentCategoryCurrentPage}-${activeCategory}`}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
-            {/* Desktop & Tablet Categories (md and up) */}
+            {/* Desktop & Tablet Categories with Pagination Arrows */}
             <motion.div
               variants={imageVariants}
               className="hidden md:flex justify-between items-center"
@@ -249,24 +243,33 @@ const NewsModelEight = ({
                   </button>
                 ))}
               </div>
-              <div className="flex gap-x-[0.5rem]">
+
+              {/* API Pagination Arrows - These call the API for category pagination */}
+              <div className="flex gap-x-[0.5rem] items-center">
                 <div
-                  onClick={handlePrevLocal}
+                  onClick={handlePrevApiPage}
                   className={`w-[1.5rem] h-[1.5rem] bg-[#D9D9D9] flex items-center justify-center rounded-full cursor-pointer transition ${
-                    currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
+                    currentCategoryCurrentPage <= 1 || isLoadingCategory
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-gray-400"
                   }`}
                 >
-                  <img className="w-[0.6rem]" src={arrow1} alt="arrow" />
+                  <img
+                    className="w-[0.6rem]"
+                    src={arrow1}
+                    alt="previous page"
+                  />
                 </div>
                 <div
-                  onClick={handleNextLocal}
+                  onClick={handleNextApiPage}
                   className={`w-[1.5rem] h-[1.5rem] bg-[#D9D9D9] rounded-full flex items-center justify-center cursor-pointer transition ${
-                    currentPage === totalLocalPages - 1 || totalLocalPages === 0
+                    currentCategoryCurrentPage >= currentCategoryLastPage ||
+                    isLoadingCategory
                       ? "opacity-50 cursor-not-allowed"
-                      : ""
+                      : "hover:bg-gray-400"
                   }`}
                 >
-                  <img className="w-[0.6rem]" src={arrow2} alt="arrow" />
+                  <img className="w-[0.6rem]" src={arrow2} alt="next page" />
                 </div>
               </div>
             </motion.div>
@@ -317,12 +320,42 @@ const NewsModelEight = ({
                   ))}
                 </div>
               )}
+
+              {/* Mobile API Pagination */}
+              <div className="flex justify-between items-center mt-3 px-2">
+                <span className="text-sm text-gray-500">
+                  {currentCategoryCurrentPage} / {currentCategoryLastPage}
+                </span>
+                <div className="flex gap-x-2">
+                  <div
+                    onClick={handlePrevApiPage}
+                    className={`w-[2rem] h-[2rem] bg-[#D9D9D9] flex items-center justify-center rounded-full cursor-pointer transition ${
+                      currentCategoryCurrentPage <= 1 || isLoadingCategory
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-gray-400"
+                    }`}
+                  >
+                    <img className="w-[0.7rem]" src={arrow1} alt="previous" />
+                  </div>
+                  <div
+                    onClick={handleNextApiPage}
+                    className={`w-[2rem] h-[2rem] bg-[#D9D9D9] rounded-full flex items-center justify-center cursor-pointer transition ${
+                      currentCategoryCurrentPage >= currentCategoryLastPage ||
+                      isLoadingCategory
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-gray-400"
+                    }`}
+                  >
+                    <img className="w-[0.7rem]" src={arrow2} alt="next" />
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
             {/* Mobile Horizontal Scroll Categories */}
             <motion.div
               variants={imageVariants}
-              className="md:hidden overflow-x-auto pb-[0.5rem] mb-[1rem] hide-scrollbar"
+              className="md:hidden overflow-x-auto pb-[0.5rem] mb-[0.5rem] hide-scrollbar"
             >
               <div className="flex gap-x-[0.75rem]">
                 {categories.map((category) => (
@@ -343,6 +376,7 @@ const NewsModelEight = ({
 
             <div className="flex-1 relative h-[0.15rem] bg-[#D9E3F6] mt-[0.5rem] hidden md:block"></div>
 
+            {/* News Content */}
             {currentNews.length > 0 ? (
               <>
                 {/* Desktop Layout (lg screens) */}
@@ -361,11 +395,13 @@ const NewsModelEight = ({
                           className="w-full h-[16rem] object-cover"
                           alt="news"
                         />
-                        <h1 className="font-bold text-xl text-[#333333] mt-[1rem]">
+                        <h1
+                          className={`font-bold text-xl ${isDarkMode ? "text-white" : "text-[#333333]"} mt-[1rem]`}
+                        >
                           {mainNews.title}
                         </h1>
                         {mainNews.description && (
-                          <p className="text-md text-[#666666] mt-[0.5rem] line-clamp-3">
+                          <p className={`text-md text-[#666666] mt-[0.5rem] line-clamp-3`}>
                             {mainNews.description}
                           </p>
                         )}
@@ -536,6 +572,7 @@ const NewsModelEight = ({
                     </motion.div>
                   </div>
 
+                  {/* Local pagination (items within current page) */}
                   <div className="flex justify-center items-center gap-[1rem] mt-[1.5rem]">
                     <button
                       onClick={handlePrevLocal}

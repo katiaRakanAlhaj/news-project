@@ -1,6 +1,8 @@
+import { useTheme } from "../../../context/ThemeContext";
 import ModelTitle from "../../../ui/modelsTitle";
 
 const SingleNewsModel8 = ({data}) => {
+  const {isDarkMode} = useTheme();
   const items = [
     {
       title: "الجمعية العامة",
@@ -31,7 +33,7 @@ const SingleNewsModel8 = ({data}) => {
         {data?.content?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}
-            className="w-full h-[7rem] flex flex-col space-y-2 rounded-xl p-[1rem]"
+            className={`w-full h-[7rem] flex flex-col space-y-2 rounded-xl p-[1rem] ${isDarkMode?'border border-white':''}`}
           >
             <h1 className="font-bold mt-1 text-md text-secondary">
               {item.title}

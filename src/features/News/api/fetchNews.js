@@ -3,8 +3,8 @@ export const fetchCategories = async() => {
     const response = await client.get("/categories");
     return response.data || []; // Return empty array if no data
 };
-export const fetchCategoryById = async(id) => {
-    const response = await client.get(`/categories/${id}`);
+export const fetchCategoryById = async(id, page = 1) => {
+    const response = await client.get(`/categories/${id}?page=${page}`);
     return response.data || null; // Return null if no data
 };
 export const fetchNewsById = async(id) => {

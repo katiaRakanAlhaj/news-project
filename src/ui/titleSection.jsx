@@ -2,6 +2,7 @@
 import i18next from "i18next";
 import arrow1 from "../assets/images/arrow1.svg";
 import arrow2 from "../assets/images/arrow2.svg";
+import { useTheme } from "../context/ThemeContext";
 
 const TitleSection = ({ 
   title, 
@@ -23,10 +24,10 @@ const TitleSection = ({
       onNextPage();
     }
   };
-
+const {isDarkMode} = useTheme();
   return (
     <div className="flex flex-wrap gap-x-2 items-center">
-      <h1 className="text-primary font-bold text-lg text-nowrap">{title}</h1>
+      <h1 className={`text-primary font-bold text-lg text-nowrap`}>{title}</h1>
       <div className="flex-1 h-[0.2rem] relative bg-[#D9E3F6]">
         <div className="absolute h-full w-[10%] bg-negative"></div>
       </div>

@@ -28,7 +28,7 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutes
       refetchIntervalInBackground: true,
       retry: 2,
-      networkMode: "offlineFirst",
+      networkMode: "always",
     },
   },
 });
@@ -88,7 +88,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
           <Route path="About_Us" element={<AboutUs />} />
-          <Route path="categories/:id" element={<News />} />
+          <Route path="category/:id" element={<News />} />
           <Route path="News/:id" element={<SingleNews />} />
           {/* Add 404 route - this will catch all unmatched routes */}
           <Route path="*" element={<NotFound />} />

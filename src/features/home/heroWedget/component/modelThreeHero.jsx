@@ -1,6 +1,7 @@
 import i18next from "i18next";
+import { Link } from "react-router-dom";
 
-const ModelThreeHero = ({ data }) => {
+const ModelThreeHero = ({ data, currentLang }) => {
   // Check if data exists and has items
   if (!data || !data.items || data.items.length === 0) {
     return null; // or return a loading/empty state
@@ -10,11 +11,11 @@ const ModelThreeHero = ({ data }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -28,46 +29,10 @@ const ModelThreeHero = ({ data }) => {
         {/* first column - single image (col-span-5) */}
         <div className="lg:col-span-5 col-span-1">
           {firstColumnItem.map((item, index) => (
-            <div
-              key={item.id || index}
-              className="relative w-full lg:h-[42rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
-            >
-              <img
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                src={item.news_image}
-                alt={item.news_title}
-              />
-              <div
-                className="absolute inset-0 rounded-lg pointer-events-none"
-                style={{
-                  background:
-                    "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
-                }}
-              ></div>
-              <div className="absolute right-[2rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
-                <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-                  <p className="text-white font-[700] text-md mt-1">
-                    {item.category?.name || "عام"}
-                  </p>
-                </div>
-                <p className="text-2xl font-bold text-white w-full leading-relaxed mt-4">
-                  {item.news_title}
-                </p>
-                <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                  {formatDate(item.date)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* second column - 4 images in 2x2 grid (col-span-7) */}
-        <div className="lg:col-span-7 col-span-1">
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-[0.5rem]">
-            {secondColumnItems.map((item, index) => (
+            <Link to={`/${currentLang}/News/${item.id}`}>
               <div
                 key={item.id || index}
-                className="relative w-full lg:h-[20.8rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
+                className="relative w-full lg:h-[42rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
               >
                 <img
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -81,13 +46,13 @@ const ModelThreeHero = ({ data }) => {
                       "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
                   }}
                 ></div>
-                <div className="absolute right-[1.5rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
+                <div className="absolute right-[2rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
                   <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
-                    <p className="text-white font-[700] text-sm mt-1">
+                    <p className="text-white font-[700] text-md mt-1">
                       {item.category?.name || "عام"}
                     </p>
                   </div>
-                  <p className="text-lg font-bold text-white w-full leading-relaxed mt-4">
+                  <p className="text-2xl font-bold text-white w-full leading-relaxed mt-4">
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
@@ -95,6 +60,46 @@ const ModelThreeHero = ({ data }) => {
                   </p>
                 </div>
               </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* second column - 4 images in 2x2 grid (col-span-7) */}
+        <div className="lg:col-span-7 col-span-1">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-[0.5rem]">
+            {secondColumnItems.map((item, index) => (
+              <Link to={`/${currentLang}/News/${item.id}`}>
+                <div
+                  key={item.id || index}
+                  className="relative w-full lg:h-[20.8rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
+                >
+                  <img
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    src={item.news_image}
+                    alt={item.news_title}
+                  />
+                  <div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                      background:
+                        "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+                    }}
+                  ></div>
+                  <div className="absolute right-[1.5rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
+                    <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
+                      <p className="text-white font-[700] text-sm mt-1">
+                        {item.category?.name || "عام"}
+                      </p>
+                    </div>
+                    <p className="text-lg font-bold text-white w-full leading-relaxed mt-4">
+                      {item.news_title}
+                    </p>
+                    <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
+                      {formatDate(item.date)}
+                    </p>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

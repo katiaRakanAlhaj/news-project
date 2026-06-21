@@ -4,39 +4,58 @@ import mainVideo from "../../../../assets/images/mainVideo.png";
 import TitleSection from "../../../../ui/titleSection";
 import i18next from "i18next";
 
-const MediaModelTwo = ({ data }) => {
+const MediaModelTwo = ({ 
+  data, 
+  sectionId, 
+  currentPage, 
+  totalPages, 
+  onPageChange, 
+  isLoading 
+}) => {
   const [currentVideo, setCurrentVideo] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTitle, setCurrentTitle] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
+  
+  // Local state to accumulate items across all loaded pages
+  const [accumulatedItems, setAccumulatedItems] = useState([]);
 
-  // Get items from API (handle pagination structure)
+  // Helper parsing routine for handling nested pagination arrays safely
   const getItemsArray = (items) => {
-    if (Array.isArray(items)) {
-      return items;
-    }
-    if (items && items.data && Array.isArray(items.data)) {
-      return items.data;
-    }
+    if (Array.isArray(items)) return items;
+    if (items && items.data && Array.isArray(items.data)) return items.data;
     return [];
   };
 
-  // Extract media items from API data
-  const mediaItemsData = getItemsArray(data?.items || []);
+  // Sync incoming API prop data into our local accumulated state arrays safely
+  useEffect(() => {
+    if (data?.items) {
+      const incomingRaw = getItemsArray(data.items);
+      
+      setAccumulatedItems((prev) => {
+        const existingIds = new Set(prev.map(item => item.id));
+        const filteredNew = incomingRaw.filter(item => !existingIds.has(item.id));
+        
+        if (currentPage === 1) {
+          return incomingRaw;
+        }
+        return [...prev, ...filteredNew];
+      });
+    }
+  }, [data?.items, currentPage]);
 
-  // Map API media items to the format needed for the component
-  const secondColumnItems = mediaItemsData.map((item) => ({
+  // Map accumulated list rows to targeted client template properties
+  const secondColumnItems = accumulatedItems.map((item) => ({
     id: item.id,
     image: item.image,
     title: item.title || "فيديو",
     videoUrl: item.video_link || "",
   }));
 
-  // Get YouTube video ID from URL
+  // Extract pure YouTube ID string segments via expressions
   const getYouTubeVideoId = (url) => {
     if (!url) return null;
-    const regExp =
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
   };
@@ -56,22 +75,24 @@ const MediaModelTwo = ({ data }) => {
     setSelectedItemId(null);
   };
 
-  // Don't render if no data
+  // Handler to fetch next pagination block asynchronously
+  const handleLoadMore = () => {
+    if (currentPage < totalPages && !isLoading) {
+      onPageChange(sectionId, currentPage + 1);
+    }
+  };
+
+  // Handler to collapse back to Page 1 items
+  const handleShowLess = () => {
+    onPageChange(sectionId, 1);
+  };
+
+  // Don't render layout components if raw content dependencies are unavailable
   if (!data || !secondColumnItems.length) {
     return null;
   }
 
-  // Get first item as default main display
   const defaultMainItem = secondColumnItems[0];
-
-  // If no video is playing, show the first item by default
-  const activeItem = isPlaying
-    ? { videoUrl: currentVideo, title: currentTitle }
-    : {
-        videoUrl: defaultMainItem.videoUrl,
-        title: defaultMainItem.title,
-        image: defaultMainItem.image,
-      };
 
   return (
     <div className="container1 mx-auto mt-[2rem]">
@@ -79,21 +100,18 @@ const MediaModelTwo = ({ data }) => {
 
       <div className="w-full mt-[1rem]">
         <div className="grid grid-cols-12 gap-4">
-          {/* Main Video - col-span-8 */}
-          <div className="relative col-span-9 h-[18rem] sm:h-[24rem] lg:h-[38rem] overflow-hidden">
+          {/* Main Video Window - col-span-9 */}
+          <div className="relative col-span-12 lg:col-span-9 h-[18rem] sm:h-[24rem] lg:h-[38rem] overflow-hidden rounded-md">
             {isPlaying ? (
               <>
                 <iframe
                   className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(
-                    currentVideo,
-                  )}?autoplay=1`}
+                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(currentVideo)}?autoplay=1`}
                   title={currentTitle}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
-
                 <button
                   onClick={handleCloseVideo}
                   className="absolute top-4 right-4 bg-black bg-opacity-70 text-white rounded-full w-8 h-8 flex items-center justify-center z-20 text-xl hover:bg-opacity-100"
@@ -108,15 +126,12 @@ const MediaModelTwo = ({ data }) => {
                   src={defaultMainItem.image || mainVideo}
                   alt="media"
                 />
-
                 <div
                   className="absolute inset-0"
                   style={{
-                    background:
-                      "linear-gradient(360deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
+                    background: "linear-gradient(360deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
                   }}
                 />
-
                 <div
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer flex justify-center items-center"
                   onClick={() => handlePlayVideo(defaultMainItem)}
@@ -131,36 +146,35 @@ const MediaModelTwo = ({ data }) => {
             )}
 
             <h1
-              className={`absolute ${i18next.language == "ar" ? "right-4 lg:right-[2rem]" : "left-4 lg:left-[2rem]"} top-4 lg:top-[2rem] font-bold text-white text-sm sm:text-lg lg:text-2xl max-w-[90%] drop-shadow-lg`}
+              className={`absolute ${i18next.language === "ar" ? "right-4 lg:right-[2rem]" : "left-4 lg:left-[2rem]"} top-4 lg:top-[2rem] font-bold text-white text-sm sm:text-lg lg:text-2xl max-w-[90%] drop-shadow-lg`}
             >
               {isPlaying ? currentTitle : defaultMainItem.title}
             </h1>
           </div>
 
-          {/* Sidebar - col-span-4 */}
-          <div className="relative col-span-3 h-auto lg:h-[38rem] flex flex-col overflow-hidden">
+          {/* Sidebar Area Playlist Items Track - col-span-3 */}
+          <div className="relative col-span-12 lg:col-span-3 h-auto lg:h-[38rem] flex flex-col overflow-hidden rounded-md">
             <div
               className="absolute inset-0 -z-10"
               style={{
-                background:
-                  "linear-gradient(360deg, rgba(0, 0, 0, 0.7) 0%, #000000 150%)",
+                background: "linear-gradient(360deg, rgba(0, 0, 0, 0.7) 0%, #000000 150%)",
               }}
             />
 
             <div className="h-[1rem] w-full bg-secondary" />
 
-            <div className="flex lg:flex-col gap-3 p-2 overflow-x-auto lg:overflow-y-auto lg:overflow-x-hidden scrollbar-custom">
-              {secondColumnItems.map((item) => (
+            {/* Scrollable container list elements */}
+            <div className="flex lg:flex-col gap-3 p-2 overflow-x-auto lg:overflow-y-auto lg:overflow-x-hidden scrollbar-custom flex-1">
+              <div>
+                {secondColumnItems.map((item) => (
                 <div
                   key={item.id}
                   className={`flex gap-x-2 items-center cursor-pointer transition-all duration-300 flex-shrink-0 lg:flex-shrink min-w-[240px] lg:min-w-0 ${
-                    selectedItemId === item.id
-                      ? "bg-[#66CCFF33] p-1 rounded"
-                      : ""
+                    selectedItemId === item.id ? "bg-[#66CCFF33] p-1 rounded" : ""
                   }`}
                   onClick={() => handlePlayVideo(item)}
                 >
-                  <div className="w-[7rem] h-[7rem] flex-shrink-0">
+                  <div className="w-[7rem] h-[7rem] flex-shrink-0 rounded overflow-hidden">
                     <img
                       src={item.image}
                       className="w-full h-full object-cover"
@@ -173,7 +187,29 @@ const MediaModelTwo = ({ data }) => {
                   </p>
                 </div>
               ))}
+              </div>
+              {/* Compact Action Area directly under the news list */}
+            <div className="p-3 w-full flex justify-center mt-auto bg-black/20 border-t border-white/5">
+              {currentPage < totalPages ? (
+                <button
+                  onClick={handleLoadMore}
+                  disabled={isLoading}
+                  className="px-5 py-1.5 rounded text-xs font-bold bg-negative text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                >
+                  {isLoading ? "جاري التحميل..." : "عرض المزيد"}
+                </button>
+              ) : currentPage > 1 ? (
+                <button
+                  onClick={handleShowLess}
+                  className="px-5 py-1.5 rounded text-xs font-bold bg-negative text-white transition hover:bg-opacity-90 shadow-md"
+                >
+                  "عرض أقل"
+                </button>
+              ) : null}
             </div>
+            </div>
+
+            
           </div>
         </div>
       </div>
@@ -181,6 +217,7 @@ const MediaModelTwo = ({ data }) => {
       <style jsx>{`
         .scrollbar-custom::-webkit-scrollbar {
           width: 4px;
+          height: 4px;
         }
         .scrollbar-custom::-webkit-scrollbar-track {
           background: #333;

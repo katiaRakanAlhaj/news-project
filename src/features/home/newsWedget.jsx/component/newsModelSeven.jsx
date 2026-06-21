@@ -6,30 +6,60 @@ import youtubeColor from "../../../../assets/images/youtubeColor.svg";
 import tiktok from "../../../../assets/images/tiktok.svg";
 import TitleSection from "../../../../ui/titleSection";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
+import { Link } from "react-router-dom";
 
-const NewsModelSeven = ({ data , contactData }) => {
+const NewsModelSeven = ({ data, contactData, currentLang }) => {
   // Social media icons (static - these are UI elements, not content data)
   const social = [
-    { image: LinkedInColor, name: "Linkedin", width: "2rem" , url:contactData?.data?.linkedin },
-    { image: instgramColor, name: "Instagram", width: "2rem" , url:contactData?.data?.instagram },
-    { image: facebookColor, name: "Facebook", width: "2rem" , url:contactData?.data?.facebook },
-    { image: tiktok, name: "Tik Tok", width: "2.5rem" ,url:contactData?.data?.tiktok},
-    { image: twitterColor, name: "Twitter", width: "1.7rem" ,url:contactData?.data?.x},
-    { image: youtubeColor, name: "Youtube", width: "2rem" ,url:contactData?.data?.youtube},
+    {
+      image: LinkedInColor,
+      name: "Linkedin",
+      width: "2rem",
+      url: contactData?.data?.linkedin,
+    },
+    {
+      image: instgramColor,
+      name: "Instagram",
+      width: "2rem",
+      url: contactData?.data?.instagram,
+    },
+    {
+      image: facebookColor,
+      name: "Facebook",
+      width: "2rem",
+      url: contactData?.data?.facebook,
+    },
+    {
+      image: tiktok,
+      name: "Tik Tok",
+      width: "2.5rem",
+      url: contactData?.data?.tiktok,
+    },
+    {
+      image: twitterColor,
+      name: "Twitter",
+      width: "1.7rem",
+      url: contactData?.data?.x,
+    },
+    {
+      image: youtubeColor,
+      name: "Youtube",
+      width: "2rem",
+      url: contactData?.data?.youtube,
+    },
   ];
 
   // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
-
 
   // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
@@ -44,7 +74,7 @@ const NewsModelSeven = ({ data , contactData }) => {
 
   // Extract news items from API data
   const newsItems = getItemsArray(data?.items || []);
-  
+
   // Map API news items to the format needed for the component
   const newsItem = newsItems.map((item) => ({
     id: item.id,
@@ -70,54 +100,61 @@ const NewsModelSeven = ({ data , contactData }) => {
       <div className="grid lg:grid-cols-12 gap-y-0 gap-y-[2rem]">
         {/* first column - News Section */}
         <div className="lg:col-span-8 col-span-1">
-          <TitleSection title={data.title || "منوعات وثقافة"} showArrows={false} />
+          <TitleSection
+            title={data.title || "منوعات وثقافة"}
+            showArrows={false}
+          />
 
           <div className="grid md:grid-cols-12 gap-[1rem] mt-[1rem]">
             {/* Main featured news */}
-           <div className = "col-span-7">
-             <div className="flex flex-col">
-              <img
-                src={mainNews.image}
-                className="w-full h-[15rem] object-cover"
-                alt={mainNews.title}
-              />
-              <h1 className="font-bold text-xl text-[#333333] mt-4">
-                {mainNews.title}
-              </h1>
-              <p className="text-md text-[#666666] mt-2 line-clamp-3">
-                {mainNews.description}
-              </p>
-              <NewsMetaInfo
-                dateText={mainNews.date}
-                viewsText={mainNews.views}
-                textColor="text-[#363636]"
-              />
+            <div className="col-span-7">
+              <Link to={`/${currentLang}/News/${mainNews.id}`}>
+                <div className="flex flex-col">
+                  <img
+                    src={mainNews.image}
+                    className="w-full h-[15rem] object-cover"
+                    alt={mainNews.title}
+                  />
+                  <h1 className="font-bold text-xl text-[#333333] mt-4">
+                    {mainNews.title}
+                  </h1>
+                  <p className="text-md text-[#666666] mt-2 line-clamp-3">
+                    {mainNews.description}
+                  </p>
+                  <NewsMetaInfo
+                    dateText={mainNews.date}
+                    viewsText={mainNews.views}
+                    textColor="text-[#363636]"
+                  />
+                </div>
+              </Link>
             </div>
-           </div>
 
             {/* List of other news items */}
-            <div className = "col-span-5">
+            <div className="col-span-5">
               <div className="flex flex-col space-y-[1rem]">
-              {sideNews.map((item) => (
-                <div key={item.id} className="md:flex gap-x-[1rem]">
-                  <img
-                    className="md:w-[11rem] w-full h-[9rem] object-cover"
-                    src={item.image}
-                    alt={item.title}
-                  />
-                  <div className="flex flex-col space-y-2 justify-center">
-                    <h1 className="font-bold text-lg text-[#333333] md:mt-0 mt-[1rem] line-clamp-2">
-                      {item.title}
-                    </h1>
-                    <NewsMetaInfo
-                      dateText={item.date}
-                      viewsText={item.views}
-                      textColor="text-[#363636]"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                {sideNews.map((item) => (
+                  <Link to={`/${currentLang}/News/${item.id}`}>
+                    <div key={item.id} className="md:flex gap-x-[1rem]">
+                      <img
+                        className="md:w-[11rem] w-full h-[9rem] object-cover"
+                        src={item.image}
+                        alt={item.title}
+                      />
+                      <div className="flex flex-col space-y-2 justify-center">
+                        <h1 className="font-bold text-lg text-[#333333] md:mt-0 mt-[1rem] line-clamp-2">
+                          {item.title}
+                        </h1>
+                        <NewsMetaInfo
+                          dateText={item.date}
+                          viewsText={item.views}
+                          textColor="text-[#363636]"
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -130,21 +167,22 @@ const NewsModelSeven = ({ data , contactData }) => {
             className="w-full h-[17rem] bg-[#F6F6F6] flex justify-center items-center mt-[1rem]"
           >
             <div>
-               <div className="grid grid-cols-3 gap-x-[3rem] gap-y-[2rem]">
+              <div className="grid grid-cols-3 gap-x-[3rem] gap-y-[2rem]">
                 {social.map((socialItem, index) => (
                   <a
                     key={index}
-                    href={socialItem.url || '#'}
+                    href={socialItem.url || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex flex-col space-y-2 justify-center items-center cursor-pointer hover:opacity-80 transition"
-                    style={{ textDecoration: 'none' }}
+                    style={{ textDecoration: "none" }}
                   >
                     <img
                       src={socialItem.image}
                       style={{
                         width: socialItem.width,
-                        marginTop: socialItem.name === "Tik Tok" ? "-0.7rem" : "0",
+                        marginTop:
+                          socialItem.name === "Tik Tok" ? "-0.7rem" : "0",
                       }}
                       alt={socialItem.name}
                     />

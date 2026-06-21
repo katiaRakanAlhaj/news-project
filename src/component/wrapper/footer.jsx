@@ -4,9 +4,14 @@ import facebookFooter from "../../assets/images/facebookFooter.svg";
 import twitterFooter from "../../assets/images/twitterFooter.svg";
 import instgramFooter from "../../assets/images/instgramFooter.svg";
 import i18next from "i18next";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Footer = ({ categoryData, footerData }) => {
+    const { lang } = useParams();
+  const getCurrentLang = () => {
+    return lang || "ar";
+  };
+  const currentLang = getCurrentLang();
   const icons = [
     { icon: twitterFooter },
     { icon: linkedIn },
@@ -69,11 +74,11 @@ const Footer = ({ categoryData, footerData }) => {
           <div className="flex flex-col mr-[1rem]">
             <ul className="space-y-3 text-gray-300 text-md">
               <li className="hover:text-white cursor-pointer transition">
-                <Link to="/About_Us">{i18next.t("menu.about_us")}</Link>
+                <Link to={`${currentLang}/About_Us`}>{i18next.t("menu.about_us")}</Link>
               </li>
 
               <li className="hover:text-white cursor-pointer transition">
-                <Link to="/contact">
+                <Link to={`${currentLang}/contact`}>
                   {i18next.t("menu.contact_us") || "اتصل بنا"}
                 </Link>
               </li>
@@ -88,7 +93,7 @@ const Footer = ({ categoryData, footerData }) => {
                   key={category.id}
                   className="hover:text-white cursor-pointer transition"
                 >
-                  <Link to={`/category/${category.id}`}>{category.name}</Link>
+                  <Link to={`/${currentLang}/category/${category.id}`}>{category.name}</Link>
                 </li>
               ))}
             </ul>

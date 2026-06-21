@@ -1,57 +1,57 @@
-// NewsModelOne.jsx - with shared animations
+// NewsModelOne.jsx - with shared animations and "See More" functionality
 import i18next from "i18next";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import seeMore1 from "../../../../assets/images/seeMore1.png";
-import seeMore2 from "../../../../assets/images/seeMore2.png";
-import seeMore3 from "../../../../assets/images/seeMore3.png";
 import NewsCard from "../../../../ui/newsCard";
 import MostViewedSection from "../../../../ui/MostViewedSection";
 import TitleSection from "../../../../ui/titleSection";
-import { containerVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
-import { useFetchCategories, useFetchCategoryById } from "../../../News/hook/useFetchNews";
-import { useParams } from "react-router-dom";
+import {
+  containerVariants,
+  CenteredSquareLoader,
+} from "../../../../ui/animationNews";
+import {
+  useFetchCategories,
+  useFetchCategoryById,
+} from "../../../News/hook/useFetchNews";
+import { Link, useParams } from "react-router-dom";
 import React from "react";
 
-const NewsModelOne = ({ 
-  data, 
-  sectionId, 
-  currentPage, 
-  totalPages, 
+const NewsModelOne = ({
+  data,
+  sectionId,
+  currentPage,
+  totalPages,
   onPageChange,
   isLoading: externalIsLoading,
   diffrentNewsData,
-  mostViewdNewsData 
+  mostViewdNewsData,
+  currentLang,
 }) => {
-  const [activeTab, setActiveTab] = useState(null); // Changed from "ترند" to null
+  const [activeTab, setActiveTab] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [trendCategoryId, setTrendCategoryId] = useState(null);
-  const [showMostViewed, setShowMostViewed] = useState(true); // Changed from false to true
-  const {id} = useParams();
+  const [showMostViewed, setShowMostViewed] = useState(true);
 
-  const {
-    data: categoryData,
-    isLoading: categoryDataLoading,
-    error: categoryDataError,
-  } = useFetchCategories();
+  // Track whether the side section is expanded or collapsed
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const {
-    data: categoryByIdData,
-    isLoading: categoryByIdDataLoading,
-    error: categoryByIdDataError,
-  } = useFetchCategoryById(selectedCategoryId);
+  const { id } = useParams();
+
+  const { data: categoryData } = useFetchCategories();
+
+  const { data: categoryByIdData, isLoading: categoryByIdDataLoading } =
+    useFetchCategoryById(selectedCategoryId);
 
   // Find "ترند" category from the API response
   useEffect(() => {
     if (categoryData?.data) {
       const trendCategory = categoryData.data.find(
-        category => category.name === "ترند"
+        (category) => category.name === "ترند",
       );
-      
+
       if (trendCategory) {
         setTrendCategoryId(trendCategory.id);
-        // Don't auto-select trend category anymore
-        // setSelectedCategoryId(trendCategory.id);
       }
     }
   }, [categoryData]);
@@ -60,17 +60,17 @@ const NewsModelOne = ({
   const formatDateArabic = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   // Extract news items from API data
   const newsItems = data?.items || [];
-  
+
   // Map API news items to the format expected by NewsCard
   const news = newsItems.map((item) => ({
     image: item.news_image,
@@ -78,10 +78,10 @@ const NewsModelOne = ({
     date: formatDateArabic(item.date),
     views: item.views_count,
     type: item.category?.name,
-    id: item.id
+    id: item.id,
   }));
 
-  // Pagination handlers with loading animation
+  // Pagination handlers
   const handlePrevPage = () => {
     if (currentPage > 1 && !externalIsLoading) {
       onPageChange(sectionId, currentPage - 1);
@@ -98,6 +98,7 @@ const NewsModelOne = ({
   const handleTabClick = (tabName, categoryId = null) => {
     setActiveTab(tabName);
     setShowMostViewed(false);
+    setIsExpanded(false); // Reset to collapsed view on tab changes
     if (categoryId) {
       setSelectedCategoryId(categoryId);
     }
@@ -106,7 +107,8 @@ const NewsModelOne = ({
   // Handle "الأكثر مشاهدة" header click
   const handleMostViewedClick = () => {
     setShowMostViewed(true);
-    setActiveTab(null); // Clear active tab
+    setActiveTab(null);
+    setIsExpanded(false); // Reset to collapsed view on header click
   };
 
   // Transform category data for "ترند"
@@ -138,9 +140,10 @@ const NewsModelOne = ({
   // Transform most viewed news data
   const getMostViewedNews = () => {
     if (mostViewdNewsData?.data) {
-      // Sort by views_count in descending order
-      const sortedData = [...mostViewdNewsData.data].sort((a, b) => b.views_count - a.views_count);
-      
+      const sortedData = [...mostViewdNewsData.data].sort(
+        (a, b) => b.views_count - a.views_count,
+      );
+
       return sortedData.map((item, index) => ({
         image: item.news_image || seeMore1,
         title: item.news_title,
@@ -152,14 +155,28 @@ const NewsModelOne = ({
     return [];
   };
 
-  // Most viewed data from API
+  // Collect raw un-sliced objects
+  const currentActiveKey = showMostViewed ? "الأكثر_مشاهدة" : activeTab;
+  const completeSideList =
+    currentActiveKey === "الأكثر_مشاهدة"
+      ? getMostViewedNews()
+      : currentActiveKey === "ترند"
+        ? getTrendCategoryNews()
+        : currentActiveKey === "منوعات"
+          ? getDifferentNews()
+          : [];
+
+  // Slice list conditionally if not expanded
+  const visibleSideList = isExpanded
+    ? completeSideList
+    : completeSideList.slice(0, 3);
+
   const mostViewedData = {
-    ترند: getTrendCategoryNews(),
-    منوعات: getDifferentNews(),
-    الأكثر_مشاهدة: getMostViewedNews()
+    ترند: currentActiveKey === "ترند" ? visibleSideList : [],
+    منوعات: currentActiveKey === "منوعات" ? visibleSideList : [],
+    الأكثر_مشاهدة: currentActiveKey === "الأكثر_مشاهدة" ? visibleSideList : [],
   };
 
-  // Don't render if no data
   if (!data || (!newsItems.length && !externalIsLoading)) {
     return null;
   }
@@ -175,8 +192,7 @@ const NewsModelOne = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-[2rem] gap-y-[2rem]">
         {/* first column - Main News */}
         <div className="lg:col-span-8">
-          {/* title with pagination arrows */}
-          <TitleSection 
+          <TitleSection
             title={data.title || i18next.t("news_wedget.latest_news")}
             showArrows={true}
             currentPage={currentPage}
@@ -186,7 +202,6 @@ const NewsModelOne = ({
             isLoading={externalIsLoading}
           />
 
-          {/* Animated content with centered square loader */}
           <div className="relative min-h-[400px]">
             <AnimatePresence mode="wait">
               {externalIsLoading ? (
@@ -201,14 +216,16 @@ const NewsModelOne = ({
                   className="grid grid-cols-1 md:grid-cols-2 gap-x-[0.5rem] gap-y-[2rem] mt-[1rem]"
                 >
                   {news.map((item, index) => (
-                    <NewsCard
-                      key={item.id || index}
-                      image={item.image}
-                      title={item.title}
-                      date={item.date}
-                      views={item.views}
-                      type={item.type}
-                    />
+                    <Link to={`/${currentLang}/News/${item.id}`}>
+                      <NewsCard
+                        key={item.id || index}
+                        image={item.image}
+                        title={item.title}
+                        date={item.date}
+                        views={item.views}
+                        type={item.type}
+                      />
+                    </Link>
                   ))}
                 </motion.div>
               )}
@@ -219,8 +236,7 @@ const NewsModelOne = ({
         {/** second column - Most Viewed */}
         <div className="lg:col-span-4">
           <div className="flex flex-wrap gap-x-6 items-center mb-[0.9rem]">
-            {/* "الأكثر مشاهدة" Header - Clickable */}
-            <h1 
+            <h1
               className={`font-bold text-lg cursor-pointer transition ${
                 showMostViewed
                   ? "text-negative border-b-2 border-negative"
@@ -232,7 +248,6 @@ const NewsModelOne = ({
             </h1>
             <div className="w-[15%] h-[0.1rem] bg-negative"></div>
 
-            {/* "ترند" Tab Button - from API */}
             {trendCategoryId && (
               <>
                 <button
@@ -249,7 +264,6 @@ const NewsModelOne = ({
               </>
             )}
 
-            {/* "منوعات" Tab Button - from diffrentNewsData */}
             <button
               onClick={() => handleTabClick("منوعات")}
               className={`font-bold text-lg transition ${
@@ -262,16 +276,29 @@ const NewsModelOne = ({
             </button>
           </div>
 
-          {/* Show loading state for "ترند" data */}
           {activeTab === "ترند" && categoryByIdDataLoading ? (
             <div className="flex justify-center items-center min-h-[200px]">
               <CenteredSquareLoader />
             </div>
           ) : (
-            <MostViewedSection
-              activeTab={showMostViewed ? "الأكثر_مشاهدة" : activeTab}
-              mostViewedData={mostViewedData}
-            />
+            <div>
+              <MostViewedSection
+                activeTab={currentActiveKey}
+                mostViewedData={mostViewedData}
+              />
+
+              {/* Conditional See More / See Less Button Actions */}
+              {completeSideList.length > 4 && (
+                <div className="mt-4 flex justify-center">
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="px-6 py-2 text-sm font-bold bg-negative text-white rounded shadow hover:bg-opacity-90 transition duration-200"
+                  >
+                    {isExpanded ? "عرض أقل" : "عرض المزيد"}
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

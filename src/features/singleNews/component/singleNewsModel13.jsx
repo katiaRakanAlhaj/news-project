@@ -1,5 +1,8 @@
+import { useTheme } from "../../../context/ThemeContext";
 import ModelTitle from "../../../ui/modelsTitle";
 const SingleNewsModel13 = ({ data }) => {
+    const {isDarkMode} = useTheme();
+  
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={data?.title} />
@@ -8,7 +11,7 @@ const SingleNewsModel13 = ({ data }) => {
         {data?.content?.map((item) => (
           <div
             style={{ boxShadow: "0px 0px 2px 0px #00000040" }}
-            className="w-full h-[10rem] flex flex-col space-y-2 rounded-xl  p-[1rem]"
+            className={`w-full h-[10rem] flex flex-col space-y-2 rounded-xl  p-[1rem] ${isDarkMode?'border border-white':''}`}
           >
             <img className="w-[1.5rem]" src={item.icon} />
             <h1 className="font-bold mt-1 text-md text-secondary">

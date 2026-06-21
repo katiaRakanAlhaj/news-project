@@ -12,6 +12,7 @@ import {
   containerVariants,
   CenteredSquareLoader,
 } from "../../../../ui/animationNews";
+import { Link } from "react-router-dom";
 
 const NewsModelFour = ({
   data,
@@ -20,6 +21,7 @@ const NewsModelFour = ({
   totalPages,
   onPageChange,
   isLoading: externalIsLoading,
+  currentLang,
 }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -98,10 +100,14 @@ const NewsModelFour = ({
               exit="exit"
             >
               <Swiper
-              
                 modules={[Autoplay]}
                 loop={true}
-                centeredSlides={true}
+                centeredSlides={
+                  false
+                } /* Fixed: Changed from true to false so slides start from the left edge */
+                initialSlide={
+                  0
+                } /* Fixed: Forces Swiper to load starting from the very first slide */
                 slidesPerGroup={1}
                 speed={800}
                 spaceBetween={8}
@@ -133,42 +139,42 @@ const NewsModelFour = ({
               >
                 {news.map((item) => (
                   <SwiperSlide key={item.id}>
-                    <div className="group relative h-[28rem] overflow-hidden rounded-2xl cursor-pointer">
-                      {/* Image */}
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                      />
+                    <Link to={`/${currentLang}/News/${item.id}`}>
+                      <div className="group relative h-[28rem] overflow-hidden rounded-2xl cursor-pointer">
+                        {/* Image */}
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                        />
 
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
-                      {/* Category */}
-                      <div
-                        className={`absolute top-4 z-20 ${
-                          i18next.language === "ar"
-                            ? "right-4"
-                            : "left-4"
-                        }`}
-                      >
-                        <span className="bg-[#005BBF] text-white text-xs px-3 py-1 rounded-full">
-                          {item.type}
-                        </span>
-                      </div>
+                        {/* Category */}
+                        <div
+                          className={`absolute top-4 z-20 ${
+                            i18next.language === "ar" ? "right-4" : "left-4"
+                          }`}
+                        >
+                          <span className="bg-[#005BBF] text-white text-xs px-3 py-1 rounded-full">
+                            {item.type}
+                          </span>
+                        </div>
 
-                      {/* Content */}
-                      <div className="absolute bottom-0 left-0 right-0 z-20 p-5">
-                        <h3 className="text-white text-lg font-bold leading-7 line-clamp-3">
-                          {item.title}
-                        </h3>
+                        {/* Content */}
+                        <div className="absolute bottom-0 left-0 right-0 z-20 p-5">
+                          <h3 className="text-white text-lg font-bold leading-7 line-clamp-3">
+                            {item.title}
+                          </h3>
 
-                        <div className="flex items-center justify-between mt-4 text-xs text-gray-300">
-                          <span>{item.views}</span>
-                          <span>{item.date}</span>
+                          <div className="flex items-center justify-between mt-4 text-xs text-gray-300">
+                            <span>{item.views}</span>
+                            <span>{item.date}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -176,21 +182,20 @@ const NewsModelFour = ({
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="flex justify-center mt-8 gap-3">
-                  {Array.from(
-                    { length: totalPages },
-                    (_, i) => i + 1
-                  ).map((page) => (
-                    <button
-                      key={page}
-                      disabled={externalIsLoading}
-                      onClick={() => handlePageChange(page)}
-                      className={`transition-all duration-300 rounded-full ${
-                        currentPage === page
-                          ? "w-3 h-3 bg-negative"
-                          : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
-                      }`}
-                    />
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <button
+                        key={page}
+                        disabled={externalIsLoading}
+                        onClick={() => handlePageChange(page)}
+                        className={`transition-all duration-300 rounded-full ${
+                          currentPage === page
+                            ? "w-3 h-3 bg-negative"
+                            : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
+                        }`}
+                      />
+                    ),
+                  )}
                 </div>
               )}
             </motion.div>

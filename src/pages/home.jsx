@@ -1,5 +1,223 @@
+// // Home.jsx
+// import { useState } from "react";
+// import { useQueries } from "@tanstack/react-query";
+// import ModelFourHero from "../features/home/heroWedget/component/modelFourHero";
+// import ModelOneHero from "../features/home/heroWedget/component/modelOneHero";
+// import ModelThreeHero from "../features/home/heroWedget/component/modelThreeHero";
+// import ModelTwoHero from "../features/home/heroWedget/component/modelTwoHero";
+// import { useFetchHomePage } from "../features/home/heroWedget/hook/useFetchHomePage";
+// import { fetchHomePage } from "../features/home/heroWedget/api/fetchHomePage";
+// import MediaModelOne from "../features/home/mediaWedget/component/mediaModelOne";
+// import MediaModelTwo from "../features/home/mediaWedget/component/mediaModelTwo";
+// import NewsModelEight from "../features/home/newsWedget.jsx/component/newsModelEight";
+// import NewsModelFive from "../features/home/newsWedget.jsx/component/newsModelFive";
+// import NewsModelFour from "../features/home/newsWedget.jsx/component/newsModelFour";
+// import NewsModelNine from "../features/home/newsWedget.jsx/component/newsModelNine";
+// import NewsModelOne from "../features/home/newsWedget.jsx/component/newsModelOne";
+// import NewsModelSeven from "../features/home/newsWedget.jsx/component/newsModelSeven";
+// import NewsModelSix from "../features/home/newsWedget.jsx/component/newsModelSix";
+// import NewsModelThree from "../features/home/newsWedget.jsx/component/newsModelThree";
+// import NewsModelTwo from "../features/home/newsWedget.jsx/component/newsModelTwo";
+// import { useFetchContact } from "../features/contact/hook/useFetchContact";
+// import {
+//   usefetchDifferentNews,
+//   usefetchMostViewedNews,
+// } from "../features/News/hook/useFetchNews";
+// import { useParams } from "react-router-dom";
+// import { HelmetProvider } from "react-helmet-async";
+// import MetaHelmet from "../component/metaHelmet/metaHelmet";
+
+// const heroComponents = {
+//   1: ModelOneHero,
+//   2: ModelTwoHero,
+//   3: ModelThreeHero,
+//   4: ModelFourHero,
+// };
+
+// const newsComponents = {
+//   7: NewsModelOne,
+//   8: NewsModelTwo,
+//   9: NewsModelThree,
+//   10: NewsModelFour,
+//   11: NewsModelFive,
+//   12: NewsModelSix,
+//   13: NewsModelSeven,
+//   14: NewsModelEight,
+//   15: NewsModelNine,
+// };
+
+// const mediaComponents = {
+//   5: MediaModelOne,
+//   6: MediaModelTwo,
+// };
+
+// const Home = () => {
+//   const { id } = useParams();
+//   const { data: contactData } = useFetchContact();
+
+//   // Initial layout fetch
+//   const { data: homePageData, isLoading, error } = useFetchHomePage();
+//   const { data: diffrentNewsData } = usefetchDifferentNews();
+//   const { data: mostViewdNewsData } = usefetchMostViewedNews();
+
+//   // Track page counts across unique section entities
+//   const [sectionPages, setSectionPages] = useState({});
+
+//   const handlePageChange = (sectionId, newPage) => {
+//     setSectionPages((prev) => ({ ...prev, [sectionId]: newPage }));
+//   };
+
+//   // Target collection profiles needing lazy dynamic pagination properties
+//   const sectionsNeedingPagination =
+//     homePageData?.data?.filter(
+//       (item) =>
+//         item.home_model_id >= 7 ||
+//         item.home_model_id === 5 ||
+//         item.home_model_id === 6,
+//     ) || [];
+
+//   // Compose tracking maps representing ongoing query items
+//   const activePaginationQueries = sectionsNeedingPagination
+//     .filter((section) => sectionPages[section.id] && sectionPages[section.id] !== 1)
+//     .map((section) => ({
+//       sectionId: section.id,
+//       page: sectionPages[section.id],
+//       queryKey: ["home-page", section.id, sectionPages[section.id]],
+//       queryFn: () => fetchHomePage(section.id, sectionPages[section.id]),
+//     }));
+
+//   // Perform isolated dynamic query hook routines concurrently
+//   const paginationResults = useQueries({
+//     queries: activePaginationQueries.map((q) => ({
+//       queryKey: q.queryKey,
+//       queryFn: q.queryFn,
+//       placeholderData: (previousData) => previousData, // Native tool caching prevents flickers
+//     })),
+//   });
+
+//   // Structural parsing safely handling varying array payload definitions
+//   const getItemsArray = (items) => {
+//     if (Array.isArray(items)) return items;
+//     if (items?.data && Array.isArray(items.data)) return items.data;
+//     return [];
+//   };
+
+//   const getPaginationInfo = (items) => ({
+//     currentPage: items?.current_page || 1,
+//     lastPage: items?.last_page || 1,
+//   });
+
+//   // Resolves the exact dataset status and fetch status per unique section instance
+//   const getSectionState = (section) => {
+//     const currentPage = sectionPages[section.id] || 1;
+
+//     if (currentPage === 1) {
+//       return { data: section, isExecuting: false };
+//     }
+
+//     const queryIndex = activePaginationQueries.findIndex(
+//       (q) => q.sectionId === section.id && q.page === currentPage
+//     );
+
+//     if (queryIndex !== -1) {
+//       const queryResult = paginationResults[queryIndex];
+//       const serverPayload = queryResult?.data?.data?.find((item) => item.id === section.id);
+
+//       return {
+//         data: serverPayload || section,
+//         isExecuting: queryResult.isFetching, // Clean fallback background indicator
+//       };
+//     }
+
+//     return { data: section, isExecuting: false };
+//   };
+
+//   if (isLoading) {
+//     return (
+//       <div className="lg:mt-0 mt-[6rem] flex justify-center items-center min-h-screen">
+//         <div className="text-center">Loading Layout...</div>
+//       </div>
+//     );
+//   }
+
+//   if (error) {
+//     return (
+//       <div className="lg:mt-0 mt-[6rem] flex justify-center items-center min-h-screen">
+//         <div className="text-center text-red-500">Error: {error.message}</div>
+//       </div>
+//     );
+//   }
+
+//   const heroSections = homePageData?.data?.filter((i) => i.home_model_id >= 1 && i.home_model_id <= 4) || [];
+//   const mediaSections = homePageData?.data?.filter((i) => i.home_model_id === 5 || i.home_model_id === 6) || [];
+
+//   return (
+//     <HelmetProvider>
+//       <MetaHelmet title={"Home"} description={"Home"} />
+//       <div className="lg:mt-0 mt-[6rem]">
+//         {/* Hero Sections */}
+//         {heroSections.map((section) => {
+//           const HeroComponent = heroComponents[section.home_model_id];
+//           return HeroComponent ? <HeroComponent key={`hero-${section.id}`} data={section} /> : null;
+//         })}
+
+//         {/* Media Sections */}
+//         {mediaSections.map((section) => {
+//           const MediaComponent = mediaComponents[section.home_model_id];
+//           if (!MediaComponent) return null;
+
+//           const currentPage = sectionPages[section.id] || 1;
+//           const { data: sectionData, isExecuting } = getSectionState(section);
+//           const pagination = getPaginationInfo(sectionData.items);
+
+//           return (
+//             <MediaComponent
+//               key={`media-${section.id}`}
+//               data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
+//               sectionId={section.id}
+//               currentPage={currentPage}
+//               totalPages={pagination.lastPage}
+//               onPageChange={handlePageChange}
+//               isLoading={isExecuting}
+//             />
+//           );
+//         })}
+
+//         {/* News Sections */}
+//         {sectionsNeedingPagination
+//           .filter((section) => section.home_model_id >= 7)
+//           .map((section) => {
+//             const NewsComponent = newsComponents[section.home_model_id];
+//             if (!NewsComponent) return null;
+
+//             const { data: sectionData, isExecuting } = getSectionState(section);
+//             const currentPage = sectionPages[section.id] || 1;
+//             const pagination = getPaginationInfo(sectionData.items);
+
+//             return (
+//               <NewsComponent
+//                 key={`news-${section.id}`}
+//                 data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
+//                 sectionId={section.id}
+//                 homePageId={section.id}
+//                 currentPage={currentPage}
+//                 totalPages={pagination.lastPage}
+//                 onPageChange={handlePageChange}
+//                 isLoading={isExecuting}
+//                 contactData={contactData}
+//                 diffrentNewsData={diffrentNewsData}
+//                 mostViewdNewsData={mostViewdNewsData}
+//               />
+//             );
+//           })}
+//       </div>
+//     </HelmetProvider>
+//   );
+// };
+
+// export default Home;
 // Home.jsx
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 import ModelFourHero from "../features/home/heroWedget/component/modelFourHero";
 import ModelOneHero from "../features/home/heroWedget/component/modelOneHero";
@@ -20,14 +238,15 @@ import NewsModelThree from "../features/home/newsWedget.jsx/component/newsModelT
 import NewsModelTwo from "../features/home/newsWedget.jsx/component/newsModelTwo";
 import { useFetchContact } from "../features/contact/hook/useFetchContact";
 import {
-  useFetchCategories,
-  useFetchCategoryById,
   usefetchDifferentNews,
   usefetchMostViewedNews,
 } from "../features/News/hook/useFetchNews";
 import { useParams } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import MetaHelmet from "../component/metaHelmet/metaHelmet";
+import Loader from "../component/loader/loader";
+import ErrorMessageNetwork from "../component/errorMessage/errorMessage";
+import ScrollToTop from "../component/scrollToTop/scrollToTop";
 
 const heroComponents = {
   1: ModelOneHero,
@@ -55,37 +274,33 @@ const mediaComponents = {
 
 const Home = () => {
   const { id } = useParams();
-  const {
-    data: contactData,
-    isLoading: contactDataLoading,
-    error: contactDataError,
-  } = useFetchContact();
-
-  // Get all sections
+  const { data: contactData } = useFetchContact();
+  const { lang } = useParams();
+  const currentLang = lang || "ar";
+  // Initial layout fetch
   const { data: homePageData, isLoading, error } = useFetchHomePage();
-  const {
-    data: diffrentNewsData,
-    isLoading: diffrentNewsDataLoading,
-    error: diffrentNewsDataError,
-  } = usefetchDifferentNews();
-  const {
-    data: mostViewdNewsData,
-    isLoading: mostViewdNewsDataLoading,
-    error: mostViewdNewsDataError,
-  } = usefetchMostViewedNews();
-  // State to track pages per section
-  const [sectionPages, setSectionPages] = useState({});
-  // Store paginated data for each section
-  const [paginatedData, setPaginatedData] = useState({});
-  // Track loading state per section
-  const [loadingSections, setLoadingSections] = useState({});
+  const { data: diffrentNewsData } = usefetchDifferentNews();
+  const { data: mostViewdNewsData } = usefetchMostViewedNews();
 
-  const handlePageChange = (sectionId, newPage) => {
-    setLoadingSections((prev) => ({ ...prev, [sectionId]: true }));
-    setSectionPages((prev) => ({ ...prev, [sectionId]: newPage }));
+  // Track page counts across unique section entities with category support
+  const [sectionPages, setSectionPages] = useState({});
+
+  // Track active categories for each section
+  const [activeCategories, setActiveCategories] = useState({});
+
+  // Handle page change with category support
+  const handlePageChange = (sectionId, newPage, categoryId = null) => {
+    // Create a unique key that includes both sectionId and categoryId if present
+    const pageKey = categoryId ? `${sectionId}-${categoryId}` : `${sectionId}`;
+    setSectionPages((prev) => ({ ...prev, [pageKey]: newPage }));
   };
 
-  // Prepare queries for paginated sections (include media sections)
+  // Handle category change tracking
+  const handleCategoryChange = (sectionId, categoryId) => {
+    setActiveCategories((prev) => ({ ...prev, [sectionId]: categoryId }));
+  };
+
+  // Target collection profiles needing lazy dynamic pagination properties
   const sectionsNeedingPagination =
     homePageData?.data?.filter(
       (item) =>
@@ -94,55 +309,62 @@ const Home = () => {
         item.home_model_id === 6,
     ) || [];
 
-  // Create a map of section ID to its query
-  const sectionQueryMap = sectionsNeedingPagination
-    .filter(
-      (section) => sectionPages[section.id] && sectionPages[section.id] !== 1,
-    )
-    .map((section) => ({
-      sectionId: section.id,
-      page: sectionPages[section.id],
-      queryKey: ["home-page", section.id, sectionPages[section.id]],
-      queryFn: () => fetchHomePage(section.id, sectionPages[section.id]),
-    }));
+  // Get the current page for a specific section and category
+  const getCurrentPage = (sectionId, categoryId = null) => {
+    const pageKey = categoryId ? `${sectionId}-${categoryId}` : `${sectionId}`;
+    return sectionPages[pageKey] || 1;
+  };
 
-  // Execute all pagination queries in parallel
-  const paginationResults = useQueries({
-    queries: sectionQueryMap.map((q) => ({
-      queryKey: q.queryKey,
-      queryFn: q.queryFn,
-      placeholderData: (previousData) => previousData,
-    })),
-  });
+  // Compose tracking maps representing ongoing query items
+  const activePaginationQueries = sectionsNeedingPagination
+    .filter((section) => {
+      // Check if we have pages for any category in this section
+      const hasPage = Object.keys(sectionPages).some(
+        (key) => key === `${section.id}` || key.startsWith(`${section.id}-`),
+      );
+      return hasPage;
+    })
+    .map((section) => {
+      // Find the page for this section (could be for a specific category)
+      let page = 1;
+      let categoryId = null;
 
-  // Store paginated data when results come in and clear loading state
-  useEffect(() => {
-    sectionQueryMap.forEach((query, index) => {
-      const result = paginationResults[index];
-
-      if (result?.data?.data && !result.isLoading) {
-        const foundSection = result.data.data.find(
-          (item) => item.id === query.sectionId,
-        );
-        if (foundSection) {
-          setPaginatedData((prev) => ({
-            ...prev,
-            [query.sectionId]: {
-              data: foundSection,
-              page: query.page,
-            },
-          }));
-          setLoadingSections((prev) => ({ ...prev, [query.sectionId]: false }));
+      // Check if there's a specific category page
+      const activeCategoryId = activeCategories[section.id];
+      if (activeCategoryId) {
+        const categoryKey = `${section.id}-${activeCategoryId}`;
+        if (sectionPages[categoryKey]) {
+          page = sectionPages[categoryKey];
+          categoryId = activeCategoryId;
         }
       }
 
-      if (result?.isError) {
-        setLoadingSections((prev) => ({ ...prev, [query.sectionId]: false }));
+      // If no category-specific page found, check for section-level page
+      if (page === 1 && sectionPages[section.id]) {
+        page = sectionPages[section.id];
       }
-    });
-  }, [paginationResults, sectionQueryMap]);
 
-  // Helper functions
+      return {
+        sectionId: section.id,
+        page: page,
+        categoryId: categoryId,
+        queryKey: categoryId
+          ? ["home-page", section.id, page, categoryId]
+          : ["home-page", section.id, page],
+        queryFn: () => fetchHomePage(section.id, page, categoryId),
+      };
+    });
+
+  // Perform isolated dynamic query hook routines concurrently
+  const paginationResults = useQueries({
+    queries: activePaginationQueries.map((q) => ({
+      queryKey: q.queryKey,
+      queryFn: q.queryFn,
+      placeholderData: (previousData) => previousData, // Native tool caching prevents flickers
+    })),
+  });
+
+  // Structural parsing safely handling varying array payload definitions
   const getItemsArray = (items) => {
     if (Array.isArray(items)) return items;
     if (items?.data && Array.isArray(items.data)) return items.data;
@@ -154,63 +376,78 @@ const Home = () => {
     lastPage: items?.last_page || 1,
   });
 
-  // Get section data (either from initial load or paginated)
-  const getSectionData = (section) => {
-    const currentPage = sectionPages[section.id];
+  // Resolves the exact dataset status and fetch status per unique section instance
+  const getSectionState = (section) => {
+    const activeCategoryId = activeCategories[section.id];
+    const pageKey = activeCategoryId
+      ? `${section.id}-${activeCategoryId}`
+      : `${section.id}`;
+    const currentPage = sectionPages[pageKey] || 1;
 
-    if (!currentPage || currentPage === 1) {
-      return section;
+    if (currentPage === 1 && !activeCategoryId) {
+      return { data: section, isExecuting: false };
     }
 
-    const paginated = paginatedData[section.id];
-    if (paginated && paginated.page === currentPage) {
-      return paginated.data;
+    // Find the query for this section and category
+    const queryIndex = activePaginationQueries.findIndex((q) => {
+      if (activeCategoryId) {
+        return (
+          q.sectionId === section.id &&
+          q.categoryId === activeCategoryId &&
+          q.page === currentPage
+        );
+      }
+      return (
+        q.sectionId === section.id && q.page === currentPage && !q.categoryId
+      );
+    });
+
+    if (queryIndex !== -1) {
+      const queryResult = paginationResults[queryIndex];
+      const serverPayload = queryResult?.data?.data?.find(
+        (item) => item.id === section.id,
+      );
+
+      return {
+        data: serverPayload || section,
+        isExecuting: queryResult?.isFetching || false, // Clean fallback background indicator
+      };
     }
 
-    return section;
-  };
-
-  // Check if a section is currently loading
-  const isSectionLoading = (sectionId) => {
-    const currentPage = sectionPages[sectionId];
-    if (!currentPage || currentPage === 1) return false;
-    return loadingSections[sectionId] === true;
+    return { data: section, isExecuting: false };
   };
 
   if (isLoading) {
-    return (
-      <div className="lg:mt-0 mt-[6rem] flex justify-center items-center min-h-screen">
-        <div className="text-center">Loading...</div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
-    return (
-      <div className="lg:mt-0 mt-[6rem] flex justify-center items-center min-h-screen">
-        <div className="text-center text-red-500">Error: {error.message}</div>
-      </div>
-    );
+    return <ErrorMessageNetwork />;
   }
 
   const heroSections =
     homePageData?.data?.filter(
-      (item) => item.home_model_id >= 1 && item.home_model_id <= 4,
+      (i) => i.home_model_id >= 1 && i.home_model_id <= 4,
     ) || [];
   const mediaSections =
     homePageData?.data?.filter(
-      (item) => item.home_model_id === 5 || item.home_model_id === 6,
+      (i) => i.home_model_id === 5 || i.home_model_id === 6,
     ) || [];
 
   return (
     <HelmetProvider>
+      <ScrollToTop />
       <MetaHelmet title={"Home"} description={"Home"} />
       <div className="lg:mt-0 mt-[6rem]">
         {/* Hero Sections */}
         {heroSections.map((section) => {
           const HeroComponent = heroComponents[section.home_model_id];
           return HeroComponent ? (
-            <HeroComponent key={`hero-${section.id}`} data={section} />
+            <HeroComponent
+              currentLang={currentLang}
+              key={`hero-${section.id}`}
+              data={section}
+            />
           ) : null;
         })}
 
@@ -219,10 +456,9 @@ const Home = () => {
           const MediaComponent = mediaComponents[section.home_model_id];
           if (!MediaComponent) return null;
 
-          const currentPage = sectionPages[section.id] || 1;
-          const pagination = getPaginationInfo(section.items);
-          const isLoading = isSectionLoading(section.id);
-          const sectionData = getSectionData(section);
+          const currentPage = getCurrentPage(section.id);
+          const { data: sectionData, isExecuting } = getSectionState(section);
+          const pagination = getPaginationInfo(sectionData.items);
 
           return (
             <MediaComponent
@@ -232,7 +468,7 @@ const Home = () => {
               currentPage={currentPage}
               totalPages={pagination.lastPage}
               onPageChange={handlePageChange}
-              isLoading={isLoading}
+              isLoading={isExecuting}
             />
           );
         })}
@@ -244,10 +480,10 @@ const Home = () => {
             const NewsComponent = newsComponents[section.home_model_id];
             if (!NewsComponent) return null;
 
-            const sectionData = getSectionData(section);
-            const currentPage = sectionPages[section.id] || 1;
+            const { data: sectionData, isExecuting } = getSectionState(section);
+            const activeCategoryId = activeCategories[section.id];
+            const currentPage = getCurrentPage(section.id, activeCategoryId);
             const pagination = getPaginationInfo(sectionData.items);
-            const isLoading = isSectionLoading(section.id);
 
             return (
               <NewsComponent
@@ -257,14 +493,17 @@ const Home = () => {
                   items: getItemsArray(sectionData.items),
                 }}
                 sectionId={section.id}
-                homePageId={section.id} // Pass the section id as homePageId
+                homePageId={section.id}
                 currentPage={currentPage}
                 totalPages={pagination.lastPage}
                 onPageChange={handlePageChange}
-                isLoading={isLoading}
+                onCategoryChange={handleCategoryChange}
+                isLoading={isExecuting}
+                categoryPages={sectionPages}
                 contactData={contactData}
                 diffrentNewsData={diffrentNewsData}
                 mostViewdNewsData={mostViewdNewsData}
+                currentLang = {currentLang}
               />
             );
           })}

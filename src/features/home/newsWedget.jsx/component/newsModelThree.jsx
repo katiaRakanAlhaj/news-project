@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import TitleSection from "../../../../ui/titleSection";
 import MostViewedSection from "../../../../ui/MostViewedSection";
 import { containerVariants, imageVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
+import { Link } from "react-router-dom";
 
 const NewsModelThree = ({ 
   data, 
@@ -10,7 +11,8 @@ const NewsModelThree = ({
   currentPage, 
   totalPages, 
   onPageChange,
-  isLoading 
+  isLoading ,
+  currentLang
 }) => {
   // Format date function
   const formatDate = (dateString) => {
@@ -127,6 +129,8 @@ const NewsModelThree = ({
               className="lg:col-span-8 col-span-1"
             >
               {mainNewsItem && (
+                              <Link to={`/${currentLang}/News/${mainNewsItem.id}`}>
+
                 <div className="relative rounded-lg overflow-hidden">
                   <img
                     src={mainNewsItem.image}
@@ -144,6 +148,7 @@ const NewsModelThree = ({
                     </h1>
                   </div>
                 </div>
+                </Link>
               )}
             </motion.div>
 

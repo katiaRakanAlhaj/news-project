@@ -2,25 +2,31 @@ import TitleSection from "../../../../ui/titleSection";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import i18next from "i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { containerVariants, imageVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
+import {
+  containerVariants,
+  imageVariants,
+  CenteredSquareLoader,
+} from "../../../../ui/animationNews";
+import { Link } from "react-router-dom";
 
-const NewsModelSix = ({ 
-  data, 
-  sectionId, 
-  currentPage, 
-  totalPages, 
+const NewsModelSix = ({
+  data,
+  sectionId,
+  currentPage,
+  totalPages,
   onPageChange,
-  isLoading: externalIsLoading 
+  isLoading: externalIsLoading,
+  currentLang,
 }) => {
   // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -37,30 +43,34 @@ const NewsModelSix = ({
 
   // Extract news items from API data
   const newsItems = getItemsArray(data?.items || []);
-  
+
   // Get first two items as main news (featured - left and right)
   const mainNewsLeft = newsItems.length > 0 ? newsItems[0] : null;
   const mainNewsRight = newsItems.length > 1 ? newsItems[1] : null;
-  
+
   // Get remaining items for small cards grid
   const smallNewsItems = newsItems.slice(2, 6); // Next 4 items
 
   // Format main news data
-  const mainNewsLeftData = mainNewsLeft ? {
-    id: mainNewsLeft.id,
-    image: mainNewsLeft.news_image,
-    title: mainNewsLeft.news_title,
-    date: formatDate(mainNewsLeft.date),
-    views: mainNewsLeft.views_count,
-  } : null;
+  const mainNewsLeftData = mainNewsLeft
+    ? {
+        id: mainNewsLeft.id,
+        image: mainNewsLeft.news_image,
+        title: mainNewsLeft.news_title,
+        date: formatDate(mainNewsLeft.date),
+        views: mainNewsLeft.views_count,
+      }
+    : null;
 
-  const mainNewsRightData = mainNewsRight ? {
-    id: mainNewsRight.id,
-    image: mainNewsRight.news_image,
-    title: mainNewsRight.news_title,
-    date: formatDate(mainNewsRight.date),
-    views: mainNewsRight.views_count,
-  } : null;
+  const mainNewsRightData = mainNewsRight
+    ? {
+        id: mainNewsRight.id,
+        image: mainNewsRight.news_image,
+        title: mainNewsRight.news_title,
+        date: formatDate(mainNewsRight.date),
+        views: mainNewsRight.views_count,
+      }
+    : null;
 
   // Format small news data
   const smallNews = smallNewsItems.map((item) => ({
@@ -68,7 +78,7 @@ const NewsModelSix = ({
     image: item.news_image,
     title: item.news_title,
     date: formatDate(item.date),
-    views: '1.2K',
+    views: "1.2K",
   }));
 
   // Pagination handlers
@@ -97,7 +107,7 @@ const NewsModelSix = ({
       variants={containerVariants}
       className="container1 mx-auto mt-[2rem] md:px-0"
     >
-      <TitleSection 
+      <TitleSection
         title={data.title || "منوعات"}
         showArrows={true}
         currentPage={currentPage}
@@ -121,73 +131,77 @@ const NewsModelSix = ({
               exit="exit"
             >
               {/* first row - Grid with 2 columns (left and right cards) */}
-              <motion.div 
+              <motion.div
                 variants={containerVariants}
                 className="grid grid-cols-1 md:grid-cols-2 gap-[0.5rem]"
               >
                 {/* Left Card */}
                 <motion.div variants={imageVariants}>
-                  <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
-                    <img
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      src={mainNewsLeftData?.image}
-                      alt={mainNewsLeftData?.title}
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
-                      }}
-                    />
-                    <div
-                      className={`absolute ${i18next.language == "ar" ? "right-[1rem]" : "left-[1rem]"} bottom-[1.5rem] left-[1rem] right-[1rem]`}
-                    >
-                      <h1 className="text-white text-base md:text-lg lg:text-2xl w-full leading-relaxed font-bold line-clamp-3">
-                        {mainNewsLeftData?.title}
-                      </h1>
-                      <NewsMetaInfo
-                        dateText={mainNewsLeftData?.date}
-                        viewsText={mainNewsLeftData?.views}
-                        textColor="text-white"
+                  <Link to={`/${currentLang}/News/${mainNewsLeftData.id}`}>
+                    <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
+                      <img
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        src={mainNewsLeftData?.image}
+                        alt={mainNewsLeftData?.title}
                       />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
+                        }}
+                      />
+                      <div
+                        className={`absolute ${i18next.language == "ar" ? "right-[1rem]" : "left-[1rem]"} bottom-[1.5rem] left-[1rem] right-[1rem]`}
+                      >
+                        <h1 className="text-white text-base md:text-lg lg:text-2xl w-full leading-relaxed font-bold line-clamp-3">
+                          {mainNewsLeftData?.title}
+                        </h1>
+                        <NewsMetaInfo
+                          dateText={mainNewsLeftData?.date}
+                          viewsText={mainNewsLeftData?.views}
+                          textColor="text-white"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
 
                 {/* Right Card */}
                 <motion.div variants={imageVariants}>
-                  <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
-                    <img
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      src={mainNewsRightData?.image}
-                      alt={mainNewsRightData?.title}
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
-                      }}
-                    />
-                    <div
-                      className={`absolute ${i18next.language == "ar" ? "right-[1rem]" : "left-[1rem]"} bottom-[1.5rem] left-[1rem] right-[1rem]`}
-                    >
-                      <h1 className="text-white text-base md:text-lg lg:text-2xl w-full leading-relaxed font-bold line-clamp-3">
-                        {mainNewsRightData?.title}
-                      </h1>
-                      <NewsMetaInfo
-                        dateText={mainNewsRightData?.date}
-                        viewsText={mainNewsRightData?.views}
-                        textColor="text-white"
+                  <Link to={`/${currentLang}/News/${mainNewsRightData.id}`}>
+                    <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
+                      <img
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        src={mainNewsRightData?.image}
+                        alt={mainNewsRightData?.title}
                       />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
+                        }}
+                      />
+                      <div
+                        className={`absolute ${i18next.language == "ar" ? "right-[1rem]" : "left-[1rem]"} bottom-[1.5rem] left-[1rem] right-[1rem]`}
+                      >
+                        <h1 className="text-white text-base md:text-lg lg:text-2xl w-full leading-relaxed font-bold line-clamp-3">
+                          {mainNewsRightData?.title}
+                        </h1>
+                        <NewsMetaInfo
+                          dateText={mainNewsRightData?.date}
+                          viewsText={mainNewsRightData?.views}
+                          textColor="text-white"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
               </motion.div>
 
               {/* second row - Small cards grid */}
-              <motion.div 
+              <motion.div
                 variants={containerVariants}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-[0.5rem] gap-y-[0.5rem] mt-[0.5rem]"
               >
@@ -197,28 +211,32 @@ const NewsModelSix = ({
                     variants={imageVariants}
                     className="relative w-full h-[10rem] md:h-[12rem] lg:h-[15rem] overflow-hidden group cursor-pointer"
                   >
-                    <img
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      src={item.image}
-                      alt={item.title}
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
-                      }}
-                    />
-                    <div className="absolute right-[0.75rem] bottom-[0.5rem] left-[0.75rem]">
-                      <h1 className="text-white text-xs md:text-lg w-full leading-relaxed font-bold line-clamp-2">
-                        {item.title}
-                      </h1>
-                      <NewsMetaInfo
-                        dateText={item.date}
-                        viewsText={item.views}
-                        textColor="text-white"
-                      />
-                    </div>
+                    <Link to={`/${currentLang}/News/${item.id}`}>
+                      <div>
+                        <img
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          src={item.image}
+                          alt={item.title}
+                        />
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            background:
+                              "linear-gradient(0deg, #000000 0%, rgba(102, 102, 102, 0) 54.46%)",
+                          }}
+                        />
+                        <div className="absolute right-[0.75rem] bottom-[0.5rem] left-[0.75rem]">
+                          <h1 className="text-white text-xs md:text-lg w-full leading-relaxed font-bold line-clamp-2">
+                            {item.title}
+                          </h1>
+                          <NewsMetaInfo
+                            dateText={item.date}
+                            viewsText={item.views}
+                            textColor="text-white"
+                          />
+                        </div>
+                      </div>
+                    </Link>
                   </motion.div>
                 ))}
               </motion.div>
