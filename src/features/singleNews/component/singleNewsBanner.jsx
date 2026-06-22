@@ -4,7 +4,8 @@ import instgramColor from "../../../assets/images/instgramColor.svg";
 import facebookBanner from "../../../assets/images/facebookBanner.svg";
 import linkedInColor from "../../../assets/images/linkedInColor.svg";
 import { useTheme } from "../../../context/ThemeContext";
-const SinlgeNewsBanner = ({ singleNewsData, contactData }) => {
+import { formatDate } from "../../../utils/dateUtils";
+const SinlgeNewsBanner = ({ singleNewsData, contactData ,currentLang}) => {
   const { isDarkMode } = useTheme();
   const iconWhiteFilter =
     "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)";
@@ -14,16 +15,7 @@ const SinlgeNewsBanner = ({ singleNewsData, contactData }) => {
     { icon: facebookBanner, width: "1.5rem", url: contactData?.data?.facebook },
     { icon: linkedInColor, width: "1.5rem", url: contactData?.data?.linkedin },
   ];
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+
   return (
     <div className="mt-[1rem]">
       <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
@@ -35,7 +27,7 @@ const SinlgeNewsBanner = ({ singleNewsData, contactData }) => {
         {singleNewsData?.news_title}
       </h1>
       <p className="text-[#282828] text-md mt-3">
-        {formatDate(singleNewsData?.date)}
+        {formatDate(singleNewsData?.date , currentLang)}
       </p>
       <div className="relative mt-3">
         <img

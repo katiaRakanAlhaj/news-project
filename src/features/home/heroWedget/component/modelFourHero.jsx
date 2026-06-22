@@ -1,24 +1,12 @@
 import i18next from "i18next";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 
 const ModelFourHero = ({ data, currentLang }) => {
   // Check if data exists and has items
   if (!data || !data.items || data.items.length === 0) {
     return null; // or return a loading/empty state
   }
-
-  // Format the date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   // Split items: first 2 items in first row, next 4 items in second row
   const firstRowItems = data.items.slice(0, 2); // First 2 images
   const secondRowItems = data.items.slice(2, 6); // Next 4 images
@@ -56,7 +44,7 @@ const ModelFourHero = ({ data, currentLang }) => {
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                    {formatDate(item.date)}
+                    {formatDate(item.date , currentLang)}
                   </p>
                 </div>
               </div>
@@ -94,7 +82,7 @@ const ModelFourHero = ({ data, currentLang }) => {
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                    {formatDate(item.date)}
+                    {formatDate(item.date , currentLang)}
                   </p>
                 </div>
               </div>

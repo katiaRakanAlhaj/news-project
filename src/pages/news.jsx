@@ -13,8 +13,8 @@ import ErrorMessageNetwork from "../component/errorMessage/errorMessage";
 import ScrollToTop from "../component/scrollToTop/scrollToTop";
 
 const News = () => {
-  const { id } = useParams();
-
+  const { id ,lang } = useParams();
+  const currentLang = lang || "ar";
   const {
     data: categoryData,
     isLoading: categoryDataLoading,
@@ -45,7 +45,7 @@ const News = () => {
         <MetaHelmet title={categoryName} description={categoryName} />
         <div className="lg:mt-0 mt-[6rem]">
           {/* Hero section with latest news */}
-          <ModelTwoHero data={heroData} />
+          <ModelTwoHero currentLang = {currentLang} data={heroData} />
 
           <div className="container1 mx-auto">
             <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[4rem] mt-[2rem] lg:gap-y-0 gap-y-[2rem]">
@@ -56,7 +56,7 @@ const News = () => {
 
               {/* Second column - Last News */}
               <div className="lg:col-span-4 col-span-1">
-                <LastNews latestNewsData={latestNewsData} />
+                <LastNews currentLang = {currentLang} latestNewsData={latestNewsData} />
               </div>
             </div>
           </div>

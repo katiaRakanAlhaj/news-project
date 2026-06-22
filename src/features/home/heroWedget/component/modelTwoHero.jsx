@@ -1,6 +1,7 @@
 // src/features/home/heroWedget/component/modelTwoHero.js
 import i18next from "i18next";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 const ModelTwoHero = ({ data, dataKey = "data", currentLang }) => {
   // Handle different data structures
   let items = [];
@@ -29,22 +30,6 @@ const ModelTwoHero = ({ data, dataKey = "data", currentLang }) => {
       return item.category.name;
     }
   };
-
-  // Format the date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString(
-      i18next.language === "ar" ? "ar-EG" : "en-US",
-      {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      },
-    );
-  };
-
   return (
     <div className="container1 mx-auto h-auto">
       <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[0.5rem] mt-[2.5rem] gap-y-[0.5rem]">
@@ -80,7 +65,7 @@ const ModelTwoHero = ({ data, dataKey = "data", currentLang }) => {
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-3 opacity-70">
-                    {formatDate(item.date)}
+                    {formatDate(item.date , currentLang)}
                   </p>
                 </div>
               </div>
@@ -121,7 +106,7 @@ const ModelTwoHero = ({ data, dataKey = "data", currentLang }) => {
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                    {formatDate(item.date)}
+                    {formatDate(item.date , currentLang)}
                   </p>
                 </div>
               </div>

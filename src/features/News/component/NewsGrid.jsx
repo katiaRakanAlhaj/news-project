@@ -3,6 +3,7 @@ import NewsMetaInfo from "../../../ui/dateAndViewsSection";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import i18next from "i18next";
 import { useFetchCategoryById } from "../hook/useFetchNews";
+import { formatDate } from "../../../utils/dateUtils";
 
 const NewsGrid = ({ categoryData, categoryId }) => {
   const navigate = useNavigate();
@@ -46,18 +47,6 @@ const NewsGrid = ({ categoryData, categoryId }) => {
     setPaginationInfo(categoryData?.pagination || null);
   }, [categoryId, categoryData]);
 
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   const handleNewsClick = (id) => {
     navigate(`/${currentLang}/News/${id}`); // Added leading '/'
   };
@@ -72,10 +61,21 @@ const NewsGrid = ({ categoryData, categoryId }) => {
     }
   };
 
+  // Empty state with better UI
   if (!allNewsItems || allNewsItems.length === 0) {
     return (
-      <div className="text-center text-gray-500 py-8">
-        No news found in this category
+      <div className="flex flex-col items-center justify-center py-16 border border-dashed border-gray-200 rounded-xl bg-gray-50/50 text-center px-4">
+        <img 
+          src="https://www.gstatic.com/images/branding/product/2x/news_96dp.png" 
+          alt={i18next.t("category.empty_alt")} 
+          className="w-20 h-20 opacity-50 mb-4"
+        />
+        <h2 className="text-xl font-bold text-gray-700 mb-2">
+          {i18next.t("category.empty_title")}
+        </h2>
+        <p className="text-gray-400 max-w-sm text-md">
+          {i18next.t("category.empty_description")}
+        </p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ const NewsGrid = ({ categoryData, categoryId }) => {
               </p>
               <div className="absolute lg:bottom-[0.4rem] bottom-[-1rem] pointer-events-none">
                 <NewsMetaInfo
-                  dateText={formatDate(newsItem.date)}
+                  dateText={formatDate(newsItem.date , currentLang)}
                   viewsText={newsItem.views_count}
                   textColor="text-[#6B7280]"
                 />

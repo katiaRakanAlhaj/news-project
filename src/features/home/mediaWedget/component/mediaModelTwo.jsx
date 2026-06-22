@@ -196,14 +196,14 @@ const MediaModelTwo = ({
                   disabled={isLoading}
                   className="px-5 py-1.5 rounded text-xs font-bold bg-negative text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                 >
-                  {isLoading ? "جاري التحميل..." : "عرض المزيد"}
+                  {isLoading ? "جاري التحميل..." : i18next.t("buttons.see_more")}
                 </button>
               ) : currentPage > 1 ? (
                 <button
                   onClick={handleShowLess}
                   className="px-5 py-1.5 rounded text-xs font-bold bg-negative text-white transition hover:bg-opacity-90 shadow-md"
                 >
-                  "عرض أقل"
+                  {i18next.t("buttons.see_less")}
                 </button>
               ) : null}
             </div>

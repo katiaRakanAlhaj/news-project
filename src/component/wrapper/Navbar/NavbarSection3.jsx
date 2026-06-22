@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import i18n from "../../i18n";
-import { useParams, useNavigate } from "react-router-dom";
 import i18next from "i18next";
 
 const NavbarSection3 = ({ categoryData }) => {
-  const menuItems = ["سياسية", "رياضة", "اقتصادية"];
   const navigate = useNavigate();
+  const location = useLocation(); // Tracks the current active path
   const { lang } = useParams();
 
   // Helper function to get current language from URL
@@ -29,27 +28,19 @@ const NavbarSection3 = ({ categoryData }) => {
     const match = currentPath.match(/^\/(en|ar)(\/.*)?$/);
 
     if (match) {
-      // We have a language in the URL
       const restOfPath = match[2] || "";
-
-      // Build new path with new language
       const newPath = `/${newLang}${restOfPath}`;
 
-      // Update language
       i18n.changeLanguage(newLang);
       localStorage.setItem("language", newLang);
 
-      // Navigate to new URL
       window.location.href = newPath;
     } else {
-      // No language in URL (shouldn't happen, but handle it)
       const newPath = `/${newLang}`;
 
-      // Update language
       i18n.changeLanguage(newLang);
       localStorage.setItem("language", newLang);
 
-      // Navigate to new URL
       window.location.href = newPath;
     }
   };
@@ -61,24 +52,49 @@ const NavbarSection3 = ({ categoryData }) => {
 
   const currentLang = getCurrentLang();
 
+  // Helper check to determine if home is active
+  const isHomeActive = 
+    location.pathname === `/${currentLang}` || 
+    location.pathname === `/${currentLang}/`;
+
   return (
     <div className="w-full h-[5.5rem] bg-[#121C2A] relative">
       <div className="container1 mx-auto h-full">
         <div className="flex w-full gap-x-[2rem] h-full items-center justify-between">
           <div className="flex gap-x-[2rem] items-center">
+            
+            {/* Home Link with Active Condition */}
             <Link to={`/${currentLang}`}>
-              <p className="text-white text-md">{i18next.t("menu.home")}</p>
+              <p
+                className={`text-md transition-colors duration-200 pb-1 ${
+                  isHomeActive
+                    ? "text-[#3B82F6] font-bold border-b-2 border-[#3B82F6]"
+                    : "text-white hover:text-[#0058C5]"
+                }`}
+              >
+                {i18next.t("menu.home")}
+              </p>
             </Link>
+
+            {/* Dynamic Categories Link Matrix */}
             <div className="flex gap-x-[2rem]">
-              {categoryData?.data?.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryClick(category.id)}
-                  className="text-white text-md hover:text-[#0058C5] transition-colors duration-200 cursor-pointer bg-transparent border-none"
-                >
-                  {category.name}
-                </button>
-              ))}
+              {categoryData?.data?.map((category) => {
+                const isCategoryActive = location.pathname === `/${currentLang}/category/${category.id}`;
+
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className={`text-md transition-colors duration-200 cursor-pointer bg-transparent border-none pb-1 ${
+                      isCategoryActive
+                        ? "text-[#3B82F6] font-bold border-b-2 border-[#3B82F6]"
+                        : "text-white hover:text-[#0058C5]"
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

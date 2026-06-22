@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import NavbarMobile from "./Navbar/NavbarMobile";
 import Footer from "./footer";
 import NavbarSection1 from "./Navbar/NavbarSection1";
@@ -10,6 +10,8 @@ import { ThemeProvider, useTheme } from "../../context/ThemeContext";
 import { useFetchFooter } from "./hooks/useFetchFooter";
 
 function WrapperContent() {
+    const { lang } = useParams();
+  const currentLang = lang || "ar";
   const {data:footerData , isLoading:footerDataLoading , error:footerDataError} = useFetchFooter();
   const { data: categoryData, isLoading: categoryDataLoading, error: categoryDataError } = useFetchCategories();
   const { data: contactData, isLoading: contactDataLoading, error: contactDataError } = useFetchContact();
@@ -19,7 +21,7 @@ function WrapperContent() {
     <div className={`size-full relative ${isDarkMode ? 'dark' : ''}`}>
       <div className="hidden lg:block">
         <NavbarSection1 contactData={contactData} />
-        <NavbarSection2 footerData = {footerData}/>
+        <NavbarSection2 currentLang = {currentLang} footerData = {footerData}/>
         <NavbarSection3 categoryData={categoryData} />
       </div>
       <div className="lg:hidden block">

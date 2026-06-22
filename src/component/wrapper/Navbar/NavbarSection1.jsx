@@ -1,35 +1,28 @@
 import i18next from "i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { FiSun, FiMoon } from "react-icons/fi";
 import facebook from "../../../assets/images/facebook.svg";
 import linkedIn from "../../../assets/images/linkedIn.svg";
 import instgram from "../../../assets/images/instgram.svg";
 import twitter from "../../../assets/images/twitter.svg";
 import { useTheme } from "../../../context/ThemeContext";
+import { getTodayDate } from "../../../utils/dateUtils";
 
 const NavbarSection1 = ({ contactData }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { lang } = useParams();
+  const location = useLocation(); // Add this to track current path
+  
   const getCurrentLang = () => {
     return lang || "ar";
   };
   const currentLang = getCurrentLang();
+  
   const iconWhiteFilter =
     "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)";
   const iconDarkFilter =
     "brightness(0) saturate(100%) invert(28%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(98%) contrast(92%)";
-
-  const getTodayDate = () => {
-    const today = new Date();
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return today.toLocaleDateString("ar-EG", options);
-  };
-
+  
   const socilaIcons = [
     { icon: twitter, url: contactData?.data?.x, type: "image" },
     { icon: linkedIn, url: contactData?.data?.linkedin, type: "image" },
@@ -50,6 +43,11 @@ const NavbarSection1 = ({ contactData }) => {
     { icon: twitter, url: contactData?.data?.x, type: "image" },
   ];
 
+  // Helper function to check if a link is active
+  const isActiveLink = (path) => {
+    return location.pathname === `/${currentLang}${path}`;
+  };
+
   return (
     <>
       <div
@@ -62,9 +60,13 @@ const NavbarSection1 = ({ contactData }) => {
             <div className="flex gap-x-10 items-center">
               <Link to={`/${currentLang}/About_Us`}>
                 <p
-                  className={`transition-colors duration-300 ${
-                    isDarkMode ? "text-white" : "text-[#222222]"
-                  } text-md`}
+                  className={`transition-colors duration-300 text-md ${
+                    isActiveLink("/About_Us")
+                      ? "text-[#3B82F6] font-bold"
+                      : isDarkMode 
+                        ? "text-white hover:text-[#3B82F6]" 
+                        : "text-[#222222] hover:text-[#3B82F6]"
+                  }`}
                 >
                   {i18next.t("menu.about_us")}
                 </p>
@@ -72,9 +74,13 @@ const NavbarSection1 = ({ contactData }) => {
 
               <Link to={`/${currentLang}/contact`}>
                 <p
-                  className={`transition-colors duration-300 ${
-                    isDarkMode ? "text-white" : "text-[#222222]"
-                  } text-md`}
+                  className={`transition-colors duration-300 text-md ${
+                    isActiveLink("/contact")
+                      ? "text-[#3B82F6] font-bold"
+                      : isDarkMode 
+                        ? "text-white hover:text-[#3B82F6]" 
+                        : "text-[#222222] hover:text-[#3B82F6]"
+                  }`}
                 >
                   {i18next.t("menu.contact_us")}
                 </p>
@@ -86,7 +92,7 @@ const NavbarSection1 = ({ contactData }) => {
                   isDarkMode ? "text-white" : "text-[#222222]"
                 } text-md`}
               >
-                {getTodayDate()}
+                {getTodayDate(currentLang)}
               </p>
             </div>
             <div className="flex items-center gap-x-4">

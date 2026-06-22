@@ -3,8 +3,10 @@ import TitleSection from "../../../../ui/titleSection";
 import i18next from "i18next";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { containerVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5"; // Importing navigation arrow icons
+import { formatDate } from "../../../../utils/dateUtils";
 
 const NewsModelNine = ({ 
   data, 
@@ -12,23 +14,11 @@ const NewsModelNine = ({
   currentPage, 
   totalPages, 
   onPageChange,
-  isLoading: externalIsLoading 
+  isLoading: externalIsLoading ,
+  currentLang
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(3);
-
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
-
   // Extract news items from API data
   const newsItems = data?.items || [];
   
@@ -37,7 +27,7 @@ const NewsModelNine = ({
     id: item.id,
     image: item.news_image,
     title: item.news_title,
-    date: formatDate(item.date),
+    date: formatDate(item.date , currentLang),
     views: item.views_count || "0",
     type: item.category?.name,
   }));
@@ -156,27 +146,29 @@ const NewsModelNine = ({
                       className="px-2 shrink-0 flex-none" // Prevents individual slide cards from shrinking on final index bounds
                       style={{ width: `${100 / slidesToShow}%` }}
                     >
-                      <div className="relative w-full h-[22rem] overflow-hidden rounded-md">
-                        <img
-                          className="w-full h-full object-cover"
-                          src={item.image}
-                          alt={item.title}
-                        />
-                        <div
-                          className="absolute inset-0"
-                          style={{
-                            background:
-                              "linear-gradient(180deg, rgba(0, 0, 0, 0) 51.55%, #000000 100%)",
-                          }}
-                        ></div>
-                        <div
-                          className={`absolute ${isRTL ? "right-[1rem]" : "left-[1rem]"} bottom-[1rem] z-10`}
-                        >
-                          <h1 className="text-white font-bold text-xl line-clamp-2">
-                            {item.title}
-                          </h1>
+                      <Link to={`/${currentLang}/News/${item.id}`}>
+                        <div className="relative w-full h-[22rem]">
+                          <img
+                            className="w-full h-full object-cover transition-transform duration-300"
+                            src={item.image}
+                            alt={item.title}
+                          />
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              background:
+                                "linear-gradient(180deg, rgba(0, 0, 0, 0) 51.55%, #000000 100%)",
+                            }}
+                          ></div>
+                          <div
+                            className={`absolute ${isRTL ? "right-[1rem]" : "left-[1rem]"} bottom-[1rem] z-10`}
+                          >
+                            <h1 className="text-white font-bold text-xl line-clamp-2">
+                              {item.title}
+                            </h1>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     </div>
                   ))}
                 </div>

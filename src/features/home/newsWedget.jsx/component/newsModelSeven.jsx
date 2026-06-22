@@ -7,6 +7,7 @@ import tiktok from "../../../../assets/images/tiktok.svg";
 import TitleSection from "../../../../ui/titleSection";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 
 const NewsModelSeven = ({ data, contactData, currentLang }) => {
   // Social media icons (static - these are UI elements, not content data)
@@ -48,19 +49,6 @@ const NewsModelSeven = ({ data, contactData, currentLang }) => {
       url: contactData?.data?.youtube,
     },
   ];
-
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
     if (Array.isArray(items)) {
@@ -81,7 +69,7 @@ const NewsModelSeven = ({ data, contactData, currentLang }) => {
     image: item.news_image,
     title: item.news_title,
     description: item.news_description || "لا يوجد وصف متاح",
-    date: formatDate(item.date),
+    date: formatDate(item.date , currentLang),
     views: item.views_count,
   }));
 

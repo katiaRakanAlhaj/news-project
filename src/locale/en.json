@@ -10,7 +10,8 @@
         "vote_now": "Vote now"
     },
     "buttons": {
-        "see_more": "see more"
+        "see_more": "see more",
+        "see_less": "see less"
     },
     "contact": {
         "contact_us": "Contact Us",
@@ -21,7 +22,7 @@
         "subject": "Subject",
         "text": "Text",
         "send": "Send",
-        "success_message": "تم إرسال الرسالة بنجاح!",
+        "success_message": "Data Sent Successfully",
         "failed_message": "Failed to send message. Please try again.",
         "sending": "sending..."
     },
@@ -32,5 +33,41 @@
         "invalid_email": "Invalid email address",
         "subject_required": "Subject is required",
         "message_required": "Message is required"
+    },
+    "survey": "Survey",
+    "polls": {
+        "loading_error": "An error occurred while loading the survey",
+        "please_select": "Please select an answer first",
+        "vote_success": "Voted successfully!",
+        "vote_error": "An error occurred during voting",
+        "hide_results": "Hide results",
+        "show_results": "Show results",
+        "total_votes": "Total votes:",
+        "votes_count": "votes",
+        "no_poll": "No survey available for this section"
+    },
+    "ads": {
+        "loading_error": "An error occurred while loading the advertisement",
+        "no_ad": "No advertisement available",
+        "ad_space": "Advertisement space"
+    },
+    "time": {
+        "less_than_hour": "Less than an hour ago",
+        "hours_ago": "{{count}} hours ago",
+        "days_ago": "{{count}} days ago"
+    },
+    "single_news": {
+        "empty_alt": "No news content",
+        "empty_title": "No details available for this news item at the moment",
+        "empty_description": "Sorry, this news segment is empty and contains no data to display.",
+        "latest_news_title": "Latest News"
+    },
+    "Milestones in Our History": "Milestones in Our History",
+    "Latest News": "Latest News",
+    "category": {
+        "empty_alt": "No news available",
+        "empty_title": "No news in this category",
+        "empty_description": "New news will be added soon, stay tuned"
     }
+
 }

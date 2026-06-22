@@ -1,6 +1,7 @@
 import i18next from "i18next";
+import { Link } from "react-router-dom"; // Add this import
 
-const MostViewedSection = ({ activeTab, mostViewedData }) => {
+const MostViewedSection = ({ activeTab, mostViewedData, currentLang }) => { // Add currentLang prop
   // Check if mostViewedData has tabs (object with ترند/منوعات) or is a direct array
   const getDisplayData = () => {
     if (Array.isArray(mostViewedData)) {
@@ -18,25 +19,28 @@ const MostViewedSection = ({ activeTab, mostViewedData }) => {
   return (
     <div className="space-y-[1rem]">
       {displayData?.map((newsItem, newsIndex) => (
-        <div
+        <Link 
           key={newsIndex}
-          className="flex flex-col sm:flex-row gap-x-6 group cursor-pointer  rounded-lg"
+          to={`/${currentLang}/News/${newsItem.id}`}
+          className="block"
         >
-          <img
-            className="w-full sm:w-[8rem] h-[7.75rem] rounded-lg object-cover"
-            src={newsItem.image}
-            alt={newsItem.title}
-          />
-          <div className="flex-1 flex flex-col space-y-2">
-            <h3 className="text-secondary font-bold text-md line-clamp-1 group-hover:text-negative transition">
-              {newsItem.title}
-            </h3>
-            <p className="text-md text-secondary line-clamp-2">
-              {newsItem.description}
-            </p>
-            <p className="text-sm text-[#6B7280]">{newsItem.time}</p>
+          <div className="flex flex-col sm:flex-row gap-x-6 group cursor-pointer rounded-lg">
+            <img
+              className="w-full sm:w-[8rem] h-[7.75rem] rounded-lg object-cover"
+              src={newsItem.image}
+              alt={newsItem.title}
+            />
+            <div className="flex-1 flex flex-col space-y-2">
+              <h3 className="text-secondary font-bold text-md line-clamp-1 group-hover:text-negative transition">
+                {newsItem.title}
+              </h3>
+              <p className="text-md text-secondary line-clamp-2">
+                {newsItem.description}
+              </p>
+              <p className="text-sm text-[#6B7280]">{newsItem.time}</p>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

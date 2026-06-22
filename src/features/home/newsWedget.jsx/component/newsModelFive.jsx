@@ -18,6 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { usefetchAds } from "../../heroWedget/hook/useFetchAds";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 
 // Poll Component - handles individual poll
 const PollComponent = ({ pollId }) => {
@@ -43,7 +44,7 @@ const PollComponent = ({ pollId }) => {
 
   const handleVote = () => {
     if (!selectedChoice) {
-      toast.warning("الرجاء اختيار إجابة أولاً");
+      toast.warning(i18next.t("polls.please_select"));
       return;
     }
 
@@ -51,7 +52,7 @@ const PollComponent = ({ pollId }) => {
       { pollId, pollOptionId: selectedChoice },
       {
         onSuccess: (data) => {
-          toast.success("تم التصويت بنجاح!");
+          toast.success(i18next.t("polls.vote_success"));
           setTimeout(() => {
             setShowResults(true);
             refetch();
@@ -59,7 +60,7 @@ const PollComponent = ({ pollId }) => {
           console.log("Vote successful:", data);
         },
         onError: (error) => {
-          toast.error(error?.response?.data?.message || "حدث خطأ في التصويت");
+          toast.error(error?.response?.data?.message || i18next.t("polls.vote_error"));
           console.error("Vote error:", error);
         },
       },
@@ -83,7 +84,7 @@ const PollComponent = ({ pollId }) => {
 
   if (pollError || !pollData?.data) {
     return (
-      <p className="text-red-500 text-center">حدث خطأ في تحميل الاستبيان</p>
+      <p className="text-red-500 text-center">{i18next.t("polls.loading_error")}</p>
     );
   }
 
@@ -101,7 +102,7 @@ const PollComponent = ({ pollId }) => {
                 <div className="flex justify-between text-sm text-secondary mb-1">
                   <span>{result.title}</span>
                   <span>
-                    {result.percentage}% ({result.votes} صوت)
+                    {result.percentage}% ({result.votes} {i18next.t("polls.votes_count")})
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -114,7 +115,7 @@ const PollComponent = ({ pollId }) => {
             ))}
           </div>
           <div className="text-sm text-gray-500 mt-3 text-center">
-            إجمالي الأصوات: {resultsData.total_votes}
+            {i18next.t("polls.total_votes")} {resultsData.total_votes}
           </div>
         </div>
       ) : (
@@ -159,7 +160,7 @@ const PollComponent = ({ pollId }) => {
         onClick={handleShowResults}
         className="w-full text-center text-sm text-secondary hover:text-secondary/80 mt-2 transition"
       >
-        {showResults ? "إخفاء النتائج" : "عرض النتائج"}
+        {showResults ? i18next.t("polls.hide_results") : i18next.t("polls.show_results")}
       </button>
     </div>
   );
@@ -170,7 +171,7 @@ const AdvertisementComponent = ({ adData }) => {
   if (!adData) {
     return (
       <div className="w-full h-[19rem] relative bg-[#E5E7EB] border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-        <p className="text-[#9CA3AF] text-xs">لا يوجد إعلان متاح</p>
+        <p className="text-[#9CA3AF] text-xs">{i18next.t("ads.no_ad")}</p>
       </div>
     );
   }
@@ -223,18 +224,6 @@ const NewsModelFive = ({
   // Get the poll ID from the matching poll
   const pollId = matchingPoll?.id;
 
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
     if (Array.isArray(items)) {
@@ -254,9 +243,9 @@ const NewsModelFive = ({
     id: item.id,
     image: item.news_image,
     title: item.news_title,
-    date: formatDate(item.date),
+    date: formatDate(item.date , currentLang),
     views: item.views_count,
-    type: item.category?.name || "عام",
+    type: item.category?.name || i18next.t("news.general_fallback"),
   }));
 
   // Pagination handlers
@@ -285,14 +274,6 @@ const NewsModelFive = ({
     return null;
   }
 
-  // Log for debugging
-  console.log(`Section ${sectionId} - Home Page ID:`, homePageId);
-  console.log(`Section ${sectionId} - All Polls:`, pollsData);
-  console.log(`Section ${sectionId} - Matching Poll:`, matchingPoll);
-  console.log(`Section ${sectionId} - Poll ID:`, pollId);
-  console.log(`Section ${sectionId} - All Ads:`, AdsData);
-  console.log(`Section ${sectionId} - Matching Ad:`, matchingAd);
-
   return (
     <>
       {/* Toast Container */}
@@ -302,7 +283,7 @@ const NewsModelFive = ({
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl={false}
+        rtl={i18next.language === "ar"}
         pauseOnFocusLoss
         draggable
         pauseOnHover
@@ -321,7 +302,7 @@ const NewsModelFive = ({
           {/* first column - News with animations */}
           <div className="lg:col-span-8 col-span-1">
             <TitleSection
-              title={data.title || "أحدث الأخبار"}
+              title={data.title || i18next.t("news.title_fallback")}
               showArrows={true}
               currentPage={currentPage}
               lastPage={totalPages}
@@ -345,9 +326,8 @@ const NewsModelFive = ({
                     className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]"
                   >
                     {news.map((item, index) => (
-                      <Link to={`/${currentLang}/News/${item.id}`}>
+                      <Link key={item.id || index} to={`/${currentLang}/News/${item.id}`}>
                         <NewsCard
-                          key={item.id || index}
                           image={item.image}
                           title={item.title}
                           date={item.date}
@@ -369,7 +349,7 @@ const NewsModelFive = ({
               style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
               className="w-full h-auto px-[2rem] py-[2rem] rounded-lg bg-white border border-[#C1C6D6]"
             >
-              <h1 className="text-secondary text-md mt-1">استبيان</h1>
+              <h1 className="text-secondary text-md mt-1">{i18next.t("survey")}</h1>
 
               {isPollLoading ? (
                 <div className="flex justify-center items-center h-40">
@@ -377,14 +357,14 @@ const NewsModelFive = ({
                 </div>
               ) : isPollError ? (
                 <p className="text-red-500 text-center mt-4">
-                  حدث خطأ في تحميل الاستبيان
+                  {i18next.t("polls.loading_error")}
                 </p>
               ) : pollId ? (
                 // Show the matching poll for this section
                 <PollComponent key={pollId} pollId={pollId} />
               ) : (
                 <p className="text-gray-500 text-center mt-4">
-                  لا يوجد استبيان متاح لهذا القسم
+                  {i18next.t("polls.no_poll")}
                 </p>
               )}
             </div>
@@ -398,7 +378,7 @@ const NewsModelFive = ({
               ) : isAdError ? (
                 <div className="w-full h-[19rem] bg-[#E5E7EB] border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                   <p className="text-red-500 text-xs">
-                    حدث خطأ في تحميل الإعلان
+                    {i18next.t("ads.loading_error")}
                   </p>
                 </div>
               ) : matchingAd ? (
@@ -407,7 +387,7 @@ const NewsModelFive = ({
               ) : (
                 // Fallback ad placeholder if no matching ad found
                 <div className="w-full h-[19rem] relative bg-[#E5E7EB] border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                  <p className="text-[#9CA3AF] text-xs">مساحة إعلانية</p>
+                  <p className="text-[#9CA3AF] text-xs">{i18next.t("ads.ad_space")}</p>
                 </div>
               )}
             </div>

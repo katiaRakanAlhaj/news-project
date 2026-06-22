@@ -1,49 +1,61 @@
+import { useState } from "react";
 import MostViewedSection from "../../../ui/MostViewedSection";
+import { formatTimeAgo } from "../../../utils/dateUtils";
 
-const LastNews = ({ latestNewsData }) => {
-  // Function to format time difference
-  const getTimeAgo = (dateString) => {
-    if (!dateString) return "منذ ٤ ساعات";
-    
-    const now = new Date();
-    const date = new Date(dateString);
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    
-    if (diffMins < 1) return "الآن";
-    if (diffMins < 60) return `منذ ${diffMins} دقائق`;
-    if (diffHours === 1) return "منذ ساعة";
-    if (diffHours < 24) return `منذ ${diffHours} ساعات`;
-    if (diffDays === 1) return "منذ يوم";
-    if (diffDays < 30) return `منذ ${diffDays} أيام`;
-    if (diffDays < 365) return `منذ ${Math.floor(diffDays / 30)} أشهر`;
-    return `منذ ${Math.floor(diffDays / 365)} سنوات`;
-  };
+// If you use translation files like the second component, import i18next
+import i18next from "i18next"; 
 
-  // Transform API data to match MostViewedSection expected format
-  const transformedData = latestNewsData?.data?.map((item) => ({
+const LastNews = ({ latestNewsData, currentLang }) => {
+  // Track whether the news section is expanded or collapsed
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // 1. Transform all available data first
+  const allTransformedData = latestNewsData?.data?.map((item) => ({
     image: item.news_image,
     title: item.news_title,
     description: item.news_description,
-    time: getTimeAgo(item.date),
+    time: formatTimeAgo(item.date, currentLang),
     id: item.id,
     category: item.category_id,
     date: item.date
   })) || [];
 
+  // 2. Slice the data dynamically based on the state (4 items initially)
+  const visibleData = isExpanded 
+    ? allTransformedData 
+    : allTransformedData.slice(0, 4);
+
   return (
     <div>
       <div className="flex gap-x-2 items-center">
         <h1 className="text-negative font-bold text-md text-nowrap">
-          اخر الاخبار
+          {i18next.t("Latest News")}
         </h1>
         <div className="bg-negative w-full h-[0.01rem]"></div>
       </div>
+      
       <div className="mt-2">
-        <MostViewedSection activeTab={null} mostViewedData={transformedData} />
+        <MostViewedSection 
+          currentLang={currentLang} 
+          activeTab={null} 
+          mostViewedData={visibleData} 
+        />
       </div>
+
+      {/* 3. Render the See More/See Less button conditionally if total items > 4 */}
+      {allTransformedData.length > 4 && (
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="px-6 py-2 text-sm font-bold bg-negative text-white rounded shadow hover:bg-opacity-90 transition duration-200"
+          >
+            {isExpanded 
+              ? (i18next.t("buttons.see_less") || "عرض أقل") 
+              : (i18next.t("buttons.see_more") || "عرض المزيد")
+            }
+          </button>
+        </div>
+      )}
     </div>
   );
 };

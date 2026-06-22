@@ -1,6 +1,7 @@
 // NewsModelEight.jsx
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import arrow1 from "../../../../assets/images/arrow1.svg";
 import arrow2 from "../../../../assets/images/arrow2.svg";
@@ -10,27 +11,20 @@ import {
   CenteredSquareLoader,
 } from "../../../../ui/animationNews";
 import { useTheme } from "../../../../context/ThemeContext";
+import { formatDate } from "../../../../utils/dateUtils";
+import i18next from "i18next";
 
 const NewsModelEight = ({
   data,
   sectionId,
   onPageChange,
-  onCategoryChange, // New prop for category tracking
+  onCategoryChange,
   isLoading: externalIsLoading,
   categoryPages,
+  currentLang,
 }) => {
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
   const { isDarkMode } = useTheme();
-  // Process API data structure - items is an array of categories with their news
+
   const processApiData = (apiData) => {
     if (!apiData || !apiData.items || !Array.isArray(apiData.items)) {
       return {};
@@ -42,11 +36,9 @@ const NewsModelEight = ({
       const categoryName = categoryItem.name;
       const categoryId = categoryItem.id;
 
-      // news is an object with 'data' array
       const newsObject = categoryItem.news || { data: [] };
       const newsArray = newsObject.data || [];
 
-      // Get pagination info
       const currentPage = newsObject.current_page || 1;
       const lastPage = newsObject.last_page || 1;
 
@@ -59,7 +51,7 @@ const NewsModelEight = ({
           image: news.news_image,
           title: news.news_title,
           description: news.news_description || "",
-          date: formatDate(news.date),
+          date: formatDate(news.date, currentLang),
           views: news.views_count,
         })),
       };
@@ -68,22 +60,16 @@ const NewsModelEight = ({
     return newsDataMap;
   };
 
-  // Get news data from API
   const newsData = processApiData(data);
-
-  // Get categories from the data
   const categories = Object.keys(newsData);
 
-  // State management
   const [activeCategory, setActiveCategory] = useState(categories[0] || "");
   const [currentPage, setCurrentPage] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Update active category when data changes
   useEffect(() => {
     if (categories.length > 0 && !categories.includes(activeCategory)) {
       setActiveCategory(categories[0]);
-      // Notify parent about the initial category
       const categoryData = newsData[categories[0]];
       if (categoryData && onCategoryChange) {
         onCategoryChange(sectionId, categoryData.id);
@@ -91,7 +77,6 @@ const NewsModelEight = ({
     }
   }, [categories, activeCategory, sectionId, onCategoryChange, newsData]);
 
-  // Get current category news
   const currentCategoryData = newsData[activeCategory] || {
     news: [],
     id: null,
@@ -101,13 +86,11 @@ const NewsModelEight = ({
   const currentNews = currentCategoryData.news || [];
   const currentCategoryId = currentCategoryData.id;
 
-  // Get the current page for this specific category from categoryPages state
   const categoryKey = `${sectionId}-${currentCategoryId}`;
   const currentCategoryCurrentPage =
     categoryPages?.[categoryKey] || currentCategoryData.currentPage || 1;
   const currentCategoryLastPage = currentCategoryData.lastPage || 1;
 
-  // Check if this category is currently loading
   const isLoadingCategory =
     externalIsLoading ||
     (categoryPages?.[categoryKey] &&
@@ -116,16 +99,13 @@ const NewsModelEight = ({
   const mainNews = currentNews[0];
   const remainingNews = currentNews.slice(1);
 
-  // Pagination settings for local category pagination (items per page)
   const itemsPerPage = 8;
   const totalLocalPages = Math.ceil(remainingNews.length / itemsPerPage);
 
-  // Reset local page when category changes or data updates
   useEffect(() => {
     setCurrentPage(0);
   }, [activeCategory, currentCategoryCurrentPage]);
 
-  // Handle local pagination (navigating through items within the current page)
   const handleNextLocal = () => {
     if (currentPage < totalLocalPages - 1) {
       setCurrentPage(currentPage + 1);
@@ -138,7 +118,6 @@ const NewsModelEight = ({
     }
   };
 
-  // API pagination handlers with section ID and category ID
   const handlePrevApiPage = () => {
     if (currentCategoryCurrentPage > 1 && !isLoadingCategory) {
       onPageChange(
@@ -178,21 +157,17 @@ const NewsModelEight = ({
     setCurrentPage(0);
     setIsMobileMenuOpen(false);
 
-    // Notify parent about category change
     if (onCategoryChange) {
       onCategoryChange(sectionId, categoryId);
     }
 
-    // Reset to first page with new category
     onPageChange(sectionId, 1, categoryId);
   };
 
-  // Don't render if no data or no categories
   if (!data || (!categories.length && !isLoadingCategory)) {
     return null;
   }
 
-  // Show loading if no news and still loading
   if (isLoadingCategory && currentNews.length === 0) {
     return (
       <div className="min-h-[400px]">
@@ -209,7 +184,6 @@ const NewsModelEight = ({
       variants={containerVariants}
       className="container1 mx-auto mt-[2rem] px-[1rem] sm:px-[1.5rem] md:px-0"
     >
-      {/* Categories Section */}
       <AnimatePresence mode="wait">
         {isLoadingCategory && currentNews.length > 0 ? (
           <div className="min-h-[200px] flex items-center justify-center">
@@ -244,7 +218,6 @@ const NewsModelEight = ({
                 ))}
               </div>
 
-              {/* API Pagination Arrows - These call the API for category pagination */}
               <div className="flex gap-x-[0.5rem] items-center">
                 <div
                   onClick={handlePrevApiPage}
@@ -386,34 +359,42 @@ const NewsModelEight = ({
                 >
                   <div className="col-span-8">
                     <div className="grid grid-cols-2 gap-x-[1rem]">
+                      {/* Main News Card - Left */}
                       <motion.div
                         variants={imageVariants}
                         className="flex flex-col"
                       >
-                        <img
-                          src={mainNews.image}
-                          className="w-full h-[16rem] object-cover"
-                          alt="news"
-                        />
-                        <h1
-                          className={`font-bold text-xl ${isDarkMode ? "text-white" : "text-[#333333]"} mt-[1rem]`}
-                        >
-                          {mainNews.title}
-                        </h1>
-                        {mainNews.description && (
-                          <p className={`text-md text-[#666666] mt-[0.5rem] line-clamp-3`}>
-                            {mainNews.description}
-                          </p>
-                        )}
-                        <div className="mt-[0.75rem]">
-                          <NewsMetaInfo
-                            dateText={mainNews.date}
-                            viewsText={mainNews.views}
-                            textColor="text-[#363636]"
-                          />
-                        </div>
+                        <Link to={`/${currentLang}/News/${mainNews.id}`}>
+                          <div className="cursor-pointer">
+                            <img
+                              src={mainNews.image}
+                              className="w-full h-[16rem] object-cover"
+                              alt="news"
+                            />
+                            <h1
+                              className={`font-bold text-xl ${isDarkMode ? "text-white" : "text-[#333333]"} mt-[1rem]`}
+                            >
+                              {mainNews.title}
+                            </h1>
+                            {mainNews.description && (
+                              <p
+                                className={`text-md text-[#666666] mt-[0.5rem] line-clamp-3`}
+                              >
+                                {mainNews.description}
+                              </p>
+                            )}
+                            <div className="mt-[0.75rem]">
+                              <NewsMetaInfo
+                                dateText={mainNews.date}
+                                viewsText={mainNews.views}
+                                textColor="text-[#363636]"
+                              />
+                            </div>
+                          </div>
+                        </Link>
                       </motion.div>
 
+                      {/* Left Column News Cards */}
                       <motion.div
                         variants={containerVariants}
                         className="flex flex-col space-y-[1rem]"
@@ -424,27 +405,33 @@ const NewsModelEight = ({
                             variants={imageVariants}
                             className="flex gap-x-[1rem]"
                           >
-                            <img
-                              className="w-[9rem] h-[8rem] object-cover"
-                              src={item.image}
-                              alt="news"
-                            />
-                            <div className="flex flex-col space-y-[0.5rem] justify-center">
-                              <h1 className="font-bold line-clamp-2 text-lg text-[#333333]">
-                                {item.title}
-                              </h1>
-                              <NewsMetaInfo
-                                dateText={item.date}
-                                viewsText={item.views}
-                                textColor="text-[#363636]"
+                            <Link
+                              to={`/${currentLang}/News/${item.id}`}
+                              className="flex gap-x-[1rem] w-full"
+                            >
+                              <img
+                                className="w-[9rem] h-[8rem] object-cover cursor-pointer"
+                                src={item.image}
+                                alt="news"
                               />
-                            </div>
+                              <div className="flex flex-col space-y-[0.5rem] justify-center">
+                                <h1 className="font-bold line-clamp-2 text-lg text-[#333333] cursor-pointer">
+                                  {item.title}
+                                </h1>
+                                <NewsMetaInfo
+                                  dateText={item.date}
+                                  viewsText={item.views}
+                                  textColor="text-[#363636]"
+                                />
+                              </div>
+                            </Link>
                           </motion.div>
                         ))}
                       </motion.div>
                     </div>
                   </div>
 
+                  {/* Right Column News Cards */}
                   <motion.div
                     variants={containerVariants}
                     className="col-span-4"
@@ -456,21 +443,26 @@ const NewsModelEight = ({
                           variants={imageVariants}
                           className="flex gap-x-[1rem]"
                         >
-                          <img
-                            className="w-[9rem] h-[8rem] object-cover"
-                            src={item.image}
-                            alt="news"
-                          />
-                          <div className="flex flex-col space-y-[0.5rem] justify-center">
-                            <h1 className="font-bold line-clamp-2 text-[1rem] text-[#333333]">
-                              {item.title}
-                            </h1>
-                            <NewsMetaInfo
-                              dateText={item.date}
-                              viewsText={item.views}
-                              textColor="text-[#363636]"
+                          <Link
+                            to={`/${currentLang}/News/${item.id}`}
+                            className="flex gap-x-[1rem] w-full"
+                          >
+                            <img
+                              className="w-[9rem] h-[8rem] object-cover cursor-pointer"
+                              src={item.image}
+                              alt="news"
                             />
-                          </div>
+                            <div className="flex flex-col space-y-[0.5rem] justify-center">
+                              <h1 className="font-bold line-clamp-2 text-[1rem] text-[#333333] cursor-pointer">
+                                {item.title}
+                              </h1>
+                              <NewsMetaInfo
+                                dateText={item.date}
+                                viewsText={item.views}
+                                textColor="text-[#363636]"
+                              />
+                            </div>
+                          </Link>
                         </motion.div>
                       ))}
                     </div>
@@ -483,32 +475,38 @@ const NewsModelEight = ({
                   className="hidden md:block lg:hidden mt-[1rem]"
                 >
                   <div className="grid grid-cols-2 gap-[1.5rem]">
+                    {/* Main News Card */}
                     <motion.div
                       variants={imageVariants}
                       className="col-span-2 mb-[1rem]"
                     >
-                      <img
-                        src={mainNews.image}
-                        className="w-full h-[16rem] object-cover"
-                        alt="news"
-                      />
-                      <h1 className="font-bold text-[1.25rem] text-[#333333] mt-[1rem]">
-                        {mainNews.title}
-                      </h1>
-                      {mainNews.description && (
-                        <p className="text-[0.875rem] text-[#666666] mt-[0.5rem] line-clamp-3">
-                          {mainNews.description}
-                        </p>
-                      )}
-                      <div className="mt-[0.75rem]">
-                        <NewsMetaInfo
-                          dateText={mainNews.date}
-                          viewsText={mainNews.views}
-                          textColor="text-[#363636]"
-                        />
-                      </div>
+                      <Link to={`/${currentLang}/News/${mainNews.id}`}>
+                        <div className="cursor-pointer">
+                          <img
+                            src={mainNews.image}
+                            className="w-full h-[16rem] object-cover"
+                            alt="news"
+                          />
+                          <h1 className="font-bold text-[1.25rem] text-[#333333] mt-[1rem]">
+                            {mainNews.title}
+                          </h1>
+                          {mainNews.description && (
+                            <p className="text-[0.875rem] text-[#666666] mt-[0.5rem] line-clamp-3">
+                              {mainNews.description}
+                            </p>
+                          )}
+                          <div className="mt-[0.75rem]">
+                            <NewsMetaInfo
+                              dateText={mainNews.date}
+                              viewsText={mainNews.views}
+                              textColor="text-[#363636]"
+                            />
+                          </div>
+                        </div>
+                      </Link>
                     </motion.div>
 
+                    {/* Left Column */}
                     <motion.div
                       variants={containerVariants}
                       className="col-span-1"
@@ -520,26 +518,32 @@ const NewsModelEight = ({
                             variants={imageVariants}
                             className="flex gap-x-[0.75rem]"
                           >
-                            <img
-                              className="w-[6.25rem] h-[5.625rem] object-cover rounded-[0.5rem] flex-shrink-0"
-                              src={item.image}
-                              alt="news"
-                            />
-                            <div className="flex flex-col space-y-[0.5rem] justify-center">
-                              <h1 className="font-bold line-clamp-2 text-[0.875rem] text-[#333333]">
-                                {item.title}
-                              </h1>
-                              <NewsMetaInfo
-                                dateText={item.date}
-                                viewsText={item.views}
-                                textColor="text-[#363636]"
+                            <Link
+                              to={`/${currentLang}/News/${item.id}`}
+                              className="flex gap-x-[0.75rem] w-full"
+                            >
+                              <img
+                                className="w-[6.25rem] h-[5.625rem] object-cover rounded-[0.5rem] flex-shrink-0 cursor-pointer"
+                                src={item.image}
+                                alt="news"
                               />
-                            </div>
+                              <div className="flex flex-col space-y-[0.5rem] justify-center">
+                                <h1 className="font-bold line-clamp-2 text-[0.875rem] text-[#333333] cursor-pointer">
+                                  {item.title}
+                                </h1>
+                                <NewsMetaInfo
+                                  dateText={item.date}
+                                  viewsText={item.views}
+                                  textColor="text-[#363636]"
+                                />
+                              </div>
+                            </Link>
                           </motion.div>
                         ))}
                       </div>
                     </motion.div>
 
+                    {/* Right Column */}
                     <motion.div
                       variants={containerVariants}
                       className="col-span-1"
@@ -551,28 +555,33 @@ const NewsModelEight = ({
                             variants={imageVariants}
                             className="flex gap-x-[0.75rem]"
                           >
-                            <img
-                              className="w-[6.25rem] h-[5.625rem] object-cover rounded-[0.5rem] flex-shrink-0"
-                              src={item.image}
-                              alt="news"
-                            />
-                            <div className="flex flex-col space-y-[0.5rem] justify-center">
-                              <h1 className="font-bold line-clamp-2 text-[0.875rem] text-[#333333]">
-                                {item.title}
-                              </h1>
-                              <NewsMetaInfo
-                                dateText={item.date}
-                                viewsText={item.views}
-                                textColor="text-[#363636]"
+                            <Link
+                              to={`/${currentLang}/News/${item.id}`}
+                              className="flex gap-x-[0.75rem] w-full"
+                            >
+                              <img
+                                className="w-[6.25rem] h-[5.625rem] object-cover rounded-[0.5rem] flex-shrink-0 cursor-pointer"
+                                src={item.image}
+                                alt="news"
                               />
-                            </div>
+                              <div className="flex flex-col space-y-[0.5rem] justify-center">
+                                <h1 className="font-bold line-clamp-2 text-[0.875rem] text-[#333333] cursor-pointer">
+                                  {item.title}
+                                </h1>
+                                <NewsMetaInfo
+                                  dateText={item.date}
+                                  viewsText={item.views}
+                                  textColor="text-[#363636]"
+                                />
+                              </div>
+                            </Link>
                           </motion.div>
                         ))}
                       </div>
                     </motion.div>
                   </div>
 
-                  {/* Local pagination (items within current page) */}
+                  {/* Local pagination */}
                   <div className="flex justify-center items-center gap-[1rem] mt-[1.5rem]">
                     <button
                       onClick={handlePrevLocal}
@@ -604,34 +613,40 @@ const NewsModelEight = ({
                   </div>
                 </motion.div>
 
-                {/* Mobile Layout (small screens) */}
+                {/* Mobile Layout */}
                 <motion.div
                   variants={containerVariants}
                   className="md:hidden mt-[1rem]"
                 >
+                  {/* Main News */}
                   <motion.div variants={imageVariants} className="mb-[1.5rem]">
-                    <img
-                      src={mainNews.image}
-                      className="w-full h-[12.5rem] object-cover rounded-[0.5rem]"
-                      alt="news"
-                    />
-                    <h1 className="font-bold text-[1.125rem] text-[#333333] mt-[0.75rem] line-clamp-2">
-                      {mainNews.title}
-                    </h1>
-                    {mainNews.description && (
-                      <p className="text-[0.875rem] text-[#666666] mt-[0.5rem] line-clamp-3">
-                        {mainNews.description}
-                      </p>
-                    )}
-                    <div className="mt-[0.5rem]">
-                      <NewsMetaInfo
-                        dateText={mainNews.date}
-                        viewsText={mainNews.views}
-                        textColor="text-[#363636]"
-                      />
-                    </div>
+                    <Link to={`/${currentLang}/News/${mainNews.id}`}>
+                      <div className="cursor-pointer">
+                        <img
+                          src={mainNews.image}
+                          className="w-full h-[12.5rem] object-cover rounded-[0.5rem]"
+                          alt="news"
+                        />
+                        <h1 className="font-bold text-[1.125rem] text-[#333333] mt-[0.75rem] line-clamp-2">
+                          {mainNews.title}
+                        </h1>
+                        {mainNews.description && (
+                          <p className="text-[0.875rem] text-[#666666] mt-[0.5rem] line-clamp-3">
+                            {mainNews.description}
+                          </p>
+                        )}
+                        <div className="mt-[0.5rem]">
+                          <NewsMetaInfo
+                            dateText={mainNews.date}
+                            viewsText={mainNews.views}
+                            textColor="text-[#363636]"
+                          />
+                        </div>
+                      </div>
+                    </Link>
                   </motion.div>
 
+                  {/* Mobile Pagination */}
                   <div className="flex justify-between items-center mb-[1rem]">
                     <button
                       onClick={handlePrevLocal}
@@ -662,6 +677,7 @@ const NewsModelEight = ({
                     </button>
                   </div>
 
+                  {/* Paginated News Cards */}
                   <motion.div
                     variants={containerVariants}
                     className="space-y-[1rem]"
@@ -672,21 +688,26 @@ const NewsModelEight = ({
                         variants={imageVariants}
                         className="flex gap-x-[0.75rem]"
                       >
-                        <img
-                          className="w-[6.25rem] h-[5rem] object-cover rounded-[0.5rem] flex-shrink-0"
-                          src={item.image}
-                          alt="news"
-                        />
-                        <div className="flex flex-col space-y-[0.25rem] flex-1">
-                          <h1 className="font-bold text-[0.875rem] text-[#333333] line-clamp-2">
-                            {item.title}
-                          </h1>
-                          <NewsMetaInfo
-                            dateText={item.date}
-                            viewsText={item.views}
-                            textColor="text-[#363636]"
+                        <Link
+                          to={`/${currentLang}/News/${item.id}`}
+                          className="flex gap-x-[0.75rem] w-full"
+                        >
+                          <img
+                            className="w-[6.25rem] h-[5rem] object-cover rounded-[0.5rem] flex-shrink-0 cursor-pointer"
+                            src={item.image}
+                            alt="news"
                           />
-                        </div>
+                          <div className="flex flex-col space-y-[0.25rem] flex-1">
+                            <h1 className="font-bold text-[0.875rem] text-[#333333] line-clamp-2 cursor-pointer">
+                              {item.title}
+                            </h1>
+                            <NewsMetaInfo
+                              dateText={item.date}
+                              viewsText={item.views}
+                              textColor="text-[#363636]"
+                            />
+                          </div>
+                        </Link>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -706,7 +727,19 @@ const NewsModelEight = ({
                 variants={imageVariants}
                 className="text-center py-[2rem] text-gray-500"
               >
-                لا توجد أخبار في هذا القسم
+                <div className="flex flex-col items-center justify-center py-16 border border-dashed border-gray-200 rounded-xl bg-gray-50/50 text-center px-4">
+                  <img
+                    src="https://www.gstatic.com/images/branding/product/2x/news_96dp.png"
+                    alt={i18next.t("category.empty_alt")}
+                    className="w-20 h-20 opacity-50 mb-4"
+                  />
+                  <h2 className="text-xl font-bold text-gray-700 mb-2">
+                    {i18next.t("category.empty_title")}
+                  </h2>
+                  <p className="text-gray-400 max-w-sm text-md">
+                    {i18next.t("category.empty_description")}
+                  </p>
+                </div>
               </motion.div>
             )}
           </motion.div>

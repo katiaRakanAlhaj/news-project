@@ -10,7 +10,8 @@
         "vote_now": "صوّت الآن"
     },
     "buttons": {
-        "see_more": "شاهد المزيد"
+        "see_more": "شاهد المزيد",
+        "see_less": "عرض أقل"
     },
     "contact": {
         "contact_us": "تواصل معنا",
@@ -32,5 +33,41 @@
         "invalid_email": "عنوان البريد الإلكتروني غير صحيح",
         "subject_required": "الموضوع مطلوب",
         "message_required": "الرسالة مطلوبة"
+    },
+    "survey": "استبيان",
+    "polls": {
+        "loading_error": "حدث خطأ في تحميل الاستبيان",
+        "please_select": "الرجاء اختيار إجابة أولاً",
+        "vote_success": "تم التصويت بنجاح!",
+        "vote_error": "حدث خطأ في التصويت",
+        "hide_results": "إخفاء النتائج",
+        "show_results": "عرض النتائج",
+        "total_votes": "إجمالي الأصوات:",
+        "votes_count": "صوت",
+        "no_poll": "لا يوجد استبيان متاح لهذا القسم"
+    },
+    "ads": {
+        "loading_error": "حدث خطأ في تحميل الإعلان",
+        "no_ad": "لا يوجد إعلان متاح",
+        "ad_space": "مساحة إعلانية"
+    },
+    "time": {
+        "less_than_hour": "منذ أقل من ساعة",
+        "hours_ago": "منذ {{count}} ساعات",
+        "days_ago": "منذ {{count}} أيام"
+    },
+    "single_news": {
+        "empty_alt": "لا يوجد محتوى للخبر",
+        "empty_title": "لا توجد تفاصيل لهذا الخبر حالياً",
+        "empty_description": "عذراً، محتوى هذا الخبر فارغ ولا يحتوي على أي بيانات لعرضها.",
+        "latest_news_title": "آخر الأخبار"
+    },
+    "Milestones in Our History": "محطات في تاريخنا",
+    "Latest News": "اخر الاخبار",
+    "category": {
+        "empty_alt": "لا يوجد اخبار",
+        "empty_title": "لا توجد اخبار في هذا القسم",
+        "empty_description": "سيتم إضافة اخبار جديدة قريباً، تابعونا"
     }
+
 }

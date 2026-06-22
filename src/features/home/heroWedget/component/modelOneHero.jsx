@@ -1,24 +1,13 @@
 // ModelOneHero.jsx
 import i18next from "i18next";
 import { useParams, Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 
 const ModelOneHero = ({ data, currentLang }) => {
   // Check if data exists and has items
   if (!data || !data.items || data.items.length === 0) {
     return null; // or return a loading/empty state
   }
-
-  // Format the date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   // Split items into two columns (first 2 items in first column, next 2 in second column)
   const firstColumnItems = data.items.slice(0, 2);
@@ -60,7 +49,7 @@ const ModelOneHero = ({ data, currentLang }) => {
                       {item.news_title}
                     </p>
                     <p className="text-[#FFFFFF] text-md mt-3 opacity-70">
-                      {formatDate(item.date)}
+                      {formatDate(item.date , currentLang)}
                     </p>
                   </div>
                 </div>
@@ -100,7 +89,7 @@ const ModelOneHero = ({ data, currentLang }) => {
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                    {formatDate(item.date)}
+                    {formatDate(item.date , currentLang)}
                   </p>
                 </div>
               </div>

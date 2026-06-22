@@ -8,6 +8,7 @@ import {
   CenteredSquareLoader,
 } from "../../../../ui/animationNews";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 
 const NewsModelSix = ({
   data,
@@ -18,18 +19,6 @@ const NewsModelSix = ({
   isLoading: externalIsLoading,
   currentLang,
 }) => {
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
     if (Array.isArray(items)) {
@@ -57,7 +46,7 @@ const NewsModelSix = ({
         id: mainNewsLeft.id,
         image: mainNewsLeft.news_image,
         title: mainNewsLeft.news_title,
-        date: formatDate(mainNewsLeft.date),
+        date: formatDate(mainNewsLeft.date , currentLang),
         views: mainNewsLeft.views_count,
       }
     : null;
@@ -67,7 +56,7 @@ const NewsModelSix = ({
         id: mainNewsRight.id,
         image: mainNewsRight.news_image,
         title: mainNewsRight.news_title,
-        date: formatDate(mainNewsRight.date),
+        date: formatDate(mainNewsRight.date , currentLang),
         views: mainNewsRight.views_count,
       }
     : null;
@@ -77,8 +66,8 @@ const NewsModelSix = ({
     id: item.id,
     image: item.news_image,
     title: item.news_title,
-    date: formatDate(item.date),
-    views: "1.2K",
+    date: formatDate(item.date , currentLang),
+    views: item.views_count,
   }));
 
   // Pagination handlers

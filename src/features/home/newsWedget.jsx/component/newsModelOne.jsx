@@ -16,6 +16,8 @@ import {
 } from "../../../News/hook/useFetchNews";
 import { Link, useParams } from "react-router-dom";
 import React from "react";
+// Import both formatDate and formatTimeAgo from your utility file
+import { formatDate, formatTimeAgo } from "../../../../utils/dateUtils";
 
 const NewsModelOne = ({
   data,
@@ -56,18 +58,6 @@ const NewsModelOne = ({
     }
   }, [categoryData]);
 
-  // Format date function for Arabic
-  const formatDateArabic = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   // Extract news items from API data
   const newsItems = data?.items || [];
 
@@ -75,9 +65,9 @@ const NewsModelOne = ({
   const news = newsItems.map((item) => ({
     image: item.news_image,
     title: item.news_title,
-    date: formatDateArabic(item.date),
+    date: formatDate(item.date, currentLang),
     views: item.views_count,
-    type: item.category?.name,
+    type: item.category?.name || (currentLang === "ar" ? "عام" : "General"),
     id: item.id,
   }));
 
@@ -114,11 +104,12 @@ const NewsModelOne = ({
   // Transform category data for "ترند"
   const getTrendCategoryNews = () => {
     if (categoryByIdData?.news) {
-      return categoryByIdData.news.map((item, index) => ({
+      return categoryByIdData.news.map((item) => ({
+        id: item.id, 
         image: item.news_image || seeMore1,
         title: item.news_title,
         description: item.news_description?.substring(0, 100) + "..." || "",
-        time: formatDateArabic(item.date) || `منذ ${index + 2} ساعات`,
+        time: formatTimeAgo(item.date, currentLang),
       }));
     }
     return [];
@@ -127,11 +118,12 @@ const NewsModelOne = ({
   // Transform different news data for "منوعات"
   const getDifferentNews = () => {
     if (diffrentNewsData?.data) {
-      return diffrentNewsData.data.map((item, index) => ({
+      return diffrentNewsData.data.map((item) => ({
+        id: item.id, 
         image: item.news_image || seeMore1,
         title: item.news_title,
         description: item.news_description?.substring(0, 100) + "..." || "",
-        time: formatDateArabic(item.date) || `منذ ${index + 2} ساعات`,
+        time: formatTimeAgo(item.date, currentLang),
       }));
     }
     return [];
@@ -144,11 +136,12 @@ const NewsModelOne = ({
         (a, b) => b.views_count - a.views_count,
       );
 
-      return sortedData.map((item, index) => ({
+      return sortedData.map((item) => ({
+        id: item.id, 
         image: item.news_image || seeMore1,
         title: item.news_title,
         description: item.news_description?.substring(0, 100) + "..." || "",
-        time: formatDateArabic(item.date) || `منذ ${index + 2} ساعات`,
+        time: formatTimeAgo(item.date, currentLang),
         views: item.views_count || 0,
       }));
     }
@@ -216,9 +209,8 @@ const NewsModelOne = ({
                   className="grid grid-cols-1 md:grid-cols-2 gap-x-[0.5rem] gap-y-[2rem] mt-[1rem]"
                 >
                   {news.map((item, index) => (
-                    <Link to={`/${currentLang}/News/${item.id}`}>
+                    <Link key={item.id || index} to={`/${currentLang}/News/${item.id}`}>
                       <NewsCard
-                        key={item.id || index}
                         image={item.image}
                         title={item.title}
                         date={item.date}
@@ -258,7 +250,7 @@ const NewsModelOne = ({
                       : "text-primary hover:text-negative"
                   }`}
                 >
-                  ترند
+                  {currentLang === "ar" ? "ترند" : "Trending"}
                 </button>
                 <div className="w-[15%] h-[0.1rem] bg-negative"></div>
               </>
@@ -272,7 +264,7 @@ const NewsModelOne = ({
                   : "text-primary hover:text-negative"
               }`}
             >
-              منوعات
+              {currentLang === "ar" ? "منوعات" : "Variety"}
             </button>
           </div>
 
@@ -283,18 +275,19 @@ const NewsModelOne = ({
           ) : (
             <div>
               <MostViewedSection
+                currentLang={currentLang}
                 activeTab={currentActiveKey}
                 mostViewedData={mostViewedData}
               />
 
               {/* Conditional See More / See Less Button Actions */}
-              {completeSideList.length > 4 && (
+              {completeSideList.length > 3 && (
                 <div className="mt-4 flex justify-center">
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="px-6 py-2 text-sm font-bold bg-negative text-white rounded shadow hover:bg-opacity-90 transition duration-200"
                   >
-                    {isExpanded ? "عرض أقل" : "عرض المزيد"}
+                    {isExpanded ? i18next.t("buttons.see_less") : i18next.t("buttons.see_more")}
                   </button>
                 </div>
               )}

@@ -4,19 +4,21 @@ import facebookFooter from "../../assets/images/facebookFooter.svg";
 import twitterFooter from "../../assets/images/twitterFooter.svg";
 import instgramFooter from "../../assets/images/instgramFooter.svg";
 import i18next from "i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 const Footer = ({ categoryData, footerData }) => {
-    const { lang } = useParams();
+  const { lang } = useParams();
+  const location = useLocation();
+
   const getCurrentLang = () => {
     return lang || "ar";
   };
   const currentLang = getCurrentLang();
+
   const icons = [
     { icon: twitterFooter },
     { icon: linkedIn },
     { icon: instgramFooter },
-
     { icon: facebookFooter },
   ];
 
@@ -26,6 +28,16 @@ const Footer = ({ categoryData, footerData }) => {
   const middleIndex = Math.ceil(categories.length / 2);
   const firstHalfCategories = categories.slice(0, middleIndex);
   const secondHalfCategories = categories.slice(middleIndex);
+
+  // Helper function to check if a category is active
+  const isCategoryActive = (categoryId) => {
+    return location.pathname === `/${currentLang}/category/${categoryId}`;
+  };
+
+  // Helper function to check if a link is active
+  const isActiveLink = (path) => {
+    return location.pathname === `/${currentLang}${path}`;
+  };
 
   return (
     <footer className="relative w-full mt-10 overflow-hidden lg:h-[21rem]">
@@ -46,11 +58,13 @@ const Footer = ({ categoryData, footerData }) => {
         >
           {/* Column 1: Logo and description */}
           <div className="md:col-span-1 flex flex-col">
-            <img
-              src={footerData?.data?.logo}
-              alt="logo"
-              className="w-[6rem] mb-4 brightness-0 invert"
-            />
+            <Link to={`/${currentLang}`}>
+              <img
+                src={footerData?.data?.logo}
+                alt="logo"
+                className="w-[6rem] mb-4 brightness-0 invert cursor-pointer hover:opacity-80 transition"
+              />
+            </Link>
             <p className="text-md leading-7 text-gray-300 max-w-[260px]">
               {footerData?.data?.description}
             </p>
@@ -73,12 +87,28 @@ const Footer = ({ categoryData, footerData }) => {
           {/* Column 2: Contact & About Us */}
           <div className="flex flex-col mr-[1rem]">
             <ul className="space-y-3 text-gray-300 text-md">
-              <li className="hover:text-white cursor-pointer transition">
-                <Link to={`${currentLang}/About_Us`}>{i18next.t("menu.about_us")}</Link>
+              <li className="cursor-pointer transition">
+                <Link 
+                  to={`/${currentLang}/About_Us`}
+                  className={`${
+                    isActiveLink("/About_Us")
+                      ? "text-[#3B82F6] font-bold"
+                      : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  {i18next.t("menu.about_us")}
+                </Link>
               </li>
 
-              <li className="hover:text-white cursor-pointer transition">
-                <Link to={`${currentLang}/contact`}>
+              <li className="cursor-pointer transition">
+                <Link 
+                  to={`/${currentLang}/contact`}
+                  className={`${
+                    isActiveLink("/contact")
+                      ? "text-[#3B82F6] font-bold"
+                      : "text-gray-300 hover:text-white"
+                  }`}
+                >
                   {i18next.t("menu.contact_us") || "اتصل بنا"}
                 </Link>
               </li>
@@ -88,28 +118,52 @@ const Footer = ({ categoryData, footerData }) => {
           {/* Column 3: Categories - First Half */}
           <div className="flex flex-col">
             <ul className="space-y-3 text-gray-300 text-md">
-              {firstHalfCategories.map((category) => (
-                <li
-                  key={category.id}
-                  className="hover:text-white cursor-pointer transition"
-                >
-                  <Link to={`/${currentLang}/category/${category.id}`}>{category.name}</Link>
-                </li>
-              ))}
+              {firstHalfCategories.map((category) => {
+                const isActive = isCategoryActive(category.id);
+                return (
+                  <li
+                    key={category.id}
+                    className="cursor-pointer transition"
+                  >
+                    <Link 
+                      to={`/${currentLang}/category/${category.id}`}
+                      className={`${
+                        isActive
+                          ? "text-[#3B82F6] font-bold"
+                          : "text-gray-300 hover:text-white"
+                      }`}
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           {/* Column 4: Categories - Second Half */}
           <div className="flex flex-col">
             <ul className="space-y-3 text-gray-300 text-md">
-              {secondHalfCategories.map((category) => (
-                <li
-                  key={category.id}
-                  className="hover:text-white cursor-pointer transition"
-                >
-                  <Link to={`/category/${category.id}`}>{category.name}</Link>
-                </li>
-              ))}
+              {secondHalfCategories.map((category) => {
+                const isActive = isCategoryActive(category.id);
+                return (
+                  <li
+                    key={category.id}
+                    className="cursor-pointer transition"
+                  >
+                    <Link 
+                      to={`/${currentLang}/category/${category.id}`}
+                      className={`${
+                        isActive
+                          ? "text-[#3B82F6] font-bold"
+                          : "text-gray-300 hover:text-white"
+                      }`}
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

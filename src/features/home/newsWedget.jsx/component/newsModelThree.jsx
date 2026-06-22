@@ -1,45 +1,27 @@
+// NewsModelThree.jsx
 import i18next from "i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import TitleSection from "../../../../ui/titleSection";
 import MostViewedSection from "../../../../ui/MostViewedSection";
-import { containerVariants, imageVariants, CenteredSquareLoader } from "../../../../ui/animationNews";
+import {
+  containerVariants,
+  imageVariants,
+  CenteredSquareLoader,
+} from "../../../../ui/animationNews";
 import { Link } from "react-router-dom";
 
-const NewsModelThree = ({ 
-  data, 
-  sectionId, 
-  currentPage, 
-  totalPages, 
-  onPageChange,
-  isLoading ,
-  currentLang
-}) => {
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ar-EG', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
+// 1. Import the utility functions
+import { formatDate, formatTimeAgo } from "../../../../utils/dateUtils"; 
 
-  // Format time difference (for "منذ ٤ ساعات" style)
-  const formatTimeAgo = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return "منذ أقل من ساعة";
-    if (diffInHours === 1) return "منذ ساعة";
-    if (diffInHours < 24) return `منذ ${diffInHours} ساعات`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays === 1) return "منذ يوم";
-    return `منذ ${diffInDays} أيام`;
-  };
+const NewsModelThree = ({
+  data,
+  sectionId,
+  currentPage,
+  totalPages,
+  onPageChange,
+  isLoading,
+  currentLang,
+}) => {
 
   // Get items from API (handle pagination structure)
   const getItemsArray = (items) => {
@@ -54,16 +36,17 @@ const NewsModelThree = ({
 
   // Extract news items from API data
   const newsItems = getItemsArray(data?.items || []);
-  
+
   // Map API news items to the format needed for the component
-  const newsData = newsItems.map((item, index) => ({
+  const newsData = newsItems.map((item) => ({
     id: item.id,
     image: item.news_image,
-    type: item.category?.name || "عام",
+    type: item.category?.name || (currentLang === "ar" ? "عام" : "General"),
     title: item.news_title,
-    description: item.news_description || "لا يوجد وصف متاح",
-    time: formatTimeAgo(item.date),
-    date: formatDate(item.date),
+    description: item.news_description || (currentLang === "ar" ? "لا يوجد وصف متاح" : "No description available"),
+    // 2. Feed currentLang to our helper functions here
+    time: formatTimeAgo(item.date, currentLang),
+    date: formatDate(item.date, currentLang),
   }));
 
   // Pagination handlers
@@ -86,7 +69,7 @@ const NewsModelThree = ({
 
   // Get first item for main column
   const mainNewsItem = newsData[0];
-  
+
   // Get remaining items for Most Viewed section (from index 1 onwards)
   const remainingItems = newsData.slice(1);
 
@@ -98,7 +81,7 @@ const NewsModelThree = ({
       variants={containerVariants}
       className="container1 mx-auto mt-[2rem] px-4"
     >
-      <TitleSection 
+      <TitleSection
         title={data.title || i18next.t("news_wedget.latest_news")}
         showArrows={true}
         currentPage={currentPage}
@@ -123,41 +106,45 @@ const NewsModelThree = ({
             variants={containerVariants}
             className="grid lg:grid-cols-12 grid-cols-1 gap-[1rem] mt-[1rem]"
           >
-            {/* First column - Main News col-span-9 */}
-            <motion.div 
+            {/* First column - Main News col-span-8 */}
+            <motion.div
               variants={imageVariants}
               className="lg:col-span-8 col-span-1"
             >
               {mainNewsItem && (
-                              <Link to={`/${currentLang}/News/${mainNewsItem.id}`}>
-
-                <div className="relative rounded-lg overflow-hidden">
-                  <img
-                    src={mainNewsItem.image}
-                    className="w-full h-[34rem] object-cover"
-                    alt={mainNewsItem.title}
-                  />
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0" />
-                  <div className={`absolute bottom-[3rem] ${i18next.language == "ar" ? 'right-[3rem]' : 'left-[3rem]'} z-10`}>
-                    <button className="w-[5rem] h-[1.8rem] bg-secondary rounded-full text-white text-md">
-                      {mainNewsItem.type}
-                    </button>
-                    <h1 className="font-bold text-white text-2xl mt-3">
-                      {mainNewsItem.title}
-                    </h1>
+                <Link to={`/${currentLang}/News/${mainNewsItem.id}`}>
+                  <div className="relative rounded-lg overflow-hidden cursor-pointer group">
+                    <img
+                      src={mainNewsItem.image}
+                      className="w-full h-[34rem] object-cover transition-transform duration-300 group-hover:scale-105"
+                      alt={mainNewsItem.title}
+                    />
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0" />
+                    <div
+                      className={`absolute bottom-[3rem] ${currentLang === "ar" ? "right-[3rem]" : "left-[3rem]"} z-10`}
+                    >
+                      <button className="w-[5rem] h-[1.8rem] bg-secondary rounded-full text-white text-md">
+                        {mainNewsItem.type}
+                      </button>
+                      <h1 className="font-bold text-white text-2xl mt-3">
+                        {mainNewsItem.title}
+                      </h1>
+                    </div>
                   </div>
-                </div>
                 </Link>
               )}
             </motion.div>
 
-            {/* Second column - Most Viewed col-span-3 */}
-            <motion.div 
+            {/* Second column - Most Viewed col-span-4 */}
+            <motion.div
               variants={imageVariants}
               className="lg:col-span-4 col-span-1"
             >
-              <MostViewedSection mostViewedData={remainingItems} />
+              <MostViewedSection 
+                mostViewedData={remainingItems}
+                currentLang={currentLang} 
+              />
             </motion.div>
           </motion.div>
         )}

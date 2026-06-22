@@ -13,6 +13,7 @@ import {
   CenteredSquareLoader,
 } from "../../../../ui/animationNews";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../../utils/dateUtils";
 
 const NewsModelFour = ({
   data,
@@ -23,19 +24,7 @@ const NewsModelFour = ({
   isLoading: externalIsLoading,
   currentLang,
 }) => {
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-
-    const date = new Date(dateString);
-
-    return date.toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
+ 
   const getItemsArray = (items) => {
     if (Array.isArray(items)) return items;
 
@@ -53,7 +42,7 @@ const NewsModelFour = ({
     image: item.news_image,
     type: item.category?.name || "عام",
     title: item.news_title,
-    date: formatDate(item.date),
+    date: formatDate(item.date , currentLang),
     views: item.views_count,
   }));
 
