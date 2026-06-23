@@ -24,7 +24,7 @@ const SingleNewsModel14 = ({data}) => {
               className="w-full flex justify-between items-center py-4 px-4 text-right bg-white hover:bg-gray-50 transition-colors"
             >
               <span
-                className={`text-lg ${
+                className={`md:text-lg text-md ${
                   openIndex === index
                     ? "font-bold text-[#005BBF]"
                     : "font-normal text-[#333333]"

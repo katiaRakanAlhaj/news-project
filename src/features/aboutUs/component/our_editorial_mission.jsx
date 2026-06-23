@@ -12,11 +12,11 @@ const OurEditorialMission = ({ aboutusData }) => {
         <div className="flex flex-col justify-center">
           <div className="flex gap-x-2 items-center">
             <div className="w-[1.5rem] h-[0.3rem] bg-[#005BBF] rounded-full"></div>
-            <h1 className="text-[#005BBF] font-bold md:text-4xl text-lg mt-1">
-              {aboutusData?.data?.title || "رسالتنا التحريرية"}
+            <h1 className="text-[#005BBF] font-bold lg:text-4xl md:text-2xl text-xl mt-1">
+              {aboutusData?.data?.title}
             </h1>
           </div>
-          <p className="text-xl text-secondary mt-[2rem] leading-relaxed">
+          <p className="md:text-xl text-lg text-secondary mt-[2rem] leading-relaxed">
             {aboutusData?.data?.description || ""}
           </p>
         </div>

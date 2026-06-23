@@ -33,7 +33,7 @@ const SinlgeNewsBanner = ({ singleNewsData, contactData ,currentLang}) => {
         <img
           style={{ boxShadow: "0px 20px 25px -5px #0000001A" }}
           src={singleNewsData?.news_image}
-          className="w-full h-[26rem] object-cover rounded-xl"
+          className="w-full lg:h-[26rem] h-[20rem] object-cover rounded-xl"
           alt="news banner"
         />
         <div

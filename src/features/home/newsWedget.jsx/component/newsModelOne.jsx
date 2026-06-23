@@ -227,7 +227,7 @@ const NewsModelOne = ({
 
         {/** second column - Most Viewed */}
         <div className="lg:col-span-4">
-          <div className="flex flex-wrap gap-x-6 items-center mb-[0.9rem]">
+          <div className="flex  gap-x-6 items-center mb-[0.9rem]">
             <h1
               className={`font-bold text-lg cursor-pointer transition ${
                 showMostViewed

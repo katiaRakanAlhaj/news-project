@@ -94,7 +94,7 @@ const NewsGrid = ({ categoryData, categoryId }) => {
             <div className="relative">
               <img
                 src={newsItem?.news_image}
-                className="w-full h-[16rem] rounded-xl object-cover"
+                className="w-full lg:h-[16rem] h-[20rem] rounded-xl object-cover"
                 alt={newsItem.news_title}
               />
               <div
@@ -108,13 +108,13 @@ const NewsGrid = ({ categoryData, categoryId }) => {
               </div>
             </div>
             <div className="relative">
-              <h1 className="text-[#333333] text-xl font-bold leading-relaxed">
+              <h1 className="text-[#333333] md:text-xl text-lg font-bold leading-relaxed">
                 {newsItem?.news_title}
               </h1>
-              <p className="text-[#666666] mt-1 text-lg leading-relaxed line-clamp-3">
+              <p className="text-[#666666] mt-1 md:text-lg text-md leading-relaxed line-clamp-3">
                 {newsItem.news_description}
               </p>
-              <div className="absolute lg:bottom-[0.4rem] bottom-[-1rem] pointer-events-none">
+              <div className="absolute lg:bottom-[0.4rem] bottom-[-1.5rem] pointer-events-none">
                 <NewsMetaInfo
                   dateText={formatDate(newsItem.date , currentLang)}
                   viewsText={newsItem.views_count}

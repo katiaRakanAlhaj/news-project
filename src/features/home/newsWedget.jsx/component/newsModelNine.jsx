@@ -147,7 +147,7 @@ const NewsModelNine = ({
                       style={{ width: `${100 / slidesToShow}%` }}
                     >
                       <Link to={`/${currentLang}/News/${item.id}`}>
-                        <div className="relative w-full h-[22rem]">
+                        <div className="relative w-full lg:h-[22rem] h-[20rem]">
                           <img
                             className="w-full h-full object-cover transition-transform duration-300"
                             src={item.image}
@@ -163,7 +163,7 @@ const NewsModelNine = ({
                           <div
                             className={`absolute ${isRTL ? "right-[1rem]" : "left-[1rem]"} bottom-[1rem] z-10`}
                           >
-                            <h1 className="text-white font-bold text-xl line-clamp-2">
+                            <h1 className="text-white font-bold md:text-xl text-md line-clamp-2">
                               {item.title}
                             </h1>
                           </div>

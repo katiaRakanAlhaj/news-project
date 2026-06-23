@@ -90,7 +90,7 @@ const PollComponent = ({ pollId }) => {
 
   return (
     <div className="mb-6 last:mb-0">
-      <p className="text-secondary text-xl mt-4 font-bold">
+      <p className="text-secondary md:text-xl text-md mt-4 font-bold">
         {pollData.data.question}
       </p>
 

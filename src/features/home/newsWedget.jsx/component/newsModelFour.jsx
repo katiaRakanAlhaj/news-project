@@ -14,6 +14,7 @@ import {
 } from "../../../../ui/animationNews";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../../utils/dateUtils";
+import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 
 const NewsModelFour = ({
   data,
@@ -105,31 +106,51 @@ const NewsModelFour = ({
                   disableOnInteraction: false,
                 }}
                 className="news-slider"
+                // breakpoints={{
+                //   320: {
+                //     slidesPerView: 1.15,
+                //   },
+                //   480: {
+                //     slidesPerView: 1.4,
+                //   },
+                //   640: {
+                //     slidesPerView: 2.2,
+                //   },
+                //   768: {
+                //     slidesPerView: 3.2,
+                //   },
+                //   1024: {
+                //     slidesPerView: 4.2,
+                //   },
+                //   1280: {
+                //     slidesPerView: 5.2,
+                //   },
+                // }}
                 breakpoints={{
-                  320: {
-                    slidesPerView: 1.15,
-                  },
-                  480: {
-                    slidesPerView: 1.4,
-                  },
-                  640: {
-                    slidesPerView: 2.2,
-                  },
-                  768: {
-                    slidesPerView: 3.2,
-                  },
-                  1024: {
-                    slidesPerView: 4.2,
-                  },
-                  1280: {
-                    slidesPerView: 5.2,
-                  },
-                }}
+  320: {
+    slidesPerView: 1.1, // Show less of the next slide, making the current one wider
+  },
+  480: {
+    slidesPerView: 1.2, 
+  },
+  640: {
+    slidesPerView: 1.8, // Reduced from 2.2
+  },
+  768: {
+    slidesPerView: 2.5, // Reduced from 3.2
+  },
+  1024: {
+    slidesPerView: 3.5, // Reduced from 4.2
+  },
+  1280: {
+    slidesPerView: 4.5, // Reduced from 5.2
+  },
+}}
               >
                 {news.map((item) => (
                   <SwiperSlide key={item.id}>
                     <Link to={`/${currentLang}/News/${item.id}`}>
-                      <div className="group relative h-[28rem] overflow-hidden rounded-2xl cursor-pointer">
+                      <div className="group relative lg:h-[30rem] h-[20rem] overflow-hidden rounded-2xl cursor-pointer">
                         {/* Image */}
                         <img
                           src={item.image}
@@ -153,14 +174,14 @@ const NewsModelFour = ({
 
                         {/* Content */}
                         <div className="absolute bottom-0 left-0 right-0 z-20 p-5">
-                          <h3 className="text-white text-lg font-bold leading-7 line-clamp-3">
+                          <h3 className="text-white md:text-lg text-md font-bold leading-7 line-clamp-3">
                             {item.title}
                           </h3>
 
-                          <div className="flex items-center justify-between mt-4 text-xs text-gray-300">
-                            <span>{item.views}</span>
-                            <span>{item.date}</span>
-                          </div>
+                          <NewsMetaInfo
+                                   dateText={item.date}
+                                viewsText={item.views}
+                                textColor="text-white"/>
                         </div>
                       </div>
                     </Link>

@@ -27,7 +27,7 @@ const NewsCard = ({
         </div>
       </div>
 
-      <h1 className="font-bold text-xl text-secondary mt-2 line-clamp-2">
+      <h1 className="font-bold md:text-xl text-md text-secondary mt-2 line-clamp-2">
         {title}
       </h1>
 

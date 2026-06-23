@@ -155,7 +155,9 @@ const MediaModelOne = ({
                         mainItem.videoUrl && handlePlayVideo(mainItem.id)
                       }
                     />
-                    <div className="absolute bottom-[3rem] right-[2rem] text-white font-bold text-2xl z-10">
+                    <div
+                      className={`absolute bottom-[3rem] ${i18next.language == "ar" ? "lg:right-[2rem] right-[1rem]" : "lg:left-[2rem] left-[1rem]"} text-white font-bold lg:text-2xl md:text-xl text-md z-10`}
+                    >
                       {mainItem.title}
                     </div>
                     <div className="absolute inset-0 bg-[#00000066] rounded-t-xl"></div>
@@ -180,7 +182,7 @@ const MediaModelOne = ({
                       <div className="relative">
                         {playingVideoId === item.id && item.videoUrl ? (
                           // Show Video
-                          <div className="relative w-full h-[10rem] rounded-xl overflow-hidden">
+                          <div className="relative w-full h-[12rem] rounded-xl overflow-hidden">
                             <iframe
                               className="w-full h-full"
                               src={`https://www.youtube.com/embed/${getYouTubeVideoId(item.videoUrl)}?autoplay=1`}
@@ -202,7 +204,7 @@ const MediaModelOne = ({
                           <>
                             <img
                               src={item.image}
-                              className="w-full h-[12rem] object-cover rounded-xl cursor-pointer"
+                              className="w-full lg:h-[12rem] h-[20rem] object-cover rounded-xl cursor-pointer"
                               alt={item.title}
                               onClick={() =>
                                 item.videoUrl && handlePlayVideo(item.id)
@@ -225,7 +227,7 @@ const MediaModelOne = ({
                           </>
                         )}
                       </div>
-                      <p className="text-secondary font-bold text-md line-clamp-2">
+                      <p className="text-secondary font-bold lg:mt-0 mt-[0.5rem] text-md line-clamp-2">
                         {item.title}
                       </p>
                     </div>

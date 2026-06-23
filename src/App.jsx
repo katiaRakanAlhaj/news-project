@@ -1,3 +1,5 @@
+// App.jsx
+
 import {
   Route,
   createBrowserRouter,
@@ -59,8 +61,15 @@ function LanguageHandler() {
     document.documentElement.dir = isArabic ? "rtl" : "ltr";
     document.documentElement.lang = languageToUse;
 
-    // Apply ShamelSansOne font for both Arabic and English
-    document.documentElement.style.fontFamily = "ShamelSansOne, sans-serif";
+    // --- Dynamic Font Change Configuration ---
+    if (isArabic) {
+      // Font for Arabic language
+      document.documentElement.style.fontFamily = "ShamelSansOne, sans-serif";
+    } else {
+      // Font for English language (You can change 'sans-serif' to 'Inter', 'Roboto', etc.)
+      document.documentElement.style.fontFamily = "sans-serif";
+    }
+    
     document.documentElement.style.fontWeight = "400";
 
     // Save to localStorage
@@ -91,6 +100,7 @@ function App() {
           <Route path="category/:id" element={<News />} />
           <Route path="News/:id" element={<SingleNews />} />
           {/* Add 404 route - this will catch all unmatched routes */}
+          {/* Setup structural fix inside route pattern to safely display elements */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

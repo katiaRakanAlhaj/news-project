@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+// NavbarMobile.jsx
+
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { MdMenu, MdClose } from "react-icons/md";
 import i18next from "i18next";
-import { useParams } from "react-router-dom";
 import logo from "../../../assets/images/logo.svg";
 import facebook from "../../../assets/images/facebook.svg";
 import linkedIn from "../../../assets/images/linkedIn.svg";
@@ -10,17 +11,18 @@ import instgram from "../../../assets/images/instgram.svg";
 import twitter from "../../../assets/images/twitter.svg";
 import i18n from "../../i18n";
 
-const NavbarMobile = () => {
-  const menuItems = ["سياسية", "رياضة", "اقتصادية"];
+const NavbarMobile = ({ categoryData, contactData }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const { lang } = useParams();
+  const location = useLocation(); // Tracks the current active path
+  const navigate = useNavigate();
 
   const socilaIconFixed = [
-    { icon: facebook, link: "https://www.facebook.com/" },
-    { icon: linkedIn, link: "https://www.linkedin.com/" },
-    { icon: instgram, link: "https://www.instagram.com/" },
-    { icon: twitter, link: "https://www.twitter.com/" },
+    { icon: facebook, link: contactData?.data?.facebook },
+    { icon: linkedIn, link: contactData?.data?.linkedin },
+    { icon: instgram, link: contactData?.data?.instagram },
+    { icon: twitter, link: contactData?.data?.x },
   ];
 
   // Helper function to get current language from URL
@@ -43,32 +45,37 @@ const NavbarMobile = () => {
     const match = currentPath.match(/^\/(en|ar)(\/.*)?$/);
 
     if (match) {
-      // We have a language in the URL
       const restOfPath = match[2] || "";
-
-      // Build new path with new language
       const newPath = `/${newLang}${restOfPath}`;
 
-      // Update language
       i18n.changeLanguage(newLang);
       localStorage.setItem("language", newLang);
 
-      // Navigate to new URL
       window.location.href = newPath;
     } else {
-      // No language in URL (shouldn't happen, but handle it)
       const newPath = `/${newLang}`;
 
-      // Update language
       i18n.changeLanguage(newLang);
       localStorage.setItem("language", newLang);
 
-      // Navigate to new URL
       window.location.href = newPath;
     }
   };
 
   const currentLang = getCurrentLang();
+
+  // Helper checks to determine if paths are active
+  const isHomeActive =
+    location.pathname === `/${currentLang}` ||
+    location.pathname === `/${currentLang}/`;
+
+  const isAboutActive = location.pathname === `/${currentLang}/About_Us`;
+  const isContactActive = location.pathname === `/${currentLang}/contact`;
+
+  const handleCategoryClick = (categoryId) => {
+    setIsMobileMenuOpen(false);
+    navigate(`/${currentLang}/category/${categoryId}`);
+  };
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -80,7 +87,6 @@ const NavbarMobile = () => {
 
     if (isMobileMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -115,7 +121,9 @@ const NavbarMobile = () => {
                   <MdMenu className="text-2xl" />
                 )}
               </button>
-              <img className="w-[7rem]" src={logo} alt="logo" />
+              <Link to={`/${currentLang}`}>
+                <img className="w-[7rem]" src={logo} alt="logo" />
+              </Link>
             </div>
 
             {/* Language Switcher */}
@@ -150,46 +158,59 @@ const NavbarMobile = () => {
           <div className="flex flex-col py-6 px-6 gap-y-4">
             {/* Home link */}
             <Link
-              to="/"
+              to={`/${currentLang}`}
               onClick={() => setIsMobileMenuOpen(false)}
               className="border-b border-white/20 pb-3"
             >
-              <p className="text-white text-[1.1rem] hover:text-[#E7792D] transition-colors">
+              <p
+                className={`text-[1.1rem] transition-colors ${isHomeActive ? "text-[#3B82F6] font-bold" : "text-white hover:text-[#E7792D]"}`}
+              >
                 {i18next.t("menu.home") || "الرئيسية"}
               </p>
             </Link>
 
-            {/* Dynamic Menu Items (menu 1) */}
-            {menuItems?.map((menuItem, index) => (
-              <Link
-                to="/News"
-                key={index}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="border-b border-white/20 pb-3"
-              >
-                <p className="text-white text-[1.1rem] hover:text-[#E7792D] transition-colors">
-                  {menuItem}
-                </p>
-              </Link>
-            ))}
+            {/* Dynamic Categories Link Matrix (Replaced menuItems) */}
+            {categoryData?.data?.map((category) => {
+              const isCategoryActive =
+                location.pathname === `/${currentLang}/category/${category.id}`;
 
-            {/* Menu 2 items (About Us and Contact Us) */}
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className="w-full text-right border-b border-white/20 pb-3 bg-transparent border-t-0 border-x-0 outline-none cursor-pointer block"
+                >
+                  <p
+                    className={`text-[1.1rem] transition-colors ${isCategoryActive ? "text-[#3B82F6] font-bold" : "text-white hover:text-[#E7792D]"}`}
+                  >
+                    {category.name}
+                  </p>
+                </button>
+              );
+            })}
+
+            {/* About Us Link */}
             <Link
-              to="/About_Us"
+              to={`/${currentLang}/About_Us`}
               onClick={() => setIsMobileMenuOpen(false)}
               className="border-b border-white/20 pb-3"
             >
-              <p className="text-white text-[1.1rem] hover:text-[#E7792D] transition-colors">
+              <p
+                className={`text-[1.1rem] transition-colors ${isAboutActive ? "text-[#3B82F6] font-bold" : "text-white hover:text-[#E7792D]"}`}
+              >
                 {i18next.t("menu.about_us")}
               </p>
             </Link>
 
+            {/* Contact Us Link */}
             <Link
-              to="/contact"
+              to={`/${currentLang}/contact`}
               onClick={() => setIsMobileMenuOpen(false)}
               className="border-b border-white/20 pb-3"
             >
-              <p className="text-white text-[1.1rem] hover:text-[#E7792D] transition-colors">
+              <p
+                className={`text-[1.1rem] transition-colors ${isContactActive ? "text-[#3B82F6] font-bold" : "text-white hover:text-[#E7792D]"}`}
+              >
                 {i18next.t("menu.contact_us")}
               </p>
             </Link>
@@ -200,7 +221,7 @@ const NavbarMobile = () => {
         </div>
       </div>
 
-      {/* Fixed Social Icons - Hidden when menu is open */}
+      {/* Fixed Social Icons */}
       {!isMobileMenuOpen && (
         <div className="fixed w-[2.5rem] h-[9rem] bg-[#eceaeacc] right-[1rem] top-1/2 -translate-y-1/2 z-50 flex flex-col items-center justify-center rounded-lg backdrop-blur-sm">
           <div className="flex flex-col space-y-5">

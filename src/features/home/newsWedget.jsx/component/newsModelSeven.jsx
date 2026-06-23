@@ -8,6 +8,7 @@ import TitleSection from "../../../../ui/titleSection";
 import NewsMetaInfo from "../../../../ui/dateAndViewsSection";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../../utils/dateUtils";
+import i18next from "i18next";
 
 const NewsModelSeven = ({ data, contactData, currentLang }) => {
   // Social media icons (static - these are UI elements, not content data)
@@ -69,7 +70,7 @@ const NewsModelSeven = ({ data, contactData, currentLang }) => {
     image: item.news_image,
     title: item.news_title,
     description: item.news_description || "لا يوجد وصف متاح",
-    date: formatDate(item.date , currentLang),
+    date: formatDate(item.date, currentLang),
     views: item.views_count,
   }));
 
@@ -93,17 +94,17 @@ const NewsModelSeven = ({ data, contactData, currentLang }) => {
             showArrows={false}
           />
 
-          <div className="grid md:grid-cols-12 gap-[1rem] mt-[1rem]">
+          <div className="grid lg:grid-cols-12 gap-[1rem] mt-[1rem]">
             {/* Main featured news */}
-            <div className="col-span-7">
+            <div className="lg:col-span-7 col-span-1">
               <Link to={`/${currentLang}/News/${mainNews.id}`}>
                 <div className="flex flex-col">
                   <img
                     src={mainNews.image}
-                    className="w-full h-[15rem] object-cover"
+                    className="w-full lg:h-[15rem] h-[20rem] object-cover"
                     alt={mainNews.title}
                   />
-                  <h1 className="font-bold text-xl text-[#333333] mt-4">
+                  <h1 className="font-bold md:text-xl text-md text-[#333333] mt-4">
                     {mainNews.title}
                   </h1>
                   <p className="text-md text-[#666666] mt-2 line-clamp-3">
@@ -119,13 +120,13 @@ const NewsModelSeven = ({ data, contactData, currentLang }) => {
             </div>
 
             {/* List of other news items */}
-            <div className="col-span-5">
+            <div className="lg:col-span-5 col-span-1">
               <div className="flex flex-col space-y-[1rem]">
                 {sideNews.map((item) => (
                   <Link to={`/${currentLang}/News/${item.id}`}>
                     <div key={item.id} className="md:flex gap-x-[1rem]">
                       <img
-                        className="md:w-[11rem] w-full h-[9rem] object-cover"
+                        className="lg:w-[11rem] w-full lg:h-[9rem] h-[20rem] object-cover"
                         src={item.image}
                         alt={item.title}
                       />
@@ -148,8 +149,8 @@ const NewsModelSeven = ({ data, contactData, currentLang }) => {
         </div>
 
         {/* second column - Social Media Section */}
-        <div className="lg:col-span-4 col-span-1 mr-[3rem]">
-          <TitleSection title={"سوشال ميديا"} showArrows={false} />
+        <div className="lg:col-span-4 col-span-1 lg:mr-[3rem]">
+          <TitleSection title={i18next.t("social_media")} showArrows={false} />
           <div
             style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
             className="w-full h-[17rem] bg-[#F6F6F6] flex justify-center items-center mt-[1rem]"

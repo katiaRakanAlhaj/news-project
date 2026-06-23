@@ -64,8 +64,8 @@ const NavbarSection1 = ({ contactData }) => {
                     isActiveLink("/About_Us")
                       ? "text-[#3B82F6] font-bold"
                       : isDarkMode 
-                        ? "text-white hover:text-[#3B82F6]" 
-                        : "text-[#222222] hover:text-[#3B82F6]"
+                        ? "text-white" 
+                        : "text-[#222222]"
                   }`}
                 >
                   {i18next.t("menu.about_us")}
@@ -78,8 +78,8 @@ const NavbarSection1 = ({ contactData }) => {
                     isActiveLink("/contact")
                       ? "text-[#3B82F6] font-bold"
                       : isDarkMode 
-                        ? "text-white hover:text-[#3B82F6]" 
-                        : "text-[#222222] hover:text-[#3B82F6]"
+                        ? "text-white" 
+                        : "text-[#222222]"
                   }`}
                 >
                   {i18next.t("menu.contact_us")}

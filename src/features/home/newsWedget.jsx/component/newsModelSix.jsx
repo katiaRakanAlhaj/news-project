@@ -127,7 +127,7 @@ const NewsModelSix = ({
                 {/* Left Card */}
                 <motion.div variants={imageVariants}>
                   <Link to={`/${currentLang}/News/${mainNewsLeftData.id}`}>
-                    <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
+                    <div className="relative w-full h-[20rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
                       <img
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         src={mainNewsLeftData?.image}
@@ -159,7 +159,7 @@ const NewsModelSix = ({
                 {/* Right Card */}
                 <motion.div variants={imageVariants}>
                   <Link to={`/${currentLang}/News/${mainNewsRightData.id}`}>
-                    <div className="relative w-full h-[17rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
+                    <div className="relative w-full h-[20rem] md:h-[20rem] lg:h-[22rem] overflow-hidden group cursor-pointer">
                       <img
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         src={mainNewsRightData?.image}
@@ -198,12 +198,12 @@ const NewsModelSix = ({
                   <motion.div
                     key={item.id || index}
                     variants={imageVariants}
-                    className="relative w-full h-[10rem] md:h-[12rem] lg:h-[15rem] overflow-hidden group cursor-pointer"
+                    className="relative w-full h-[20rem] md:h-[12rem] lg:h-[15rem] overflow-hidden group cursor-pointer"
                   >
                     <Link to={`/${currentLang}/News/${item.id}`}>
                       <div>
                         <img
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full lg:h-full h-[20rem] object-cover transition-transform duration-300 group-hover:scale-105"
                           src={item.image}
                           alt={item.title}
                         />

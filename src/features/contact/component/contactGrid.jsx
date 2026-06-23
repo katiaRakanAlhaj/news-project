@@ -94,7 +94,7 @@ const ContactGrid = ({ contactData }) => {
         style={{ zIndex: 999999 }}
       />
 
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-[3rem] lg:gap-y-0 gap-y-[2rem] lg:px-0 px-[2rem]">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-[3rem] lg:gap-y-0 gap-y-[2rem] lg:px-0 px-[2rem] lg:mt-0 mt-[6rem]">
         {/* first column */}
         <div className="flex flex-col justify-center">
           <h1 className={`font-bold text-2xl transition-colors duration-300 ${
@@ -156,12 +156,12 @@ const ContactGrid = ({ contactData }) => {
         {/* second column - Form */}
         <div
           style={{ boxShadow: "0px 0px 22px 0px #00000040" }}
-          className={`w-full h-auto py-[3rem] px-[3rem] rounded-lg transition-colors duration-300 ${
+          className={`w-full h-auto py-[3rem] lg:px-[3rem] px-[0.5rem] rounded-lg transition-colors duration-300 ${
             isDarkMode ? 'bg-[#1a1a1a]' : 'bg-white'
           }`}
         >
           <img 
-            className="w-[11rem]" 
+            className="md:w-[11rem] w-[8rem]" 
             src={logoContact} 
             alt="logo"
             style={{

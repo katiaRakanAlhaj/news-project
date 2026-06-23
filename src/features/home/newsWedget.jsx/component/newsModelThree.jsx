@@ -116,18 +116,18 @@ const NewsModelThree = ({
                   <div className="relative rounded-lg overflow-hidden cursor-pointer group">
                     <img
                       src={mainNewsItem.image}
-                      className="w-full h-[34rem] object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full lg:h-[34rem] h-[20rem] object-cover transition-transform duration-300 group-hover:scale-105"
                       alt={mainNewsItem.title}
                     />
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0" />
                     <div
-                      className={`absolute bottom-[3rem] ${currentLang === "ar" ? "right-[3rem]" : "left-[3rem]"} z-10`}
+                      className={`absolute bottom-[3rem] ${currentLang === "ar" ? "lg:right-[3rem] right-[1rem]" : "lg:left-[3rem] left-[1rem]"} z-10`}
                     >
                       <button className="w-[5rem] h-[1.8rem] bg-secondary rounded-full text-white text-md">
                         {mainNewsItem.type}
                       </button>
-                      <h1 className="font-bold text-white text-2xl mt-3">
+                      <h1 className="font-bold text-white lg:text-2xl md:txet-xl text-md mt-3">
                         {mainNewsItem.title}
                       </h1>
                     </div>

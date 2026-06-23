@@ -12,7 +12,7 @@ const OurGlobalPresence = ({ aboutusData }) => {
             <div className="flex flex-start">
               <AboutUsTitle title={aboutusData?.data?.section_title} />
             </div>
-            <p className="text-[#FFFFFF] opacity-80 w-[85%] text-lg font-[400] mt-3">
+            <p className="text-[#FFFFFF] opacity-80 w-[85%] md:text-lg text-md font-[400] mt-3">
               {aboutusData?.data?.section_description}{" "}
             </p>
           </div>

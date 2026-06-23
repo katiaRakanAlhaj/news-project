@@ -34,10 +34,10 @@ const NewsModelTwo = ({
     id: item.id,
     image: item.news_image,
     title: item.news_title,
-    description: item.news_description || "لا يوجد وصف متاح",
+    description: item.news_description,
     date: formatDate(item.date),
     views: item.views_count,
-    type: item.category?.name || "عام",
+    type: item.category?.name,
   }));
 
   // Auto-pagination effect

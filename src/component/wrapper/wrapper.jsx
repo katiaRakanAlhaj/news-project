@@ -25,7 +25,7 @@ function WrapperContent() {
         <NavbarSection3 categoryData={categoryData} />
       </div>
       <div className="lg:hidden block">
-        <NavbarMobile />
+        <NavbarMobile contactData = {contactData} categoryData = {categoryData} currentLang = {currentLang}/>
       </div>
       <Outlet />
       <Footer footerData = {footerData} categoryData = {categoryData} contactData = {contactData}/>

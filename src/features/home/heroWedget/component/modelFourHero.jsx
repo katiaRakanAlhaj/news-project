@@ -20,7 +20,7 @@ const ModelFourHero = ({ data, currentLang }) => {
             <Link to={`/${currentLang}/News/${item.id}`}>
               <div
                 key={item.id || index}
-                className="relative w-full lg:h-[22rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
+                className="relative w-full lg:h-[24rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
               >
                 <img
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -34,17 +34,19 @@ const ModelFourHero = ({ data, currentLang }) => {
                       "linear-gradient(0deg, rgba(255, 255, 255, 0.002), rgba(255, 255, 255, 0.002)), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
                   }}
                 ></div>
-                <div className="absolute right-[1.5rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
+                <div
+                  className={`absolute ${i18next.language == "ar" ? "lg:right-[1.5rem] right-[1rem]" : "lg:ledt-[1.5rem] left-[1rem]"} bottom-[1.5rem] pointer-events-none`}
+                >
                   <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
                     <p className="text-white font-[700] text-sm mt-1">
-                      {item.category?.name || "عام"}
+                      {item.category?.name}
                     </p>
                   </div>
-                  <p className="text-xl font-bold text-white w-full leading-relaxed mt-4">
+                  <p className="md:text-xl text-md font-bold text-white w-full leading-relaxed mt-4">
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                    {formatDate(item.date , currentLang)}
+                    {formatDate(item.date, currentLang)}
                   </p>
                 </div>
               </div>
@@ -58,7 +60,7 @@ const ModelFourHero = ({ data, currentLang }) => {
             <Link to={`/${currentLang}/News/${item.id}`}>
               <div
                 key={item.id || index}
-                className="relative w-full lg:h-[22rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
+                className="relative w-full lg:h-[24rem] h-[20rem] overflow-hidden rounded-xl group cursor-pointer"
               >
                 <img
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -82,7 +84,7 @@ const ModelFourHero = ({ data, currentLang }) => {
                     {item.news_title}
                   </p>
                   <p className="text-[#FFFFFF] text-md mt-2 opacity-70">
-                    {formatDate(item.date , currentLang)}
+                    {formatDate(item.date, currentLang)}
                   </p>
                 </div>
               </div>

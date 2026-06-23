@@ -26,12 +26,12 @@ const MostViewedSection = ({ activeTab, mostViewedData, currentLang }) => { // A
         >
           <div className="flex flex-col sm:flex-row gap-x-6 group cursor-pointer rounded-lg">
             <img
-              className="w-full sm:w-[8rem] h-[7.75rem] rounded-lg object-cover"
+              className="w-full sm:w-[8rem] md:h-[7.75rem] h-[16rem] rounded-lg object-cover"
               src={newsItem.image}
               alt={newsItem.title}
             />
             <div className="flex-1 flex flex-col space-y-2">
-              <h3 className="text-secondary font-bold text-md line-clamp-1 group-hover:text-negative transition">
+              <h3 className="text-secondary lg:mt-0 mt-[1rem] font-bold text-md line-clamp-1 group-hover:text-negative transition">
                 {newsItem.title}
               </h3>
               <p className="text-md text-secondary line-clamp-2">

@@ -29,6 +29,9 @@ const Contact = () => {
         <div className="container3 mx-auto mt-[3rem] lg:block hidden">
           <ContactGrid contactData={contactData} />
         </div>
+              <div className="mt-[3rem] lg:hidden block">
+          <ContactGrid contactData={contactData} />
+        </div>
       </div>
     </HelmetProvider>
   );
