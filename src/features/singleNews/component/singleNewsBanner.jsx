@@ -1,4 +1,3 @@
-import singleNewsBanner from "../../../assets/images/singleNewsbanner.png";
 import twitter from "../../../assets/images/twitter.svg";
 import instgramColor from "../../../assets/images/instgramColor.svg";
 import facebookBanner from "../../../assets/images/facebookBanner.svg";

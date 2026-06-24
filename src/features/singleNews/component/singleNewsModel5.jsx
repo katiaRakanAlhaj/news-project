@@ -1,4 +1,3 @@
-import model5 from "../../../assets/images/model5.png";
 const SingleNewsModel5 = ({data}) => {
   return (
     <div className="flex flex-col space-y-2">

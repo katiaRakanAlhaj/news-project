@@ -60,7 +60,9 @@ const PollComponent = ({ pollId }) => {
           console.log("Vote successful:", data);
         },
         onError: (error) => {
-          toast.error(error?.response?.data?.message || i18next.t("polls.vote_error"));
+          toast.error(
+            error?.response?.data?.message || i18next.t("polls.vote_error"),
+          );
           console.error("Vote error:", error);
         },
       },
@@ -84,7 +86,9 @@ const PollComponent = ({ pollId }) => {
 
   if (pollError || !pollData?.data) {
     return (
-      <p className="text-red-500 text-center">{i18next.t("polls.loading_error")}</p>
+      <p className="text-red-500 text-center">
+        {i18next.t("polls.loading_error")}
+      </p>
     );
   }
 
@@ -102,7 +106,8 @@ const PollComponent = ({ pollId }) => {
                 <div className="flex justify-between text-sm text-secondary mb-1">
                   <span>{result.title}</span>
                   <span>
-                    {result.percentage}% ({result.votes} {i18next.t("polls.votes_count")})
+                    {result.percentage}% ({result.votes}{" "}
+                    {i18next.t("polls.votes_count")})
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -160,7 +165,9 @@ const PollComponent = ({ pollId }) => {
         onClick={handleShowResults}
         className="w-full text-center text-sm text-secondary hover:text-secondary/80 mt-2 transition"
       >
-        {showResults ? i18next.t("polls.hide_results") : i18next.t("polls.show_results")}
+        {showResults
+          ? i18next.t("polls.hide_results")
+          : i18next.t("polls.show_results")}
       </button>
     </div>
   );
@@ -243,7 +250,7 @@ const NewsModelFive = ({
     id: item.id,
     image: item.news_image,
     title: item.news_title,
-    date: formatDate(item.date , currentLang),
+    date: formatDate(item.date, currentLang),
     views: item.views_count,
     type: item.category?.name || i18next.t("news.general_fallback"),
   }));
@@ -326,7 +333,10 @@ const NewsModelFive = ({
                     className="grid md:grid-cols-2 gap-y-[2rem] gap-x-[0.5rem] mt-[1rem]"
                   >
                     {news.map((item, index) => (
-                      <Link key={item.id || index} to={`/${currentLang}/News/${item.id}`}>
+                      <Link
+                        key={item.id || index}
+                        to={`/${currentLang}/News/${item.id}`}
+                      >
                         <NewsCard
                           image={item.image}
                           title={item.title}
@@ -349,7 +359,9 @@ const NewsModelFive = ({
               style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
               className="w-full h-auto px-[2rem] py-[2rem] rounded-lg bg-white border border-[#C1C6D6]"
             >
-              <h1 className="text-secondary text-md mt-1">{i18next.t("survey")}</h1>
+              <h1 className="text-secondary text-md mt-1">
+                {i18next.t("survey")}
+              </h1>
 
               {isPollLoading ? (
                 <div className="flex justify-center items-center h-40">
@@ -387,7 +399,9 @@ const NewsModelFive = ({
               ) : (
                 // Fallback ad placeholder if no matching ad found
                 <div className="w-full h-[19rem] relative bg-[#E5E7EB] border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                  <p className="text-[#9CA3AF] text-xs">{i18next.t("ads.ad_space")}</p>
+                  <p className="text-[#9CA3AF] text-xs">
+                    {i18next.t("ads.ad_space")}
+                  </p>
                 </div>
               )}
             </div>

@@ -108,7 +108,7 @@ const NewsGrid = ({ categoryData, categoryId }) => {
               </div>
             </div>
             <div className="relative">
-              <h1 className="text-[#333333] md:text-xl text-lg font-bold leading-relaxed">
+              <h1 className="text-[#333333] md:text-xl text-lg font-bold leading-relaxed line-clamp-2">
                 {newsItem?.news_title}
               </h1>
               <p className="text-[#666666] mt-1 md:text-lg text-md leading-relaxed line-clamp-3">

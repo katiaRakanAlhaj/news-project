@@ -2,7 +2,7 @@ import ModelTitle from "../../../ui/modelsTitle";
 import { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-const SingleNewsModel14 = ({data}) => {
+const SingleNewsModel14 = ({ data }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
   // Use data from response or fallback to empty array

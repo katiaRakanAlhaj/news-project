@@ -339,6 +339,7 @@ html::-webkit-scrollbar {
 .dark {
     .text-secondary,
     .text-primary,
+    .text-gray-400,
     .text-\[\#666666\],
     .text-\[\#333333\],
     .text-\[\#363636\],
@@ -356,6 +357,7 @@ html::-webkit-scrollbar {
 
 .dark {
     .bg-white,
+    .bg-\[\#F9FAFB\],
     .bg-\[\#5F5E5E\],
     .bg-\[\#F3F4F5\],
     .bg-\[\#001926\],

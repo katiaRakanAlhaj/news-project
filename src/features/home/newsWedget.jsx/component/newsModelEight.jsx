@@ -221,7 +221,7 @@ const NewsModelEight = ({
               <div className="flex gap-x-[0.5rem] items-center">
                 <div
                   onClick={handlePrevApiPage}
-                  className={`w-[1.5rem] h-[1.5rem] bg-[#D9D9D9] flex items-center justify-center rounded-full cursor-pointer transition ${
+                  className={`w-[1.5rem] h-[1.5rem] bg-[#D9D9D9] flex items-center justify-center rounded-full cursor-pointer transition ${i18next.language == "en"?'rotate-180':''} ${
                     currentCategoryCurrentPage <= 1 || isLoadingCategory
                       ? "opacity-50 cursor-not-allowed"
                       : "hover:bg-gray-400"
@@ -235,7 +235,7 @@ const NewsModelEight = ({
                 </div>
                 <div
                   onClick={handleNextApiPage}
-                  className={`w-[1.5rem] h-[1.5rem] bg-[#D9D9D9] rounded-full flex items-center justify-center cursor-pointer transition ${
+                  className={`w-[1.5rem] h-[1.5rem] bg-[#D9D9D9] rounded-full flex items-center justify-center cursor-pointer transition ${i18next.language == "en"?'rotate-180':''} ${
                     currentCategoryCurrentPage >= currentCategoryLastPage ||
                     isLoadingCategory
                       ? "opacity-50 cursor-not-allowed"

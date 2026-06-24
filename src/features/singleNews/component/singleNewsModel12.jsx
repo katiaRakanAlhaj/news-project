@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ModelTitle from "../../../ui/modelsTitle";
 
-const SingleNewsModel12 = ({data}) => {
+const SingleNewsModel12 = ({ data }) => {
   const [activeTab, setActiveTab] = useState(0);
   const tabs = data?.content || [];
   return (

@@ -1,12 +1,8 @@
-// NewsModelFour.jsx
-
 import i18next from "i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-
 import "swiper/css";
-
 import TitleSection from "../../../../ui/titleSection";
 import {
   containerVariants,

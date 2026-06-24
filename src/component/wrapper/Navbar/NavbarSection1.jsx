@@ -60,9 +60,9 @@ const NavbarSection1 = ({ contactData }) => {
             <div className="flex gap-x-10 items-center">
               <Link to={`/${currentLang}/About_Us`}>
                 <p
-                  className={`transition-colors duration-300 text-md ${
+                  className={`text-md ${
                     isActiveLink("/About_Us")
-                      ? "text-[#3B82F6] font-bold"
+                      ? "text-[#0058C5] font-bold"
                       : isDarkMode 
                         ? "text-white" 
                         : "text-[#222222]"

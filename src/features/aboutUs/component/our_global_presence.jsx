@@ -1,5 +1,4 @@
 import AboutUsTitle from "../../../ui/aboutUsTitle";
-import Newspaper from "../../../assets/images/Newspaper.png";
 import location from "../../../assets/images/location.svg";
 
 const OurGlobalPresence = ({ aboutusData }) => {

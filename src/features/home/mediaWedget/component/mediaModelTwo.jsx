@@ -1,24 +1,20 @@
-// MediaModelTwo.jsx
-
 import { useState, useEffect } from "react";
 import youtube from "../../../../assets/images/youtube.svg";
-import mainVideo from "../../../../assets/images/mainVideo.png";
 import TitleSection from "../../../../ui/titleSection";
 import i18next from "i18next";
-
-const MediaModelTwo = ({ 
-  data, 
-  sectionId, 
-  currentPage, 
-  totalPages, 
-  onPageChange, 
-  isLoading 
+const MediaModelTwo = ({
+  data,
+  sectionId,
+  currentPage,
+  totalPages,
+  onPageChange,
+  isLoading,
 }) => {
   const [currentVideo, setCurrentVideo] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTitle, setCurrentTitle] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
-  
+
   // Local state to accumulate items across all loaded pages
   const [accumulatedItems, setAccumulatedItems] = useState([]);
 
@@ -33,11 +29,13 @@ const MediaModelTwo = ({
   useEffect(() => {
     if (data?.items) {
       const incomingRaw = getItemsArray(data.items);
-      
+
       setAccumulatedItems((prev) => {
-        const existingIds = new Set(prev.map(item => item.id));
-        const filteredNew = incomingRaw.filter(item => !existingIds.has(item.id));
-        
+        const existingIds = new Set(prev.map((item) => item.id));
+        const filteredNew = incomingRaw.filter(
+          (item) => !existingIds.has(item.id),
+        );
+
         if (currentPage === 1) {
           return incomingRaw;
         }
@@ -57,7 +55,8 @@ const MediaModelTwo = ({
   // Extract pure YouTube ID string segments via expressions
   const getYouTubeVideoId = (url) => {
     if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
   };
@@ -102,7 +101,6 @@ const MediaModelTwo = ({
 
       <div className="w-full mt-4">
         <div className="grid grid-cols-12 gap-4">
-          
           {/* Main Video Window */}
           <div className="relative col-span-12 lg:col-span-9 h-[20rem] sm:h-[22rem] lg:h-[38rem] overflow-hidden shadow-lg bg-black">
             {isPlaying ? (
@@ -132,7 +130,8 @@ const MediaModelTwo = ({
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: "linear-gradient(360deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%)",
+                    background:
+                      "linear-gradient(360deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%)",
                   }}
                 />
                 <div
@@ -156,10 +155,11 @@ const MediaModelTwo = ({
           </div>
 
           {/* Sidebar Area Playlist Items Track */}
-          <div 
+          <div
             className="relative col-span-12 lg:col-span-3 h-auto lg:h-[38rem] flex flex-col overflow-hidden  border border-white/5"
             style={{
-              background: "linear-gradient(360deg, rgba(0, 0, 0, 0.7) 0%, rgb(0, 0, 0) 150%)",
+              background:
+                "linear-gradient(360deg, rgba(0, 0, 0, 0.7) 0%, rgb(0, 0, 0) 150%)",
             }}
           >
             <div className="h-[0.5rem] w-full bg-secondary" />
@@ -170,8 +170,8 @@ const MediaModelTwo = ({
                 <div
                   key={item.id}
                   className={`flex lg:w-full gap-x-3 items-center cursor-pointer transition-all duration-300 flex-shrink-0 min-w-[280px] sm:min-w-[320px] lg:min-w-0 p-2 rounded-lg ${
-                    selectedItemId === item.id 
-                      ? "bg-[#66CCFF33]" 
+                    selectedItemId === item.id
+                      ? "bg-[#66CCFF33]"
                       : "hover:bg-white/10 active:bg-white/20"
                   }`}
                   onClick={() => handlePlayVideo(item)}
@@ -199,7 +199,9 @@ const MediaModelTwo = ({
                   disabled={isLoading}
                   className="w-full sm:w-auto px-6 py-2 rounded-lg text-xs font-bold bg-negative text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                 >
-                  {isLoading ? "جاري التحميل..." : i18next.t("buttons.see_more")}
+                  {isLoading
+                    ? "جاري التحميل..."
+                    : i18next.t("buttons.see_more")}
                 </button>
               ) : currentPage > 1 ? (
                 <button
@@ -210,7 +212,6 @@ const MediaModelTwo = ({
                 </button>
               ) : null}
             </div>
-
           </div>
         </div>
       </div>

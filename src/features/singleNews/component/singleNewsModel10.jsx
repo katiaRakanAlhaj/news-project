@@ -14,7 +14,9 @@ const SingleNewsModel10 = ({ data }) => {
             <h1 className="font-bold text-lg mt-1 text-[#333333]">
               {item.title}
             </h1>
-            <p className="text-[#333333] md:text-lg text-md">{item.description}</p>
+            <p className="text-[#333333] md:text-lg text-md">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>

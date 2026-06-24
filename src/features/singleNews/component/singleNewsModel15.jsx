@@ -1,5 +1,5 @@
 import ModelTitle from "../../../ui/modelsTitle";
-const SingleNewsModel15 = ({data}) => {
+const SingleNewsModel15 = ({ data }) => {
   return (
     <div className="mt-[2rem]">
       <ModelTitle title={data.title} />

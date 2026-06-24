@@ -2,7 +2,6 @@
 import i18next from "i18next";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import seeMore1 from "../../../../assets/images/seeMore1.png";
 import NewsCard from "../../../../ui/newsCard";
 import MostViewedSection from "../../../../ui/MostViewedSection";
 import TitleSection from "../../../../ui/titleSection";

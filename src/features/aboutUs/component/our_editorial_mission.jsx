@@ -33,7 +33,7 @@ const OurEditorialMission = ({ aboutusData }) => {
             </div>
 
             {/* Remaining items - grid 2 columns */}
-            <div className="grid grid-cols-2 gap-[1rem]">
+            <div className="grid md:grid-cols-2 gap-[1rem]">
               {restItems.map((item, index) => (
                 <div
                   key={index}
