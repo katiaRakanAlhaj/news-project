@@ -6,7 +6,7 @@ const SingleNewsModel15 = ({ data }) => {
       <div className="grid md:grid-cols-2 gap-x-[4rem] gap-y-[3rem] mt-[2rem]">
         {data?.content?.map((item, index) => (
           <div key={index} className="flex flex-col space-y-2">
-            <h1 className="text-[#005BBF] font-bold text-lg">{item?.title}</h1>
+            <h1 className="text-secondary font-bold text-lg">{item?.title}</h1>
             <p className="text-[#666666] text-md leading-relaxed">
               {item?.description}
             </p>

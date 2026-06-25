@@ -37,7 +37,7 @@ const ModelFourHero = ({ data, currentLang }) => {
                 <div
                   className={`absolute ${i18next.language == "ar" ? "lg:right-[1.5rem] right-[1rem]" : "lg:ledt-[1.5rem] left-[1rem]"} bottom-[1.5rem] pointer-events-none`}
                 >
-                  <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
+                  <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-secondary rounded-full">
                     <p className="text-white font-[700] text-sm mt-1">
                       {item.category?.name}
                     </p>
@@ -75,7 +75,7 @@ const ModelFourHero = ({ data, currentLang }) => {
                   }}
                 ></div>
                 <div className="absolute right-[1.5rem] bottom-[1.5rem] left-[1rem] pointer-events-none">
-                  <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
+                  <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-secondary rounded-full">
                     <p className="text-white font-[700] text-md mt-1">
                       {item.category?.name || "عام"}
                     </p>

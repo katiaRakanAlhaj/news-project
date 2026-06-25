@@ -105,7 +105,7 @@ const NavbarMobile = ({ categoryData, contactData }) => {
   return (
     <>
       {/* Mobile Navbar Container */}
-      <div className="w-full h-[4rem] bg-[#121C2A] fixed top-0 z-50">
+      <div className="w-full h-[4rem] bg-primary fixed top-0 z-50">
         <div className="container1 mx-auto h-full px-4">
           <div className="flex w-full h-full items-center justify-between">
             {/* Mobile Menu Button */}
@@ -129,14 +129,14 @@ const NavbarMobile = ({ categoryData, contactData }) => {
             {/* Language Switcher */}
             <div className="flex gap-x-2 text-white text-[0.8rem] cursor-pointer">
               <span
-                className={`${currentLang === "en" ? "font-bold text-[#005BBF]" : ""} hover:text-[#005BBF] transition-colors duration-200`}
+                className={`${currentLang === "en" ? "font-bold text-secondary" : ""} hover:text-secondary transition-colors duration-200`}
                 onClick={() => handleLanguageChange("en")}
               >
                 EN
               </span>
               <span>|</span>
               <span
-                className={`${currentLang === "ar" ? "font-bold text-[#0058C5]" : ""} hover:text-[#0058C5] transition-colors duration-200`}
+                className={`${currentLang === "ar" ? "font-bold text-secondary" : ""} hover:text-secondary transition-colors duration-200`}
                 onClick={() => handleLanguageChange("ar")}
               >
                 AR
@@ -149,7 +149,7 @@ const NavbarMobile = ({ categoryData, contactData }) => {
       {/* Mobile Drawer Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-[4rem] right-0 h-full w-[80%] max-w-[320px] bg-[#121C2A] z-40 shadow-lg transform transition-transform duration-300 ease-in-out overflow-y-auto ${
+        className={`fixed top-[4rem] right-0 h-full w-[80%] max-w-[320px] bg-primary z-40 shadow-lg transform transition-transform duration-300 ease-in-out overflow-y-auto ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

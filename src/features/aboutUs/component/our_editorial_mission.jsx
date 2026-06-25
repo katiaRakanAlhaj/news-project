@@ -1,7 +1,9 @@
+import { useColors } from "../../../context/colorContext";
+
 const OurEditorialMission = ({ aboutusData }) => {
+
   // Safe fallback - if statistics doesn't exist, use empty array
   const statistics = aboutusData?.data?.statistics || [];
-  
   // Only try to destructure if we have at least one item
   const [firstItem, ...restItems] = statistics.length > 0 ? statistics : [null];
 
@@ -11,8 +13,8 @@ const OurEditorialMission = ({ aboutusData }) => {
         {/* first column */}
         <div className="flex flex-col justify-center">
           <div className="flex gap-x-2 items-center">
-            <div className="w-[1.5rem] h-[0.3rem] bg-[#005BBF] rounded-full"></div>
-            <h1 className="text-[#005BBF] font-bold lg:text-4xl md:text-2xl text-xl mt-1">
+            <div className="w-[1.5rem] h-[0.3rem] bg-secondary rounded-full"></div>
+            <h1 className="text-secondary font-bold lg:text-4xl md:text-2xl text-xl mt-1">
               {aboutusData?.data?.title}
             </h1>
           </div>
@@ -26,7 +28,7 @@ const OurEditorialMission = ({ aboutusData }) => {
           <div className="flex flex-col gap-y-[1rem]">
             {/* First item - special design */}
             <div className="w-full h-[8rem] rounded-xl bg-[#F3F4F5] border border-[#BBCEE4] flex flex-col justify-center items-center">
-              <h1 className="font-bold text-[#005BBF] text-4xl">
+              <h1 className="font-bold text-secondary text-4xl">
                 {firstItem.number}
               </h1>
               <p className="text-[#5F5E5E] text-lg">{firstItem.title}</p>
@@ -39,7 +41,7 @@ const OurEditorialMission = ({ aboutusData }) => {
                   key={index}
                   className="w-full h-[8rem] rounded-md bg-[#F3F4F5] border border-[#BBCEE4] flex flex-col justify-center items-center"
                 >
-                  <h1 className="font-bold text-[#005BBF] text-4xl">
+                  <h1 className="font-bold text-secondary text-4xl">
                     {item.number}
                   </h1>
                   <p className="text-[#5F5E5E] text-lg">{item.title}</p>

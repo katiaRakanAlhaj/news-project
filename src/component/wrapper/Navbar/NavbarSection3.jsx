@@ -58,7 +58,7 @@ const NavbarSection3 = ({ categoryData }) => {
     location.pathname === `/${currentLang}/`;
 
   return (
-    <div className="w-full h-[5.5rem] bg-[#121C2A] relative">
+    <div className="w-full h-[5.5rem] bg-primary relative">
       <div className="container1 mx-auto h-full">
         <div className="flex w-full gap-x-[2rem] h-full items-center justify-between">
           <div className="flex gap-x-[2rem] items-center">
@@ -69,7 +69,7 @@ const NavbarSection3 = ({ categoryData }) => {
                 className={`text-md transition-colors duration-200 pb-1 ${
                   isHomeActive
                     ? "text-[#3B82F6] font-bold border-b-2 border-[#3B82F6]"
-                    : "text-white hover:text-[#0058C5]"
+                    : "text-white hover:text-secondary"
                 }`}
               >
                 {i18next.t("menu.home")}
@@ -88,7 +88,7 @@ const NavbarSection3 = ({ categoryData }) => {
                     className={`text-md transition-colors duration-200 cursor-pointer bg-transparent border-none pb-1 ${
                       isCategoryActive
                         ? "text-[#3B82F6] font-bold border-b-2 border-[#3B82F6]"
-                        : "text-white hover:text-[#0058C5]"
+                        : "text-white hover:text-secondary"
                     }`}
                   >
                     {category.name}
@@ -101,14 +101,14 @@ const NavbarSection3 = ({ categoryData }) => {
           {/* Language Switcher */}
           <div className="flex gap-x-2 text-white text-[0.9rem] cursor-pointer">
             <span
-              className={`${currentLang === "en" ? "font-bold text-[#0058C5]" : ""} hover:text-[#0058C5] transition-colors duration-200`}
+              className={`${currentLang === "en" ? "font-bold text-secondary" : ""} hover:text-secondary transition-colors duration-200`}
               onClick={() => handleLanguageChange("en")}
             >
               EN
             </span>
             <span>|</span>
             <span
-              className={`${currentLang === "ar" ? "font-bold text-[#0058C5]" : ""} hover:text-[#0058C5] transition-colors duration-200`}
+              className={`${currentLang === "ar" ? "font-bold text-secondary" : ""} hover:text-secondary transition-colors duration-200`}
               onClick={() => handleLanguageChange("ar")}
             >
               AR

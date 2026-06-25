@@ -17,7 +17,7 @@ const SinlgeNewsBanner = ({ singleNewsData, contactData ,currentLang}) => {
 
   return (
     <div className="mt-[1rem]">
-      <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
+      <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-secondary not-last:rounded-full">
         <p className="text-white font-[700] text-md mt-1">
           {singleNewsData?.category}
         </p>

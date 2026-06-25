@@ -19,31 +19,69 @@
 }
 
 :root {
-    --text-primary: #111827;
+    /* --text-primary: #005BBF;
     --bg-negative: #BF0000;
     --bg-secondary: #005BBF;
     --text-negative: #BF0000;
-    --text-secondary: #121C2A;
+    --text-secondary: #121C2A; */
 }
 
-.text-primary {
-    color: var(--text-primary);
+
+/* src/index.css */
+
+@import "tailwindcss";
+@theme {
+    --color-primary: var(--color-primary);
+    --color-secondary: var(--color-secondary);
+    --color-negative: var(--color-negative);
 }
 
-.text-secondary {
-    color: var(--text-secondary);
+
+/* Define custom utilities */
+
+@utility text-primary {
+    color: var(--color-primary);
 }
 
-.text-negative {
-    color: var(--text-negative);
+@utility bg-primary {
+    background-color: var(--color-primary);
 }
 
-.bg-secondary {
-    background-color: var(--bg-secondary)
+@utility border-primary {
+    border-color: var(--color-primary);
 }
 
-.bg-negative {
-    background-color: var(--bg-negative);
+@utility text-secondary {
+    color: var(--color-secondary);
+}
+
+@utility bg-secondary {
+    background-color: var(--color-secondary);
+}
+
+@utility border-secondary {
+    border-color: var(--color-secondary);
+}
+
+@utility text-negative {
+    color: var(--color-negative);
+}
+
+@utility bg-negative {
+    background-color: var(--color-negative);
+}
+
+@utility border-negative {
+    border-color: var(--color-negative);
+}
+
+
+/* You can also add hover states */
+
+@utility hover-bg-secondary {
+    &:hover {
+        background-color: var(--color-secondary);
+    }
 }
 
 html::-webkit-scrollbar {
@@ -350,7 +388,8 @@ html::-webkit-scrollbar {
     .text-\[\#1B1C1C\],
     .text-\[\#5F5E5E\],
     .text-\[\#002F3C\],
-    .text-\[\#474747\] {
+    .text-\[\#474747\],
+    .text-\[\#111827\] {
         color: white !important;
     }
 }

@@ -163,7 +163,7 @@ const MediaModelOne = ({
                     <div className="absolute inset-0 bg-[#00000066] rounded-t-xl"></div>
                     {/* Centered circle for main image */}
                     <div
-                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[5rem] h-[5rem] rounded-full bg-[#005BBFE5] cursor-pointer flex justify-center items-center"
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[5rem] h-[5rem] rounded-full bg-secondary cursor-pointer flex justify-center items-center"
                       onClick={() =>
                         mainItem.videoUrl && handlePlayVideo(mainItem.id)
                       }
@@ -227,7 +227,7 @@ const MediaModelOne = ({
                           </>
                         )}
                       </div>
-                      <p className="text-secondary font-bold lg:mt-0 mt-[0.5rem] text-md line-clamp-2">
+                      <p className="text-primary font-bold lg:mt-0 mt-[0.5rem] text-md line-clamp-2">
                         {item.title}
                       </p>
                     </div>

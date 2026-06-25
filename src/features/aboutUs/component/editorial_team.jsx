@@ -14,7 +14,7 @@ const EditorialTeam = ({ aboutusData }) => {
           <p className="text-[#5F5E5E] text-base md:text-lg mb-2 lg:mb-0 lg:whitespace-nowrap">
             {aboutusData?.data?.editorial_board_description}
           </p>
-          <div className="w-full h-[0.1rem] bg-[#005BBF]"></div>
+          <div className="w-full h-[0.1rem] bg-secondary"></div>
         </div>
 
         {/* Responsive Members Grid */}
@@ -38,7 +38,7 @@ const EditorialTeam = ({ aboutusData }) => {
               <h1 className="text-xl sm:text-2xl font-bold mt-3 text-[#1B1C1C] line-clamp-1">
                 {item.name}
               </h1>
-              <p className="text-base sm:text-lg text-[#005BBF] mt-1 font-medium">
+              <p className="text-base sm:text-lg text-secondary mt-1 font-medium">
                 {item.position}
               </p>
             </div>

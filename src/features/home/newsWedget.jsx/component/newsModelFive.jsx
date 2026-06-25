@@ -57,13 +57,11 @@ const PollComponent = ({ pollId }) => {
             setShowResults(true);
             refetch();
           }, 1000);
-          console.log("Vote successful:", data);
         },
         onError: (error) => {
           toast.error(
             error?.response?.data?.message || i18next.t("polls.vote_error"),
           );
-          console.error("Vote error:", error);
         },
       },
     );
@@ -94,7 +92,7 @@ const PollComponent = ({ pollId }) => {
 
   return (
     <div className="mb-6 last:mb-0">
-      <p className="text-secondary md:text-xl text-md mt-4 font-bold">
+      <p className="text-primary md:text-xl text-md mt-4 font-bold">
         {pollData.data.question}
       </p>
 
@@ -103,7 +101,7 @@ const PollComponent = ({ pollId }) => {
           <div className="space-y-3">
             {resultsData.results?.map((result) => (
               <div key={result.id}>
-                <div className="flex justify-between text-sm text-secondary mb-1">
+                <div className="flex justify-between text-sm text-primary mb-1">
                   <span>{result.title}</span>
                   <span>
                     {result.percentage}% ({result.votes}{" "}
@@ -140,7 +138,7 @@ const PollComponent = ({ pollId }) => {
                   disabled={isVotePending}
                   className="w-3 h-3 border border-[#C1C6D6] text-secondary focus:ring-secondary cursor-pointer disabled:opacity-50"
                 />
-                <span className="text-secondary text-md">{option.title}</span>
+                <span className="text-primary text-md">{option.title}</span>
               </label>
             ))}
           </div>
@@ -359,7 +357,7 @@ const NewsModelFive = ({
               style={{ boxShadow: "0px 1px 2px 0px #0000000D" }}
               className="w-full h-auto px-[2rem] py-[2rem] rounded-lg bg-white border border-[#C1C6D6]"
             >
-              <h1 className="text-secondary text-md mt-1">
+              <h1 className="text-primary text-md mt-1">
                 {i18next.t("survey")}
               </h1>
 

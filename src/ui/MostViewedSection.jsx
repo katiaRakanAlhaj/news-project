@@ -31,10 +31,10 @@ const MostViewedSection = ({ activeTab, mostViewedData, currentLang }) => { // A
               alt={newsItem.title}
             />
             <div className="flex-1 flex flex-col space-y-2">
-              <h3 className="text-secondary lg:mt-0 mt-[1rem] font-bold text-md line-clamp-1 group-hover:text-negative transition">
+              <h3 className="text-primary lg:mt-0 mt-[1rem] font-bold text-md line-clamp-1 group-hover:text-negative transition">
                 {newsItem.title}
               </h3>
-              <p className="text-md text-secondary line-clamp-2">
+              <p className="text-md text-primary line-clamp-2">
                 {newsItem.description}
               </p>
               <p className="text-sm text-[#6B7280]">{newsItem.time}</p>

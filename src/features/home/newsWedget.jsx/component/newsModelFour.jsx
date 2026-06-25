@@ -163,7 +163,7 @@ const NewsModelFour = ({
                             i18next.language === "ar" ? "right-4" : "left-4"
                           }`}
                         >
-                          <span className="bg-[#005BBF] text-white text-xs px-3 py-1 rounded-full">
+                          <span className="bg-secondary text-white text-xs px-3 py-1 rounded-full">
                             {item.type}
                           </span>
                         </div>

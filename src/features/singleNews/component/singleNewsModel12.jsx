@@ -16,7 +16,7 @@ const SingleNewsModel12 = ({ data }) => {
             onClick={() => setActiveTab(index)}
             className={`pb-2 px-4 text-sm transition-colors cursor-pointer ${
               activeTab === index
-                ? "text-[#005BBF] font-bold border-b-2 border-[#005BBF]"
+                ? "text-secondary font-bold border-b-2 border-secondary"
                 : "text-[#959595] font-[400]"
             }`}
           >

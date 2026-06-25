@@ -28,6 +28,9 @@ const NewsModelOne = ({
   diffrentNewsData,
   mostViewdNewsData,
   currentLang,
+  negativeColor,
+  secondaryColor,
+  primaryColor
 }) => {
   const [activeTab, setActiveTab] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -192,6 +195,8 @@ const NewsModelOne = ({
             onPrevPage={handlePrevPage}
             onNextPage={handleNextPage}
             isLoading={externalIsLoading}
+            negativeColor={negativeColor}
+            
           />
 
           <div className="relative min-h-[400px]">
@@ -231,7 +236,7 @@ const NewsModelOne = ({
               className={`font-bold text-lg cursor-pointer transition ${
                 showMostViewed
                   ? "text-negative border-b-2 border-negative"
-                  : "text-negative hover:text-primary"
+                  : "text-negative hover:text-[#111827]"
               }`}
               onClick={handleMostViewedClick}
             >
@@ -246,7 +251,7 @@ const NewsModelOne = ({
                   className={`font-bold text-lg transition ${
                     activeTab === "ترند"
                       ? "text-negative border-b-2 border-negative"
-                      : "text-primary hover:text-negative"
+                      : "text-[#111827] hover:text-negative"
                   }`}
                 >
                   {currentLang === "ar" ? "ترند" : "Trending"}
@@ -260,7 +265,7 @@ const NewsModelOne = ({
               className={`font-bold text-lg transition ${
                 activeTab === "منوعات"
                   ? "text-negative border-b-2 border-negative"
-                  : "text-primary hover:text-negative"
+                  : "text-[#111827] hover:text-negative"
               }`}
             >
               {currentLang === "ar" ? "منوعات" : "Variety"}
@@ -277,6 +282,8 @@ const NewsModelOne = ({
                 currentLang={currentLang}
                 activeTab={currentActiveKey}
                 mostViewedData={mostViewedData}
+                secondaryColor = {secondaryColor}
+                primaryColor={primaryColor}
               />
 
               {/* Conditional See More / See Less Button Actions */}

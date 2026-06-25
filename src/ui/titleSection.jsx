@@ -11,7 +11,8 @@ const TitleSection = ({
   lastPage = 1,
   onPrevPage = null,
   onNextPage = null,
-  isLoading = false
+  isLoading = false,
+  negativeColor
 }) => {
   const handlePrev = () => {
     if (onPrevPage && currentPage > 1 && !isLoading) {
@@ -29,7 +30,7 @@ const {isDarkMode} = useTheme();
     <div className="flex flex-wrap gap-x-2 items-center">
       <h1 className={`text-primary font-bold text-lg text-nowrap`}>{title}</h1>
       <div className="flex-1 h-[0.2rem] relative bg-[#D9E3F6]">
-        <div className="absolute h-full w-[10%] bg-negative"></div>
+        <div  className="absolute h-full w-[10%] bg-negative"></div>
       </div>
 
       {showArrows && onPrevPage && onNextPage && (

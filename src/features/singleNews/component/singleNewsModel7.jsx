@@ -21,7 +21,7 @@ const SingleNewsModel7 = ({data}) => {
                 }}
               />
               {index !== data?.content?.length - 1 && (
-                <div className={`w-[0.01rem] h-[3rem] mt-1 bg-[#005BBF]`}></div>
+                <div className={`w-[0.01rem] h-[3rem] mt-1 bg-secondary`}></div>
               )}
             </div>
             <div className="w-full">

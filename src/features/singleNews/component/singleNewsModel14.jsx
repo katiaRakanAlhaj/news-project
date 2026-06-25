@@ -26,7 +26,7 @@ const SingleNewsModel14 = ({ data }) => {
               <span
                 className={`md:text-lg text-md ${
                   openIndex === index
-                    ? "font-bold text-[#005BBF]"
+                    ? "font-bold text-secondary"
                     : "font-normal text-[#333333]"
                 }`}
               >

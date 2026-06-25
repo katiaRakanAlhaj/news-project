@@ -62,7 +62,7 @@ const NavbarSection1 = ({ contactData }) => {
                 <p
                   className={`text-md ${
                     isActiveLink("/About_Us")
-                      ? "text-[#0058C5] font-bold"
+                      ? "text-secondary font-bold"
                       : isDarkMode 
                         ? "text-white" 
                         : "text-[#222222]"

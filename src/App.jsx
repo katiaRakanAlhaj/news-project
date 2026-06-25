@@ -1,5 +1,4 @@
 // App.jsx
-
 import {
   Route,
   createBrowserRouter,
@@ -15,19 +14,19 @@ import { useTranslation } from "react-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NotFound from "./component/page_not_found";
 import Wrapper from "./component/wrapper/wrapper";
-import "./component/i18n"; // Import i18n to ensure it initializes
+import "./component/i18n";
 import Home from "./pages/home";
 import Contact from "./pages/contact";
 import AboutUs from "./pages/aboutUs";
 import News from "./pages/news";
 import SingleNews from "./pages/singleNews";
+import { ColorProvider } from "./context/colorContext";
 
-// Create QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5, // 5 minutes
+      staleTime: 1000 * 60 * 5,
       refetchIntervalInBackground: true,
       retry: 2,
       networkMode: "always",
@@ -35,7 +34,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Component to handle language sync with URL
 function LanguageHandler() {
   const { lang } = useParams();
   const { i18n } = useTranslation();
@@ -43,45 +41,34 @@ function LanguageHandler() {
   const location = useLocation();
 
   useEffect(() => {
-    // Get language from URL param
     let languageToUse = lang;
 
-    // If no language in URL or invalid, get from localStorage or default to 'ar'
     if (!languageToUse || (languageToUse !== "en" && languageToUse !== "ar")) {
       languageToUse = localStorage.getItem("language") || "ar";
     }
 
-    // Change i18n language if needed
     if (i18n.language !== languageToUse) {
       i18n.changeLanguage(languageToUse);
     }
 
-    // Set RTL/LTR direction
     const isArabic = languageToUse === "ar";
     document.documentElement.dir = isArabic ? "rtl" : "ltr";
     document.documentElement.lang = languageToUse;
 
-    // --- Dynamic Font Change Configuration ---
     if (isArabic) {
-      // Font for Arabic language
       document.documentElement.style.fontFamily = "ShamelSansOne, sans-serif";
     } else {
-      // Font for English language (You can change 'sans-serif' to 'Inter', 'Roboto', etc.)
       document.documentElement.style.fontFamily = "sans-serif";
     }
     
     document.documentElement.style.fontWeight = "400";
-
-    // Save to localStorage
     localStorage.setItem("language", languageToUse);
 
-    // Only add language to URL if it's completely missing
     const hasValidLangParam = lang === "en" || lang === "ar";
     const isRootPath = location.pathname === "/" || location.pathname === "";
     const isRootWithNoLang = !hasValidLangParam && isRootPath;
 
     if (isRootWithNoLang) {
-      // Redirect to the correct language path
       navigate(`/${languageToUse}`, { replace: true });
     }
   }, [lang, i18n, navigate, location.pathname]);
@@ -99,8 +86,6 @@ function App() {
           <Route path="About_Us" element={<AboutUs />} />
           <Route path="category/:id" element={<News />} />
           <Route path="News/:id" element={<SingleNews />} />
-          {/* Add 404 route - this will catch all unmatched routes */}
-          {/* Setup structural fix inside route pattern to safely display elements */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
@@ -109,7 +94,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ColorProvider> 
+        <RouterProvider router={router} />
+      </ColorProvider>
     </QueryClientProvider>
   );
 }

@@ -57,7 +57,6 @@ const ContactGrid = ({ contactData }) => {
   ];
 
   const onSubmit = (data) => {
-    console.log("Form submitted:", data);
     const payload = {
       first_name: data.firstName,
       sur_name: data.surname,
@@ -259,7 +258,7 @@ const ContactGrid = ({ contactData }) => {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full h-[4.5rem] bg-[#005BBF] text-white font-bold text-xl mt-[1.8rem] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-opacity hover:bg-[#004a9f]"
+              className="w-full h-[4.5rem] bg-secondary text-white font-bold text-xl mt-[1.8rem] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-opacity hover:bg-[#004a9f]"
             >
               {isPending
                 ? i18next.t("contact.sending")

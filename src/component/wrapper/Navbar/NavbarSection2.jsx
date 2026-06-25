@@ -18,7 +18,7 @@ const NavbarSection2 = ({ footerData, currentLang }) => {
           </Link>
         </div>
         <div className="flex w-full justify-center items-center h-full">
-          <div className="w-full h-[5rem] flex items-center justify-center px-4 bg-[#D41515]">
+          <div className="w-full h-[5rem] flex items-center justify-center px-4 bg-negative">
             <p className="text-md text-white font-bold leading-relaxed">
               {footerData?.data?.description}
             </p>

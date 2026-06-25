@@ -4,7 +4,7 @@ import i18n from "../component/i18n";
 
 // src/api/axios.js
 const api = axios.create({
-    baseURL: "http://s5.hostorr.net/api",
+    baseURL: "https://s5.hostorr.net/api",
     withCredentials: false, // Add this
     headers: {
         'Content-Type': 'application/json',

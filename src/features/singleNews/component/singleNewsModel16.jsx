@@ -7,7 +7,7 @@ const SingleNewsModel16 = ({ data }) => {
       <div className="grid md:grid-cols-2 gap-[2rem] mt-[1rem]">
         {data?.content?.map((item) => (
           <div className="flex gap-x-[1rem]">
-            <div className="h-[30.5rem] w-[0.15rem] bg-[#005BBF]"></div>
+            <div className="h-[30.5rem] w-[0.15rem] bg-secondary"></div>
             <div className="flex flex-col space-y-2 mt-[1rem]">
               <h1 className="text-secondary font-bold text-lg">
                 {item?.title}

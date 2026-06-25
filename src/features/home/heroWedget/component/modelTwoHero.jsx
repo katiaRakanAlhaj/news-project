@@ -45,7 +45,7 @@ const NewsCard = ({ item, currentLang, variant }) => {
         {/* Content Details */}
         <div className={`${textPosition} pointer-events-none`}>
           {/* Category Pill */}
-          <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-[#005BBF] rounded-full">
+          <div className="w-[6rem] h-[2rem] flex justify-center items-center bg-secondary rounded-full">
             <p className="text-white font-[700] text-md mt-1">
               {item.category?.name || "عام"}
             </p>

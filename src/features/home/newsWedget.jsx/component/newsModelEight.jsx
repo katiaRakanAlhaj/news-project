@@ -284,7 +284,7 @@ const NewsModelEight = ({
                       onClick={() => handleCategoryClick(category)}
                       className={`w-full text-right px-[1rem] py-[0.75rem] hover:bg-gray-50 transition-colors ${
                         activeCategory === category
-                          ? "text-[#BF0000] font-bold bg-gray-50"
+                          ? "text-negative font-bold bg-gray-50"
                           : "text-[#204A84]"
                       }`}
                     >
@@ -337,7 +337,7 @@ const NewsModelEight = ({
                     onClick={() => handleCategoryClick(category)}
                     className={`px-[0.75rem] py-[0.375rem] rounded-full whitespace-nowrap text-[0.875rem] transition-colors ${
                       activeCategory === category
-                        ? "bg-[#BF0000] text-white"
+                        ? "bg-negative text-white"
                         : "bg-[#F5F5F5] text-[#204A84]"
                     }`}
                   >

@@ -1,6 +1,6 @@
 const AboutUsTitle = ({title})=> {
     return(
-        <h1 className="text-[#005BBF] font-bold lg:text-4xl md:text-2xl text-xl flex justify-center items-center">
+        <h1 className="text-secondary font-bold lg:text-4xl md:text-2xl text-xl flex justify-center items-center">
           {title}
         </h1>
     )
