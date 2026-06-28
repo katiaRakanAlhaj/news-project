@@ -206,58 +206,52 @@ const Home = () => {
     return <ErrorMessageNetwork />;
   }
 
-  const heroSections =
-    homePageData?.data?.filter(
-      (i) => i.home_model_id >= 1 && i.home_model_id <= 4,
-    ) || [];
-  const mediaSections =
-    homePageData?.data?.filter(
-      (i) => i.home_model_id === 5 || i.home_model_id === 6,
-    ) || [];
-
   return (
     <HelmetProvider>
       <ScrollToTop />
       <MetaHelmet title={"Home"} description={"Home"} />
       <div className="lg:mt-0 mt-[6rem]">
-        {/* Hero Sections */}
-        {heroSections.map((section) => {
-          const HeroComponent = heroComponents[section.home_model_id];
-          return HeroComponent ? (
-            <HeroComponent
-              currentLang={currentLang}
-              key={`hero-${section.id}`}
-              data={section}
-            />
-          ) : null;
-        })}
+        {/* Render all sections in API order */}
+        {homePageData?.data?.map((section) => {
+          // Hero Sections (models 1-4)
+          if (section.home_model_id >= 1 && section.home_model_id <= 4) {
+            const HeroComponent = heroComponents[section.home_model_id];
+            return HeroComponent ? (
+              <HeroComponent
+                currentLang={currentLang}
+                key={`hero-${section.id}`}
+                data={section}
+              />
+            ) : null;
+          }
 
-        {/* Media Sections */}
-        {mediaSections.map((section) => {
-          const MediaComponent = mediaComponents[section.home_model_id];
-          if (!MediaComponent) return null;
+          // Media Sections (models 5-6)
+          if (section.home_model_id === 5 || section.home_model_id === 6) {
+            const MediaComponent = mediaComponents[section.home_model_id];
+            if (!MediaComponent) return null;
 
-          const currentPage = getCurrentPage(section.id);
-          const { data: sectionData, isExecuting } = getSectionState(section);
-          const pagination = getPaginationInfo(sectionData.items);
+            const currentPage = getCurrentPage(section.id);
+            const { data: sectionData, isExecuting } = getSectionState(section);
+            const pagination = getPaginationInfo(sectionData.items);
 
-          return (
-            <MediaComponent
-              key={`media-${section.id}`}
-              data={{ ...sectionData, items: getItemsArray(sectionData.items) }}
-              sectionId={section.id}
-              currentPage={currentPage}
-              totalPages={pagination.lastPage}
-              onPageChange={handlePageChange}
-              isLoading={isExecuting}
-            />
-          );
-        })}
+            return (
+              <MediaComponent
+                key={`media-${section.id}`}
+                data={{
+                  ...sectionData,
+                  items: getItemsArray(sectionData.items),
+                }}
+                sectionId={section.id}
+                currentPage={currentPage}
+                totalPages={pagination.lastPage}
+                onPageChange={handlePageChange}
+                isLoading={isExecuting}
+              />
+            );
+          }
 
-        {/* News Sections */}
-        {sectionsNeedingPagination
-          .filter((section) => section.home_model_id >= 7)
-          .map((section) => {
+          // News Sections (models 7+)
+          if (section.home_model_id >= 7) {
             const NewsComponent = newsComponents[section.home_model_id];
             if (!NewsComponent) return null;
 
@@ -284,12 +278,16 @@ const Home = () => {
                 contactData={contactData}
                 diffrentNewsData={diffrentNewsData}
                 mostViewdNewsData={mostViewdNewsData}
-                currentLang = {currentLang}
+                currentLang={currentLang}
               />
             );
-          })}
+          }
+
+          return null;
+        })}
       </div>
     </HelmetProvider>
   );
 };
+
 export default Home;

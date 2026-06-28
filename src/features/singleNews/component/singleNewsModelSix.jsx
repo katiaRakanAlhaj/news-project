@@ -1,5 +1,5 @@
-const SingleNewsModel5 = ({data}) => {
-  return (
+const SingleNewsModelSix = ({data})=> {
+return(
     <div className="flex flex-col space-y-2 mt-[2rem]">
       <h1 className="text-xl font-bold text-[#333333]">
         {data.title}
@@ -7,8 +7,7 @@ const SingleNewsModel5 = ({data}) => {
       <p className="text-md text-[#333333] leading-relaxed">
        {data.description}
       </p>
-      <img className="w-full h-[17rem] rounded-xl object-cover" src={data.image} />
     </div>
-  );
-};
-export default SingleNewsModel5;
+)
+}
+export default SingleNewsModelSix;
