@@ -33,11 +33,10 @@ const NewsCard = ({
 
       {/* Description - Only show if it exists */}
       {description && (
-        <p className="text-md text-secondary mt-2 line-clamp-2">
+        <p className="text-md text-primary mt-2 line-clamp-2">
           {description}
         </p>
       )}
-
       <NewsMetaInfo
         dateText={newsDate}
         viewsText={newsViews}

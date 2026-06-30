@@ -6,37 +6,29 @@ import instgramFooter from "../../assets/images/instgramFooter.svg";
 import i18next from "i18next";
 import { Link, useParams, useLocation } from "react-router-dom";
 
-const Footer = ({ categoryData, footerData }) => {
-  const { lang } = useParams();
+const Footer = ({currentLang, categoryData, footerData , contactData}) => {
   const location = useLocation();
-
-  const getCurrentLang = () => {
-    return lang || "ar";
-  };
-  const currentLang = getCurrentLang();
-
+  // Dynamic ocial links from footerData
   const icons = [
-    { icon: twitterFooter },
-    { icon: linkedIn },
-    { icon: instgramFooter },
-    { icon: facebookFooter },
+    { icon: twitterFooter, url: contactData?.data?.x },
+    { icon: linkedIn, url: contactData?.data?.linkedin },
+    { icon: instgramFooter, url: contactData?.data?.instagram },
+    { icon: facebookFooter, url: contactData?.data?.facebook },
   ];
 
-  const categories = categoryData?.data || [];
+  // Limit categories to just the first 10 items
+  const categories = categoryData?.data?.slice(0, 10) || [];
 
   // Split categories into two halves for column 3 and column 4
   const middleIndex = Math.ceil(categories.length / 2);
   const firstHalfCategories = categories.slice(0, middleIndex);
   const secondHalfCategories = categories.slice(middleIndex);
 
-  // Helper function to check if a category is active
-  const isCategoryActive = (categoryId) => {
-    return location.pathname === `/${currentLang}/category/${categoryId}`;
-  };
-
-  // Helper function to check if a link is active
-  const isActiveLink = (path) => {
-    return location.pathname === `/${currentLang}${path}`;
+  // Reusable styling logic for links
+  const getLinkClass = (isActive) => {
+    return isActive 
+      ? "text-[#3B82F6] font-bold" 
+      : "text-gray-300 hover:text-white transition duration-200";
   };
 
   return (
@@ -54,7 +46,9 @@ const Footer = ({ categoryData, footerData }) => {
       {/* Content */}
       <div className="relative z-10 container5 mx-auto py-14 text-white">
         <div
-          className={`grid grid-cols-1 md:grid-cols-4 gap-10 ${i18next.language == "ar" ? "text-right" : "text-left"}`}
+          className={`grid grid-cols-1 md:grid-cols-4 gap-10 ${
+            i18next.language === "ar" ? "text-right" : "text-left"
+          }`}
         >
           {/* Column 1: Logo and description */}
           <div className="md:col-span-1 flex flex-col">
@@ -73,7 +67,7 @@ const Footer = ({ categoryData, footerData }) => {
               {icons.map((item, index) => (
                 <a
                   key={index}
-                  href={item.url}
+                  href={item.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="cursor-pointer hover:opacity-80 transition"
@@ -86,30 +80,29 @@ const Footer = ({ categoryData, footerData }) => {
 
           {/* Column 2: Contact & About Us */}
           <div className="flex flex-col mr-[1rem]">
-            <ul className="space-y-3 text-gray-300 text-md">
-              <li className="cursor-pointer transition">
-                <Link 
+            <ul className="space-y-3 text-md">
+              <li>
+                <Link
                   to={`/${currentLang}/About_Us`}
-                  className={`${
-                    isActiveLink("/About_Us")
-                      ? "text-[#3B82F6] font-bold"
-                      : "text-gray-300 hover:text-white"
-                  }`}
+                  className={getLinkClass(location.pathname === `/${currentLang}/About_Us`)}
                 >
                   {i18next.t("menu.about_us")}
                 </Link>
               </li>
-
-              <li className="cursor-pointer transition">
-                <Link 
+              <li>
+                <Link
                   to={`/${currentLang}/contact`}
-                  className={`${
-                    isActiveLink("/contact")
-                      ? "text-[#3B82F6] font-bold"
-                      : "text-gray-300 hover:text-white"
-                  }`}
+                  className={getLinkClass(location.pathname === `/${currentLang}/contact`)}
                 >
                   {i18next.t("menu.contact_us") || "اتصل بنا"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={`/${currentLang}/Media`}
+                  className={getLinkClass(location.pathname === `/${currentLang}/Media`)}
+                >
+                  {i18next.t("menu.media")}
                 </Link>
               </li>
             </ul>
@@ -117,21 +110,14 @@ const Footer = ({ categoryData, footerData }) => {
 
           {/* Column 3: Categories - First Half */}
           <div className="flex flex-col">
-            <ul className="space-y-3 text-gray-300 text-md">
+            <ul className="space-y-3 text-md">
               {firstHalfCategories.map((category) => {
-                const isActive = isCategoryActive(category.id);
+                const targetPath = `/${currentLang}/category/${category.id}`;
                 return (
-                  <li
-                    key={category.id}
-                    className="cursor-pointer transition"
-                  >
-                    <Link 
-                      to={`/${currentLang}/category/${category.id}`}
-                      className={`${
-                        isActive
-                          ? "text-[#3B82F6] font-bold"
-                          : "text-gray-300 hover:text-white"
-                      }`}
+                  <li key={category.id}>
+                    <Link
+                      to={targetPath}
+                      className={getLinkClass(location.pathname === targetPath)}
                     >
                       {category.name}
                     </Link>
@@ -143,21 +129,14 @@ const Footer = ({ categoryData, footerData }) => {
 
           {/* Column 4: Categories - Second Half */}
           <div className="flex flex-col">
-            <ul className="space-y-3 text-gray-300 text-md">
+            <ul className="space-y-3 text-md">
               {secondHalfCategories.map((category) => {
-                const isActive = isCategoryActive(category.id);
+                const targetPath = `/${currentLang}/category/${category.id}`;
                 return (
-                  <li
-                    key={category.id}
-                    className="cursor-pointer transition"
-                  >
-                    <Link 
-                      to={`/${currentLang}/category/${category.id}`}
-                      className={`${
-                        isActive
-                          ? "text-[#3B82F6] font-bold"
-                          : "text-gray-300 hover:text-white"
-                      }`}
+                  <li key={category.id}>
+                    <Link
+                      to={targetPath}
+                      className={getLinkClass(location.pathname === targetPath)}
                     >
                       {category.name}
                     </Link>

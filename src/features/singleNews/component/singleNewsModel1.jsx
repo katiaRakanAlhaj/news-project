@@ -1,4 +1,5 @@
-const SingleNewsModelOne = ({ data }) => {
+import i18next from "i18next";
+const SingleNewsModel1 = ({ data }) => {
   // data is already the individual content item from news_contents
   const imageUrl = data?.banner || data?.image || '';
   const title = data?.title || '';
@@ -15,7 +16,7 @@ const SingleNewsModelOne = ({ data }) => {
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <h1 className="text-white font-[700] lg:text-[2.8rem] mt-[2rem] lg:mt-0 absolute bottom-[3rem] right-[2rem] text-[1.7rem]">
+        <h1 className={`text-white font-[700] lg:text-[2.8rem] mt-[2rem] lg:mt-0 absolute bottom-[3rem] ${i18next.language == "ar"?'right-[2rem]':'left-[2rem]'} text-[1.7rem]`}>
           {title}
         </h1>
       </div>
@@ -23,4 +24,4 @@ const SingleNewsModelOne = ({ data }) => {
   );
 };
 
-export default SingleNewsModelOne;
+export default SingleNewsModel1;

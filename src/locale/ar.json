@@ -2,7 +2,8 @@
     "menu": {
         "about_us": "من نحن",
         "contact_us": "اتصل بنا",
-        "home": "الرئيسية"
+        "home": "الرئيسية",
+        "media": "ميديا"
     },
     "news_wedget": {
         "latest_news": "أحدث الأخبار",
@@ -11,7 +12,10 @@
     },
     "buttons": {
         "see_more": "شاهد المزيد",
-        "see_less": "عرض أقل"
+        "see_less": "عرض أقل",
+        "download_english": "تحميل (انكليزي)",
+        "download_arabic": "تحميل (عربي)",
+        "upload": "جاري التحميل..."
     },
     "contact": {
         "contact_us": "تواصل معنا",

@@ -5,7 +5,7 @@ const SingleNewsModel7 = ({data}) => {
   const {isDarkMode} = useTheme();
   
   return (
-    <div className="mt-[2rem]">
+    <div>
       <ModelTitle title={data?.title} />
       <div className="mt-[2rem] px-[1.5rem]">
         {data?.content.map((item, index) => (

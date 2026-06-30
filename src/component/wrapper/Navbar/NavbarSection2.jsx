@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../../assets/images/logo.svg";
 
-const NavbarSection2 = ({ footerData, currentLang }) => {
+const NavbarSection2 = ({ footerData, currentLang ,aboutusData }) => {
   const location = useLocation();
   const isContactPage = location.pathname === "/contact"; // Adjust the path as needed
 
@@ -19,8 +19,8 @@ const NavbarSection2 = ({ footerData, currentLang }) => {
         </div>
         <div className="flex w-full justify-center items-center h-full">
           <div className="w-full h-[5rem] flex items-center justify-center px-4 bg-negative">
-            <p className="text-md text-white font-bold leading-relaxed">
-              {footerData?.data?.description}
+            <p className="text-md line-clamp-2 text-white font-bold leading-relaxed">
+              {aboutusData?.data?.description}
             </p>
           </div>
         </div>

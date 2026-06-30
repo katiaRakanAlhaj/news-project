@@ -6,16 +6,9 @@ import { useFetchCategoryById } from "../hook/useFetchNews";
 import { formatDate } from "../../../utils/dateUtils";
 import { useColors } from "../../../context/colorContext";
 
-const NewsGrid = ({ categoryData, categoryId }) => {
+const NewsGrid = ({ categoryData, categoryId, currentLang }) => {
   const navigate = useNavigate();
-  const { lang } = useParams();
-  const { primaryColor, secondaryColor } = useColors();
-  
-  const getCurrentLang = () => {
-    return lang || "ar";
-  };
-  const currentLang = getCurrentLang();
-
+  console.log("categoryData", categoryData);
   const [currentPage, setCurrentPage] = useState(1);
   const [allNewsItems, setAllNewsItems] = useState(categoryData?.news || []);
   const [paginationInfo, setPaginationInfo] = useState(
@@ -78,11 +71,12 @@ const NewsGrid = ({ categoryData, categoryId }) => {
   }
 
   const hasMorePages = paginationInfo && currentPage < paginationInfo.last_page;
+  const displayItems = allNewsItems?.slice(3) || [];
 
   return (
     <div>
       <div className="flex flex-col lg:space-y-4 space-y-6">
-        {allNewsItems?.map((newsItem, index) => (
+        {displayItems?.map((newsItem, index) => (
           <div
             key={`${newsItem.id}-${index}`}
             className="grid md:grid-cols-2 gap-x-3 lg:gap-y-0 gap-y-[2rem] cursor-pointer"
@@ -97,10 +91,7 @@ const NewsGrid = ({ categoryData, categoryId }) => {
               <div
                 className={`absolute ${i18next.language == "ar" ? "right-[0.5rem]" : "left-[0.5rem]"} top-[0.5rem] pointer-events-none`}
               >
-                <div 
-                  className="w-[6rem] h-[2rem] flex justify-center items-center rounded-full"
-                  style={{ backgroundColor: secondaryColor }}
-                >
+                <div className="w-[6rem] h-[2rem] bg-secondary flex justify-center items-center rounded-full">
                   <p className="text-white font-[700] text-md mt-1">
                     {newsItem.category?.name || categoryData?.name || "اخبار"}
                   </p>
@@ -132,11 +123,7 @@ const NewsGrid = ({ categoryData, categoryId }) => {
           <button
             onClick={handleLoadMore}
             disabled={isLoadingMore || isFetching}
-            className="px-8 py-3 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium min-w-[200px]"
-            style={{ 
-              backgroundColor: secondaryColor
-            }}
-        
+            className="px-8 py-3 bg-secondary text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium min-w-[200px]"
           >
             {isLoadingMore || isFetching ? (
               <span className="flex items-center justify-center gap-2">

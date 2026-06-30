@@ -53,16 +53,16 @@ const NavbarSection3 = ({ categoryData }) => {
   const currentLang = getCurrentLang();
 
   // Helper check to determine if home is active
-  const isHomeActive = 
-    location.pathname === `/${currentLang}` || 
+  const isHomeActive =
+    location.pathname === `/${currentLang}` ||
     location.pathname === `/${currentLang}/`;
 
+  const isMediaActive = location.pathname === `/${currentLang}/Media`;
   return (
     <div className="w-full h-[5.5rem] bg-primary relative">
       <div className="container1 mx-auto h-full">
         <div className="flex w-full gap-x-[2rem] h-full items-center justify-between">
           <div className="flex gap-x-[2rem] items-center">
-            
             {/* Home Link with Active Condition */}
             <Link to={`/${currentLang}`}>
               <p
@@ -79,7 +79,9 @@ const NavbarSection3 = ({ categoryData }) => {
             {/* Dynamic Categories Link Matrix */}
             <div className="flex gap-x-[2rem]">
               {categoryData?.data?.map((category) => {
-                const isCategoryActive = location.pathname === `/${currentLang}/category/${category.id}`;
+                const isCategoryActive =
+                  location.pathname ===
+                  `/${currentLang}/category/${category.id}`;
 
                 return (
                   <button
@@ -96,6 +98,19 @@ const NavbarSection3 = ({ categoryData }) => {
                 );
               })}
             </div>
+            {/* Medai */}
+            {/* Media Link with Active Condition */}
+            <Link to={`/${currentLang}/Media`}>
+              <p
+                className={`text-md transition-colors duration-200 pb-1 ${
+                  isMediaActive
+                    ? "text-[#3B82F6] font-bold border-b-2 border-[#3B82F6]"
+                    : "text-white hover:text-secondary"
+                }`}
+              >
+                {i18next.t("menu.media")}
+              </p>
+            </Link>
           </div>
 
           {/* Language Switcher */}

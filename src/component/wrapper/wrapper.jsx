@@ -8,6 +8,7 @@ import { useFetchCategories } from "../../features/News/hook/useFetchNews";
 import { useFetchContact } from "../../features/contact/hook/useFetchContact";
 import { ThemeProvider, useTheme } from "../../context/ThemeContext";
 import { useFetchFooter } from "./hooks/useFetchFooter";
+import { useFetchAboutUsPage } from "../../features/aboutUs/hook/useFetchAboutUs";
 
 function WrapperContent() {
     const { lang } = useParams();
@@ -15,20 +16,25 @@ function WrapperContent() {
   const {data:footerData , isLoading:footerDataLoading , error:footerDataError} = useFetchFooter();
   const { data: categoryData, isLoading: categoryDataLoading, error: categoryDataError } = useFetchCategories();
   const { data: contactData, isLoading: contactDataLoading, error: contactDataError } = useFetchContact();
+   const {
+      data: aboutusData,
+      isLoading: aboutusDataLoading,
+      error: aboutusDataError,
+    } = useFetchAboutUsPage();
   const { isDarkMode } = useTheme();
 
   return (
     <div className={`size-full relative ${isDarkMode ? 'dark' : ''}`}>
       <div className="hidden lg:block">
         <NavbarSection1 contactData={contactData} />
-        <NavbarSection2 currentLang = {currentLang} footerData = {footerData}/>
+        <NavbarSection2 aboutusData = {aboutusData} currentLang = {currentLang} footerData = {footerData}/>
         <NavbarSection3 categoryData={categoryData} />
       </div>
       <div className="lg:hidden block">
         <NavbarMobile contactData = {contactData} categoryData = {categoryData} currentLang = {currentLang}/>
       </div>
       <Outlet />
-      <Footer footerData = {footerData} categoryData = {categoryData} contactData = {contactData}/>
+      <Footer currentLang = {currentLang} footerData = {footerData} categoryData = {categoryData} contactData = {contactData}/>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import ModelTitle from "../../../ui/modelsTitle";
 import { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -13,7 +14,7 @@ const SingleNewsModel14 = ({ data }) => {
   };
 
   return (
-    <div className="mt-[2rem]">
+    <div>
       <ModelTitle title={data?.title || "البيانات والتدخلات"} />
 
       <div className="mt-4 space-y-3">
@@ -21,7 +22,7 @@ const SingleNewsModel14 = ({ data }) => {
           <div key={index} className="border border-gray-200 shadow-md">
             <button
               onClick={() => toggleAccordion(index)}
-              className="w-full flex justify-between items-center py-4 px-4 text-right bg-white hover:bg-gray-50 transition-colors"
+              className={`w-full flex justify-between items-center py-4 px-4 ${i18next.language == "ar" ? "text-right" : "text-left"} bg-white hover:bg-gray-50 transition-colors`}
             >
               <span
                 className={`md:text-lg text-md ${

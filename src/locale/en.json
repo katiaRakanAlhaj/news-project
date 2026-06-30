@@ -2,7 +2,8 @@
     "menu": {
         "about_us": "About Us",
         "contact_us": "Contact Us",
-        "home": "Home"
+        "home": "Home",
+        "media": "Media"
     },
     "news_wedget": {
         "latest_news": "Latest news",
@@ -11,7 +12,10 @@
     },
     "buttons": {
         "see_more": "see more",
-        "see_less": "see less"
+        "see_less": "see less",
+        "download_english": "Download (English)",
+        "download_arabic": "download_arabic",
+        "upload": "upload..."
     },
     "contact": {
         "contact_us": "Contact Us",

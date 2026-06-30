@@ -2,7 +2,7 @@ import ModelTitle from "../../../ui/modelsTitle";
 
 const SingleNewsModel16 = ({ data }) => {
   return (
-    <div className="mt-[2rem]">
+    <div>
       <ModelTitle title={data?.title} />
       <div className="grid md:grid-cols-2 gap-[2rem] mt-[1rem]">
         {data?.content?.map((item) => (

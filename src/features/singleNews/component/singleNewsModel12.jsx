@@ -5,7 +5,7 @@ const SingleNewsModel12 = ({ data }) => {
   const [activeTab, setActiveTab] = useState(0);
   const tabs = data?.content || [];
   return (
-    <div className="mt-[2rem]">
+    <div>
       <ModelTitle title={data?.title} />
 
       {/* Tabs Header */}

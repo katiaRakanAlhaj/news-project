@@ -21,6 +21,7 @@ import AboutUs from "./pages/aboutUs";
 import News from "./pages/news";
 import SingleNews from "./pages/singleNews";
 import { ColorProvider } from "./context/colorContext";
+import Media from "./pages/media";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,7 +61,7 @@ function LanguageHandler() {
     } else {
       document.documentElement.style.fontFamily = "sans-serif";
     }
-    
+
     document.documentElement.style.fontWeight = "400";
     localStorage.setItem("language", languageToUse);
 
@@ -86,15 +87,16 @@ function App() {
           <Route path="About_Us" element={<AboutUs />} />
           <Route path="category/:id" element={<News />} />
           <Route path="News/:id" element={<SingleNews />} />
+          <Route path="Media" element={<Media />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-      </Route>
-    )
+      </Route>,
+    ),
   );
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ColorProvider> 
+      <ColorProvider>
         <RouterProvider router={router} />
       </ColorProvider>
     </QueryClientProvider>

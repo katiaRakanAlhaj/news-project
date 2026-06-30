@@ -18,7 +18,7 @@ const OurEditorialMission = ({ aboutusData }) => {
               {aboutusData?.data?.title}
             </h1>
           </div>
-          <p className="md:text-xl text-lg text-secondary mt-[2rem] leading-relaxed">
+          <p className="md:text-xl text-lg text-primary mt-[2rem] leading-relaxed">
             {aboutusData?.data?.description || ""}
           </p>
         </div>

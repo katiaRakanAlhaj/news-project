@@ -1,4 +1,6 @@
-const SingleNewsModelThree = ({ data }) => {
+import i18next from "i18next";
+
+const SingleNewsModel3 = ({ data }) => {
   const imageUrl = data?.banner;
   const title = data?.title;
   const description = data?.description;
@@ -14,7 +16,9 @@ const SingleNewsModelThree = ({ data }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="absolute bottom-[3rem] right-[2rem] z-20 mt-[2rem]">
+        <div
+          className={`absolute bottom-[3rem] ${i18next.language == "ar" ? "right-[2rem]" : "left-[2rem]"} z-20 mt-[2rem]`}
+        >
           <h1 className="text-white font-[700] lg:text-[2.8rem]  text-[1.7rem]">
             {title}
           </h1>
@@ -24,4 +28,4 @@ const SingleNewsModelThree = ({ data }) => {
     </div>
   );
 };
-export default SingleNewsModelThree;
+export default SingleNewsModel3;

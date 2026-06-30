@@ -1,16 +1,11 @@
 import { ModelDescription } from "../../../ui/ModelDescription";
 
-const SingleNewsModel5 = ({ data }) => {
+const SingleNewsModel6 = ({ data }) => {
   return (
     <div className="flex flex-col space-y-2">
       <h1 className="text-xl font-bold text-[#333333]">{data.title}</h1>
       <ModelDescription description={data.description} />
-
-      <img
-        className="w-full h-[17rem] rounded-xl object-cover"
-        src={data.image}
-      />
     </div>
   );
 };
-export default SingleNewsModel5;
+export default SingleNewsModel6;

@@ -51,7 +51,7 @@ const News = () => {
             <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[4rem] mt-[2rem] lg:gap-y-0 gap-y-[2rem]">
               {/* First column - News Grid */}
               <div className="lg:col-span-8 col-span-1">
-                <NewsGrid categoryData={categoryData} categoryId={id} />
+                <NewsGrid categoryData={categoryData} categoryId={id} currentLang = {currentLang}/>
               </div>
 
               {/* Second column - Last News */}

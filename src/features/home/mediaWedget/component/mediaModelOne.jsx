@@ -241,5 +241,4 @@ const MediaModelOne = ({
     </motion.div>
   );
 };
-
 export default MediaModelOne;

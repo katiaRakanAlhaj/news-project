@@ -1,10 +1,11 @@
 import { useTheme } from "../../../context/ThemeContext";
+import { ModelDescription } from "../../../ui/ModelDescription";
 import ModelTitle from "../../../ui/modelsTitle";
 const SingleNewsModel13 = ({ data }) => {
   const { isDarkMode } = useTheme();
 
   return (
-    <div className="mt-[2rem]">
+    <div>
       <ModelTitle title={data?.title} />
       <p className="text-[#666666] text-md mt-3">{data?.description} </p>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-[1rem] gap-[2rem]">
@@ -17,9 +18,7 @@ const SingleNewsModel13 = ({ data }) => {
             <h1 className="font-bold mt-1 text-md text-secondary">
               {item.title}
             </h1>
-            <p className="text-[#666666] text-md line-clamp-2">
-              {item.description}
-            </p>
+            <ModelDescription description={item.description} />
           </div>
         ))}
       </div>
