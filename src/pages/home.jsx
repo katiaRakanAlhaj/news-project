@@ -28,6 +28,7 @@ import MetaHelmet from "../component/metaHelmet/metaHelmet";
 import Loader from "../component/loader/loader";
 import ErrorMessageNetwork from "../component/errorMessage/errorMessage";
 import ScrollToTop from "../component/scrollToTop/scrollToTop";
+import NewsModelTen from "../features/home/newsWedget.jsx/component/newsModelTen";
 
 const heroComponents = {
   1: ModelOneHero,
@@ -46,6 +47,7 @@ const newsComponents = {
   13: NewsModelSeven,
   14: NewsModelEight,
   15: NewsModelNine,
+  16:NewsModelTen
 };
 
 const mediaComponents = {

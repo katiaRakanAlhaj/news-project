@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import SinlgeNewsBanner from "../features/singleNews/component/singleNewsBanner";
 import MostViewedSection from "../ui/MostViewedSection";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useFetchLatestNews,
   useFetchNewsById,
+  useFetchCategoryById,
 } from "../features/News/hook/useFetchNews";
 import { useFetchContact } from "../features/contact/hook/useFetchContact";
 import { HelmetProvider } from "react-helmet-async";
@@ -31,11 +32,16 @@ import SingleNewsModel16 from "../features/singleNews/component/SingleNewsModel1
 import SingleNewsModel17 from "../features/singleNews/component/SingleNewsModel17";
 import SingleNewsModel18 from "../features/singleNews/component/SingleNewsModel18";
 import SingleNewsModel11 from "../features/singleNews/component/singleNewsModel11";
+import RelatedNewsSlider from "../features/singleNews/component/relatedNews";
+
+// --- Import the separated RelatedNewsSlider sub-component ---
+
 const SingleNews = () => {
   const { id, lang } = useParams();
+  const navigate = useNavigate();
   const currentLang = lang || "ar";
+  const isRtl = currentLang === "ar";
 
-  // State to handle sidebar expansion
   const [isExpanded, setIsExpanded] = useState(false);
 
   const {
@@ -56,15 +62,30 @@ const SingleNews = () => {
     error: latestNewsDataError,
   } = useFetchLatestNews();
 
-  if (singleNewsDataLoading || contactDataLoading || latestNewsDataLoading) {
+  const categoryId = singleNewsData?.category_id;
+
+  const {
+    data: categoryData,
+    isLoading: categoryDataLoading,
+    error: categoryDataError,
+  } = useFetchCategoryById(categoryId, 1);
+
+  const relatedNews = useMemo(() => {
+    if (!categoryData?.news || !singleNewsData) return [];
+    
+    return categoryData.news
+      .filter(item => item.id !== parseInt(id))
+      .slice(0, 10); 
+  }, [categoryData, id]);
+
+  if (singleNewsDataLoading || contactDataLoading || latestNewsDataLoading || categoryDataLoading) {
     return <Loader />;
   }
 
-  if (singleNewsDataError || contactDataError || latestNewsDataError) {
+  if (singleNewsDataError || contactDataError || latestNewsDataError || categoryDataError) {
     return <ErrorMessageNetwork />;
   }
 
-  // Get time difference with internationalization keys
   const getTimeAgo = (dateString) => {
     if (!dateString) return "";
     const now = new Date();
@@ -81,7 +102,6 @@ const SingleNews = () => {
     }
   };
 
-  // 1. Transform all news items first
   const allMostViewedData =
     latestNewsData?.data?.map((item) => ({
       image: item.news_image,
@@ -91,65 +111,49 @@ const SingleNews = () => {
       id: item.id,
     })) || [];
 
-  // 2. Slice the items conditionally based on state (Show 4 items initially)
   const visibleSidebarData = isExpanded
     ? allMostViewedData
     : allMostViewedData.slice(0, 4);
 
   const renderModel = (item) => {
     switch (item.model_id) {
-      case 1:
-        return <SingleNewsModel1 data={item} />;
-      case 2:
-        return <SingleNewsModel2 data={item} />;
-      case 3:
-        return <SingleNewsModel3 data={item} />;
-      case 4:
-        return <SingleNewsModel4 data={item} />;
-      case 5:
-        return <SingleNewsModel5 data={item} />;
-      case 6:
-        return <SingleNewsModel6 data={item} />;
-      case 7:
-        return <SingleNewsModel7 data={item} />;
-      case 8:
-        return <SingleNewsModel8 data={item} />;
-      case 9:
-        return <SingleNewsModel9 data={item} />;
-
-      case 10:
-        return <SingleNewsModel10 data={item} />;
-         case 11:
-        return <SingleNewsModel11 data={item} />;
-      case 12:
-        return <SingleNewsModel12 data={item} />;
-      case 13:
-        return <SingleNewsModel13 data={item} />;
-      case 14:
-        return <SingleNewsModel14 data={item} />;
-      case 15:
-        return <SingleNewsModel15 data={item} />;
-      case 16:
-        return <SingleNewsModel16 data={item} />;
-      case 17:
-        return <SingleNewsModel17 data={item} />;
-      case 18:
-        return <SingleNewsModel18 data={item} />;
-      // default:
-      //   return null;
+      case 1: return <SingleNewsModel1 data={item} />;
+      case 2: return <SingleNewsModel2 data={item} />;
+      case 3: return <SingleNewsModel3 data={item} />;
+      case 4: return <SingleNewsModel4 data={item} />;
+      case 5: return <SingleNewsModel5 data={item} />;
+      case 6: return <SingleNewsModel6 data={item} />;
+      case 7: return <SingleNewsModel7 data={item} />;
+      case 8: return <SingleNewsModel8 data={item} />;
+      case 9: return <SingleNewsModel9 data={item} />;
+      case 10: return <SingleNewsModel10 data={item} />;
+      case 11: return <SingleNewsModel11 data={item} />;
+      case 12: return <SingleNewsModel12 data={item} />;
+      case 13: return <SingleNewsModel13 data={item} />;
+      case 14: return <SingleNewsModel14 data={item} />;
+      case 15: return <SingleNewsModel15 data={item} />;
+      case 16: return <SingleNewsModel16 data={item} />;
+      case 17: return <SingleNewsModel17 data={item} />;
+      case 18: return <SingleNewsModel18 data={item} />;
+      default: return null;
     }
   };
 
   const categoryName = singleNewsData?.category;
 
-  // Check if news_contents is empty
   const isContentsEmpty =
     !singleNewsData?.news_contents || singleNewsData.news_contents.length === 0;
+
+  const handleRelatedNewsClick = (newsId) => {
+    navigate(`/${currentLang}/News/${newsId}`);
+  };
 
   return (
     <HelmetProvider>
       <ScrollToTop />
       <MetaHelmet title={categoryName} description={categoryName} />
+      
+      {/* Main Container Wrapper */}
       <div className="container1 mx-auto lg:mt-0 mt-[5rem]">
         <SinlgeNewsBanner
           currentLang={currentLang}
@@ -157,6 +161,7 @@ const SingleNews = () => {
           singleNewsData={singleNewsData}
         />
 
+        {/* Layout Grid Layout Area */}
         <div className="grid lg:grid-cols-12 grid-cols-1 gap-x-[1.5rem]">
           {/* Main Content Area (Column 8) */}
           <div className="lg:col-span-8 col-span-1 mt-[2rem]">
@@ -175,7 +180,6 @@ const SingleNews = () => {
                 </p>
               </div>
             ) : (
-              // ✅ RENDER ALL MODELS HERE - NO FILTERING
               <div className="flex flex-col space-y-[2rem]">
                 {singleNewsData?.news_contents?.map((item, index) => (
                   <div key={index}>{renderModel(item)}</div>
@@ -199,7 +203,6 @@ const SingleNews = () => {
               mostViewedData={visibleSidebarData}
             />
 
-            {/* 3. Conditional See More / See Less Button */}
             {allMostViewedData.length > 4 && (
               <div className="mt-4 flex justify-center">
                 <button
@@ -215,8 +218,15 @@ const SingleNews = () => {
           </div>
         </div>
 
-        {/* ❌ REMOVED: The separate bottom section that was outside the grid */}
-        {/* All news content now renders inside the grid col-span-8 */}
+        {/* --- Related News Isolated Component: Placed right beneath the grid inside container1 --- */}
+        <RelatedNewsSlider
+          relatedNews={relatedNews}
+          isRtl={isRtl}
+          currentLang={currentLang}
+          categoryData={categoryData}
+          categoryName={categoryName}
+          handleRelatedNewsClick={handleRelatedNewsClick}
+        />
       </div>
     </HelmetProvider>
   );

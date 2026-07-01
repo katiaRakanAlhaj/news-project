@@ -64,7 +64,8 @@
         "empty_alt": "No news content",
         "empty_title": "No details available for this news item at the moment",
         "empty_description": "Sorry, this news segment is empty and contains no data to display.",
-        "latest_news_title": "Latest News"
+        "latest_news_title": "Latest News",
+        "related_news_title": "Related News"
     },
     "Milestones in Our History": "Milestones in Our History",
     "Latest News": "Latest News",

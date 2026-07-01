@@ -64,7 +64,8 @@
         "empty_alt": "لا يوجد محتوى للخبر",
         "empty_title": "لا توجد تفاصيل لهذا الخبر حالياً",
         "empty_description": "عذراً، محتوى هذا الخبر فارغ ولا يحتوي على أي بيانات لعرضها.",
-        "latest_news_title": "آخر الأخبار"
+        "latest_news_title": "آخر الأخبار",
+        "related_news_title": "أخبار ذات صلة"
     },
     "Milestones in Our History": "محطات في تاريخنا",
     "Latest News": "اخر الاخبار",

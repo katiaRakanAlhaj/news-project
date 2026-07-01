@@ -114,7 +114,7 @@ const NavbarSection3 = ({ categoryData }) => {
           </div>
 
           {/* Language Switcher */}
-          <div className="flex gap-x-2 text-white text-[0.9rem] cursor-pointer">
+          {/* <div className="flex gap-x-2 text-white text-[0.9rem] cursor-pointer">
             <span
               className={`${currentLang === "en" ? "font-bold text-secondary" : ""} hover:text-secondary transition-colors duration-200`}
               onClick={() => handleLanguageChange("en")}
@@ -128,7 +128,7 @@ const NavbarSection3 = ({ categoryData }) => {
             >
               AR
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
